@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<title>Scholia — 課程主頁</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+TC:wght@400;500;600&amp;family=Noto+Sans+TC:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBFAF6}
+a{color:#A8321C}a:hover{color:#7E2414}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBFAF6; color: #1C1B19; font-family: Inter, 'Noto Sans TC', system-ui, sans-serif; font-size: 15px; line-height: 1.6">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; border-bottom: 1px solid #E4E0D6; background: #FFFFFF">
+<div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap">
+<span style="font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Scholia<span style="color: #A8321C">.</span></span>
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 12px; color: #55524B; letter-spacing: 0.06em">{{t.course}}</span>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+<div role="group" aria-label="{{t.langLabel}}" style="display: inline-flex; padding: 3px; border: 1px solid #D6D1C4; border-radius: 999px; background: #FBFAF6">
+<sc-for list="{{langs}}" as="l" hint-placeholder-count="2">
+<button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="{{l.style}}">{{l.label}}</button>
+</sc-for>
+</div>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #D6D1C4; background: #FFFFFF; color: #1C1B19; border-radius: 8px; font-size: 14px">{{t.export}}</button>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #1C1B19; background: #1C1B19; color: #FBFAF6; border-radius: 8px; font-size: 14px; font-weight: 500">{{t.cont}}</button>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start">
+
+<nav aria-label="{{t.navCourse}}" style="flex: 1 1 220px; max-width: 260px; padding: 28px 20px 28px 32px; display: flex; flex-direction: column; gap: 4px; font-size: 14px">
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 11px; letter-spacing: 0.1em; color: #55524B; padding: 0 12px 8px">{{t.navCourse}}</span>
+<a href="#" style="display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; background: #F1EEE6; color: #1C1B19; text-decoration: none; font-weight: 600">{{t.dash}}</a>
+<a href="Mistakes.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 40px; padding: 0 12px; border-radius: 8px; color: #1C1B19; text-decoration: none">{{t.notebook}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B35A00">14</span></a>
+<a href="Exam.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 40px; padding: 0 12px; border-radius: 8px; color: #1C1B19; text-decoration: none">{{t.midterm}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #55524B">{{t.midDate}}</span></a>
+<a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 40px; padding: 0 12px; border-radius: 8px; color: #55524B; text-decoration: none">{{t.final}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px">{{t.finalDate}}</span></a>
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 11px; letter-spacing: 0.1em; color: #55524B; padding: 20px 12px 8px">{{t.navUnits}}</span>
+<sc-for list="{{units}}" as="u" hint-placeholder-count="8">
+<button type="button" onClick="{{u.pick}}" style="{{u.navStyle}}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #A8321C; width: 22px; flex: none">{{u.num}}</span>{{u.title}}</button>
+</sc-for>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 28px">
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 12px; letter-spacing: 0.06em; color: #A8321C">{{t.week}}</span>
+<h1 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 40px; line-height: 1.15; letter-spacing: -0.01em">{{sel.headline}}</h1>
+<p style="margin: 0; color: #55524B; max-width: 62ch">{{sel.title}} — {{sel.blurb}}</p>
+</section>
+
+<section aria-label="{{sel.pathTitle}}" style="background: #FFFFFF; border: 1px solid #E4E0D6; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px">
+<h2 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 22px">{{sel.pathTitle}}</h2>
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 12px; color: #55524B">{{sel.doneText}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
+<sc-for list="{{sel.stages}}" as="s" hint-placeholder-count="7">
+<a href="{{s.href}}" style="{{s.style}}">
+<span style="display: flex; justify-content: space-between; align-items: center; font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 11px; letter-spacing: 0.06em"><span>{{s.phase}}</span><span style="{{s.badgeStyle}}">{{s.badge}}</span></span>
+<span style="font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-size: 18px; line-height: 1.25; color: #1C1B19"><span style="color: #A8321C">{{s.n}}</span> {{s.name}}</span>
+<span style="font-size: 13px; color: #55524B; line-height: 1.45">{{s.detail}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-label="{{t.allUnits}}" style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 22px">{{t.allUnits}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px">
+<sc-for list="{{units}}" as="u" hint-placeholder-count="8">
+<button type="button" onClick="{{u.pick}}" style="{{u.cardStyle}}">
+<span style="display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 12px; color: #55524B"><span style="color: #A8321C">{{u.label}}</span><span>{{u.date}}</span></span>
+<span style="font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-size: 19px; line-height: 1.3; color: #1C1B19; text-align: left">{{u.title}}</span>
+<span style="display: flex; gap: 4px" aria-label="{{u.doneText}}">
+<sc-for list="{{u.dots}}" as="d" hint-placeholder-count="7"><span style="{{d.style}}"></span></sc-for>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+</main>
+
+<aside aria-label="{{t.margin}}" style="flex: 1 1 280px; max-width: 340px; padding: 28px 32px 48px 8px; display: flex; flex-direction: column; gap: 20px; border-left: 1px solid #E4E0D6">
+<span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 11px; letter-spacing: 0.1em; color: #55524B">{{t.margin}}</span>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 19px">{{t.weak}}</h3>
+<p style="margin: 0; font-size: 13px; color: #55524B">{{t.weakSub}}</p>
+<sc-for list="{{weak}}" as="w" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px"><span>{{w.concept}}</span><span style="font-family: 'IBM Plex Mono', 'Noto Sans TC', monospace; font-size: 12px; color: #B35A00; flex: none">{{w.missText}}</span></span>
+<span style="height: 6px; border-radius: 3px; background: #F1EEE6; overflow: hidden; display: block"><span style="{{w.bar}}"></span></span>
+</div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; background: #FFFFFF; border: 1px solid #E4E0D6; border-radius: 12px">
+<h3 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 19px">{{t.due}}</h3>
+<p style="margin: 0; font-size: 13px; color: #55524B">{{t.dueSub}}</p>
+<a href="Mistakes.dc.html" style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 8px; background: #A8321C; color: #FFFFFF; text-decoration: none; font-weight: 500; font-size: 14px">{{t.dueBtn}}</a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 19px">{{t.mid}}</h3>
+<p style="margin: 0; font-size: 13px; color: #55524B">{{t.midSub}}</p>
+<a href="Exam.dc.html" style="font-size: 14px">{{t.midLink}}</a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: Newsreader, 'Noto Serif TC', Georgia, serif; font-weight: 500; font-size: 19px">{{t.fromClass}}</h3>
+<p style="margin: 0; font-size: 13px; color: #55524B">{{t.fromClassSub}}</p>
+</div>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"lang":{"editor":"enum","options":["zh","en"],"default":"zh"},"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+  constructor(p){ super(p); this.state = { sel: 4, lang: null }; }
+  renderVals() {
+    const self = this;
+    const lang = this.state.lang || this.props.lang || 'zh';
+    const zh = lang === 'zh';
+    const T = zh ? {
+      course: '機率與統計 I · 2026 秋季學期', langLabel: '介面語言', export: '匯出學習進度', cont: '繼續第 5 單元',
+      navCourse: '課程', dash: '主頁', notebook: '錯題簿', midterm: '期中溫習', midDate: '10月20日', final: '期末溫習', finalDate: '12月14日', navUnits: '單元',
+      week: '第 6 週 · 下一課 10月6日（星期二）', allUnits: '全部單元', margin: 'Scholia · 頁邊批註',
+      weak: '薄弱知識點', weakSub: '你錯過不止一次的概念。', due: '今日待重測', dueSub: '5 道舊錯題按 1·3·7·14 日間隔再次出現。', dueBtn: '開始 5 題重測',
+      mid: '距離期中考 14 日', midSub: '考試範圍第 1–5 單元。5 個課後溫習已完成 4 個。', midLink: '打開期中溫習 →',
+      fromClass: '課堂提問', fromClassSub: '第 5 單元有 2 個課堂提問已獲解答。'
+    } : {
+      course: 'Probability & Statistics I · Fall 2026', langLabel: 'Interface language', export: 'Export progress', cont: 'Continue Unit 5',
+      navCourse: 'Course', dash: 'Dashboard', notebook: 'Mistake notebook', midterm: 'Midterm review', midDate: 'Oct 20', final: 'Final review', finalDate: 'Dec 14', navUnits: 'Units',
+      week: 'Week 6 · Next lecture Tue, Oct 6', allUnits: 'All units', margin: 'Scholia · margin notes',
+      weak: 'Weak spots', weakSub: 'Concepts you’ve missed more than once.', due: 'Due for re-test today', dueSub: '5 old mistakes are back, spaced 1 · 3 · 7 · 14 days apart.', dueBtn: 'Start 5-question re-test',
+      mid: 'Midterm in 14 days', midSub: 'Covers Units 1–5. You’ve finished 4 of 5 after-class reviews.', midLink: 'Open midterm review →',
+      fromClass: 'From class', fromClassSub: '2 classroom questions are answered and waiting in Unit 5.'
+    };
+    const RAW = zh ? [
+      ['樣本空間與事件','9月8日',7,'結果、事件，以及把它們聯繫起來的公理。'],
+      ['計數方法','9月15日',7,'排列、組合，以及何時要考慮次序。'],
+      ['條件機率','9月22日',7,'得知新資訊後如何更新機率。'],
+      ['獨立性與貝氏定理','9月29日',6,'事件何時互不影響，以及如何「反轉」條件機率。'],
+      ['離散型隨機變數','10月6日',2,'把結果變成數字：機率質量函數、分佈函數與期望值。'],
+      ['二項分佈與泊松分佈','10月13日',0,'數「成功次數」與「到達次數」的兩個分佈。'],
+      ['連續型隨機變數','10月27日',0,'機率密度、曲線下的面積，均勻分佈與指數分佈。'],
+      ['常態分佈','11月3日',0,'鐘形曲線、標準化與標準常態分佈表。']
+    ] : [
+      ['Sample spaces & events','Sep 8',7,'Outcomes, events and the axioms that tie them together.'],
+      ['Counting methods','Sep 15',7,'Permutations, combinations and when order matters.'],
+      ['Conditional probability','Sep 22',7,'Updating a probability once you learn something new.'],
+      ['Independence & Bayes','Sep 29',6,'When events ignore each other, and how to invert a conditional.'],
+      ['Discrete random variables','Oct 6',2,'Turning outcomes into numbers: PMFs, CDFs and expectation.'],
+      ['Binomial & Poisson','Oct 13',0,'Two distributions that count successes and arrivals.'],
+      ['Continuous random variables','Oct 27',0,'Densities, areas under curves, and the uniform and exponential.'],
+      ['The normal distribution','Nov 3',0,'The bell curve, z-scores and the standard normal table.']
+    ];
+    const STAGES = zh ? [
+      ['課前','1','預習資料','學習目標、導讀摘要、關鍵詞彙','Unit.dc.html'],
+      ['課前','2','預習題','8 道題 · 即時回饋','Quiz.dc.html'],
+      ['課前','3','預習錯題與難點','你的錯題逐一講解','Mistakes.dc.html'],
+      ['課堂','4','課堂提問記錄','隨時記低上堂的疑問','#'],
+      ['課後','5','課後溫習','重點回顧、記憶卡、溫習測驗','#'],
+      ['課後','6','課後錯題與難點','溫習錯題與深層難點','Mistakes.dc.html'],
+      ['課後','7','功課解答','先給提示，再看完整步驟','#']
+    ] : [
+      ['Before','1','Pre-study materials','Objectives, guided summary, key terms','Unit.dc.html'],
+      ['Before','2','Pre-study quiz','8 questions · instant feedback','Quiz.dc.html'],
+      ['Before','3','Mistakes & difficulties','Your errors, explained','Mistakes.dc.html'],
+      ['In class','4','Classroom questions','Log questions as they come','#'],
+      ['After','5','After-class review','Recap, flashcards, review quiz','#'],
+      ['After','6','Mistakes & difficulties','Review-quiz errors, deeper fixes','Mistakes.dc.html'],
+      ['After','7','Homework solutions','Hints first, then full steps','#']
+    ];
+    const sel = this.state.sel;
+    const units = RAW.map((r, i) => {
+      const on = i === sel;
+      return {
+        num: String(i + 1), title: r[0], date: r[1],
+        label: zh ? ('第 ' + (i + 1) + ' 單元') : ('Unit ' + (i + 1)),
+        doneText: zh ? ('已完成 ' + r[2] + '/7 個階段') : (r[2] + ' of 7 stages done'),
+        pick: () => self.setState({ sel: i }),
+        navStyle: 'display:flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:8px;border:0;text-align:left;font-size:14px;color:#1C1B19;background:' + (on ? '#F6E7E2' : 'transparent') + ';font-weight:' + (on ? '600' : '400'),
+        cardStyle: 'display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:12px;background:#FFFFFF;min-height:132px;border:' + (on ? '2px solid #A8321C' : '1px solid #E4E0D6'),
+        dots: STAGES.map((_, k) => ({ style: 'flex:1;height:6px;border-radius:3px;background:' + (k < r[2] ? '#1D5A8C' : (k === r[2] ? '#A8321C' : '#E4E0D6')) }))
+      };
+    });
+    const u = RAW[sel];
+    const next = Math.min(u[2] + 1, 7);
+    const stages = STAGES.map((s, k) => {
+      const st = k < u[2] ? 'done' : (k === u[2] ? 'now' : 'todo');
+      return {
+        phase: s[0], n: s[1], name: s[2], detail: s[3], href: s[4],
+        badge: st === 'done' ? (zh ? '已完成' : 'Done') : (st === 'now' ? (zh ? '下一步' : 'Next') : ''),
+        badgeStyle: st === 'done' ? 'color:#1D5A8C' : 'color:#A8321C;font-weight:500',
+        style: 'display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:10px;text-decoration:none;color:#55524B;min-height:120px;' + (st === 'now' ? 'background:#F6E7E2;border:1px solid #A8321C' : (st === 'done' ? 'background:#F4F7FA;border:1px solid #D5E1EC' : 'background:#FFFFFF;border:1px dashed #D6D1C4'))
+      };
+    });
+    const weak = (zh ? [['貝氏定理',5],['P(A|B) 與 P(B|A) 混淆',4],['可重複組合',3],['補事件技巧',2]] : [['Bayes’ rule',5],['P(A|B) vs P(B|A)',4],['Combinations with repeats',3],['Complement trick',2]])
+      .map(w => ({ concept: w[0], missText: zh ? ('錯 ' + w[1] + ' 次') : (w[1] + ' misses'), bar: 'display:block;height:6px;background:#B35A00;width:' + (w[1] * 20) + '%' }));
+    const langs = [['zh','繁體中文'],['en','English']].map(l => ({
+      label: l[1], pressed: lang === l[0] ? 'true' : 'false',
+      pick: () => self.setState({ lang: l[0] }),
+      style: 'min-height:36px;padding:0 14px;border:0;border-radius:999px;font-size:13px;' + (lang === l[0] ? 'background:#1C1B19;color:#FBFAF6;font-weight:500' : 'background:transparent;color:#55524B')
+    }));
+    return {
+      t: T, units, weak, langs,
+      sel: {
+        title: u[0], blurb: u[3], stages,
+        headline: zh ? ('你好！第 ' + (sel + 1) + ' 單元正等你進入第 ' + next + ' 階段。') : ('Good evening. Unit ' + (sel + 1) + ' is waiting at stage ' + next + '.'),
+        pathTitle: zh ? ('第 ' + (sel + 1) + ' 單元學習路徑') : ('The path for Unit ' + (sel + 1)),
+        doneText: zh ? ('已完成 ' + u[2] + '/7 個階段') : (u[2] + ' of 7 stages done')
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

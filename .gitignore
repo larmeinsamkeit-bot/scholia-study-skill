@@ -1,0 +1,11 @@
+# Private course materials and anything generated from them — never publish
+materials/
+courses/
+build/*
+!build/scholia-example.html
+
+# Local tooling
+.claude/
+.DS_Store
+__pycache__/
+*.pyc

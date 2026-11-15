@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scholia · 機率與統計 I（範例）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+TC:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --paper:#FBFAF6;--surface:#FFFFFF;--sunk:#F1EEE6;--ink:#1C1B19;--ink2:#55524B;--ink3:#77736A;
+  --rule:#E4E0D6;--rule2:#D6D1C4;--rubric:#A8321C;--rubric-ink:#7E2414;--rubric-soft:#F6E7E2;
+  --blue:#1D5A8C;--blue-soft:#EEF4F9;--blue-rule:#C7D8E8;--orange:#B35A00;--orange-soft:#FBF0E3;--orange-rule:#EBCDA8;
+  --on-dark:#FBFAF6;--dark:#1C1B19;
+  --serif:Newsreader,"Noto Serif TC","Noto Serif SC",Georgia,serif;
+  --sans:Inter,"Noto Sans TC","Noto Sans SC",system-ui,sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans TC","Noto Sans SC",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#161513;--surface:#1F1E1B;--sunk:#2A2825;--ink:#EDEAE3;--ink2:#B4AFA4;--ink3:#948F84;
+  --rule:#34322D;--rule2:#45423C;--rubric:#E58A70;--rubric-ink:#F2A891;--rubric-soft:#3A2420;
+  --blue:#86B8E3;--blue-soft:#18273A;--blue-rule:#2C4560;--orange:#EDA35C;--orange-soft:#33261A;--orange-rule:#5A4128;
+  --on-dark:#161513;--dark:#EDEAE3;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#161513;--surface:#1F1E1B;--sunk:#2A2825;--ink:#EDEAE3;--ink2:#B4AFA4;--ink3:#948F84;
+  --rule:#34322D;--rule2:#45423C;--rubric:#E58A70;--rubric-ink:#F2A891;--rubric-soft:#3A2420;
+  --blue:#86B8E3;--blue-soft:#18273A;--blue-rule:#2C4560;--orange:#EDA35C;--orange-soft:#33261A;--orange-rule:#5A4128;
+  --on-dark:#161513;--dark:#EDEAE3;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--rubric)}a:hover{color:var(--rubric-ink)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;letter-spacing:-.01em}
+p{margin:0}
+code{font-family:var(--mono);font-size:.9em;background:var(--sunk);padding:1px 5px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.label.r{color:var(--rubric)}.label.b{color:var(--blue)}.label.o{color:var(--orange)}
+.muted{color:var(--ink2)}
+.small{font-size:13.5px}
+.prose{font-family:var(--serif);font-size:18.5px;line-height:1.7}
+.prose p+p,.prose ul,.prose ol{margin-top:.7em}
+.prose ul,.prose ol{padding-left:1.3em}
+.md p+p,.md ul,.md ol,.md p+ul,.md p+ol{margin-top:.55em}
+.md ul,.md ol{padding-left:1.3em;margin:0}
+.md li+li{margin-top:.2em}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid var(--rule2);background:var(--surface);color:var(--ink);font-size:14px;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--ink3);color:var(--ink)}
+.btn.primary{background:var(--rubric);border-color:var(--rubric);color:#fff;font-weight:500}
+.btn.primary:hover{background:var(--rubric-ink);border-color:var(--rubric-ink);color:#fff}
+.btn.dark{background:var(--dark);border-color:var(--dark);color:var(--on-dark);font-weight:500}
+.btn.link{border:0;background:none;padding:0;min-height:40px;color:var(--rubric)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--rule2);background:var(--surface);color:var(--ink);font-size:13.5px;text-decoration:none}
+.pill.on{background:var(--dark);border-color:var(--dark);color:var(--on-dark);font-weight:500}
+.pill.todo{border-style:dashed;color:var(--ink2);background:transparent}
+.pill .n{font-family:var(--mono);color:var(--rubric)}
+.pill.on .n{color:#F2B8A8}
+.tag{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:6px}
+.tag.o{background:var(--orange-soft);color:var(--orange)}.tag.b{background:var(--blue-soft);color:var(--blue)}.tag.r{background:var(--rubric-soft);color:var(--rubric)}
+.bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;display:block}
+.bar>i{display:block;height:100%;border-radius:3px}
+.dots{display:flex;gap:4px}.dots i{flex:1;height:6px;border-radius:3px;background:var(--rule)}
+.dots i.d{background:var(--blue)}.dots i.n{background:var(--rubric)}
+.margin-note{display:flex;flex-direction:column;gap:4px;padding-left:14px;border-left:2px solid var(--rule2);font-size:14px;line-height:1.5}
+.margin-note.r{border-left-color:var(--rubric)}
+/* layout */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px;padding:14px 28px;border-bottom:1px solid var(--rule);background:var(--surface);position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0}
+.logo{font-family:var(--serif);font-size:27px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--rubric)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;padding:3px;border:1px solid var(--rule2);border-radius:999px;background:var(--paper)}
+.seg button{min-height:36px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--ink2);font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--dark);color:var(--on-dark);font-weight:500}
+.shell{display:flex;flex-wrap:wrap;align-items:flex-start}
+.side{flex:1 1 220px;max-width:270px;padding:24px 16px 24px 24px;display:flex;flex-direction:column;gap:2px;font-size:14px}
+.side .label{padding:16px 12px 6px}
+.side a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px;padding:0 12px;border-radius:8px;color:var(--ink);text-decoration:none}
+.side a:hover{background:var(--sunk)}
+.side a.on{background:var(--rubric-soft);font-weight:600}
+.side a .mono{font-size:12px;color:var(--ink2)}
+.side a .num{font-family:var(--mono);font-size:12px;color:var(--rubric);width:22px;flex:none}
+.main{flex:999 1 560px;min-width:0;padding:28px 32px 64px;display:flex;flex-direction:column;gap:26px}
+.aside{flex:1 1 260px;max-width:330px;padding:28px 28px 48px 8px;display:flex;flex-direction:column;gap:20px}
+.aside.ruled{border-left:1px solid var(--rule);padding-left:24px}
+.read{display:flex;flex-wrap:wrap;justify-content:center;gap:0 48px;padding:36px 28px 64px}
+.read>.col{flex:999 1 560px;min-width:0;max-width:740px;display:flex;flex-direction:column;gap:26px}
+.read>.mar{flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:22px;padding-top:8px}
+.stagebar{display:flex;flex-wrap:wrap;gap:6px;padding:12px 28px;border-bottom:1px solid var(--rule);background:var(--paper)}
+.stagebar .sep{display:inline-flex;align-items:center;color:var(--ink3);padding:0 2px}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stage{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:10px;text-decoration:none;color:var(--ink2);min-height:118px;background:var(--surface);border:1px dashed var(--rule2)}
+.stage.done{background:var(--blue-soft);border:1px solid var(--blue-rule)}
+.stage.now{background:var(--rubric-soft);border:1px solid var(--rubric)}
+.stage .t{font-family:var(--serif);font-size:18px;line-height:1.25;color:var(--ink)}
+.unitcard{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--rule);text-decoration:none;color:var(--ink);min-height:128px}
+.unitcard:hover{border-color:var(--ink3)}
+.unitcard.cur{border:2px solid var(--rubric)}
+.unitcard .t{font-family:var(--serif);font-size:19px;line-height:1.3}
+/* quiz */
+.opt{display:flex;align-items:center;gap:14px;min-height:56px;padding:10px 16px;border-radius:10px;border:1px solid var(--rule);background:var(--surface);font-size:16.5px;text-align:left;width:100%}
+.opt:hover:not([disabled]){border-color:var(--ink3)}
+.opt .k{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;border-radius:50%;font-family:var(--mono);font-size:13px;border:1px solid var(--rule2);color:var(--ink2)}
+.opt .txt{flex:1}
+.opt .m{font-family:var(--mono);font-size:12px}
+.opt.sel{border:2px solid var(--ink);background:var(--sunk)}
+.opt.right{border:2px solid var(--blue);background:var(--blue-soft)}.opt.right .m{color:var(--blue)}
+.opt.wrong{border:2px solid var(--orange);background:var(--orange-soft)}.opt.wrong .m{color:var(--orange)}
+.opt[disabled]{cursor:default}
+.fb{display:flex;flex-direction:column;gap:10px;padding:18px 20px;border-radius:10px}
+.fb.ok{background:var(--blue-soft)}.fb.no{background:var(--orange-soft)}
+.prog{display:flex;gap:4px}.prog i{flex:1;height:6px;border-radius:3px;background:var(--rule)}
+.prog i.ok{background:var(--blue)}.prog i.no{background:var(--orange)}.prog i.cur{background:var(--rubric)}
+textarea,input[type=text]{width:100%;border:1px solid var(--rule2);border-radius:10px;background:var(--surface);padding:12px 14px;font-size:15px;line-height:1.5}
+textarea{min-height:96px;resize:vertical}
+details.diff{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:2px 22px}
+details.diff[open]{padding-bottom:20px}
+details.diff summary{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-family:var(--serif);font-size:19.5px;list-style:none}
+details.diff summary::-webkit-details-marker{display:none}
+details.diff summary::after{content:"+";font-family:var(--mono);color:var(--ink3);margin-left:auto}
+details.diff[open] summary::after{content:"−"}
+.example{padding:14px 16px;border-radius:10px;background:var(--sunk);font-size:15px}
+.flash{min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;border-radius:16px;border:1px solid var(--rule);background:var(--surface);font-family:var(--serif);font-size:23px;line-height:1.45;width:100%}
+.flash.back{background:var(--blue-soft);border-color:var(--blue-rule)}
+.qmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.qmap a{display:flex;align-items:center;justify-content:center;height:36px;border-radius:6px;border:1px solid var(--rule2);font-family:var(--mono);font-size:12px;color:var(--ink2);text-decoration:none}
+.qmap a.a{background:var(--blue);border-color:var(--blue);color:var(--on-dark)}
+.qmap a.f{background:var(--orange);border-color:var(--orange);color:var(--on-dark)}
+.dark-card{background:var(--dark);color:var(--on-dark);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.dark-card .muted{color:inherit;opacity:.8}
+.readiness{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) 48px;gap:12px 16px;align-items:center;font-size:14px}
+.bar.lg{height:10px;border-radius:5px}
+.empty{padding:28px;border:1px dashed var(--rule2);border-radius:14px;color:var(--ink2);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.langnote{padding:8px 28px;background:var(--orange-soft);color:var(--ink);font-size:13.5px;border-bottom:1px solid var(--orange-rule)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--dark);color:var(--on-dark);padding:12px 18px;border-radius:10px;font-size:14px;z-index:20;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.between{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column}
+.g4{gap:4px}.g8{gap:8px}.g10{gap:10px}.g12{gap:12px}.g14{gap:14px}.g16{gap:16px}.g20{gap:20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:760px){
+  .top{padding:12px 16px;position:static}.main{padding:22px 16px 48px}.aside{padding:8px 16px 40px;max-width:none}.aside.ruled{border-left:0;padding-left:16px}
+  .side{max-width:none;padding:12px 16px 0}.read{padding:24px 16px 48px}.read>.mar{max-width:none}.stagebar{padding:10px 16px}
+  .readiness{grid-template-columns:1fr 1fr 40px}.prose{font-size:17.5px}h1.big{font-size:32px!important}
+}
+@media print{.top,.stagebar,.side,.aside,.btn{display:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script>
+"use strict";
+const DATA = {"course":{"title":"機率與統計 I（範例）","subtitle":"STAT 201 · 2026 秋季學期","lang":"zh-Hant","instructor":"李教授"},"units":[{"id":"u1","title":{"zh-Hant":"條件機率","en":"Conditional probability"},"summary":"得知新資訊之後，機率要怎樣更新。","date":"2026-09-22","prestudy":{"minutes":25,"objectives":["用自己的話解釋 $P(A \\mid B)$ 的意思","用定義 $P(A \\mid B) = P(A \\cap B)/P(B)$ 計算條件機率","分辨 $P(A \\mid B)$ 與 $P(B \\mid A)$"],"sections":[{"heading":"縮小了的樣本空間","body":"條件機率 (conditional probability) 回答一個問題：**已知 B 發生了**，A 發生的機率是多少？\n\n直覺上，知道 B 發生，等於把樣本空間縮小到 B 之內，然後問 A 佔了 B 的幾多。\n\n例如擲一粒骰，已知點數是偶數 (B = {2, 4, 6})，點數是 6 的機率就由 1/6 變成 1/3。","source":"教科書 §2.4"},{"heading":"定義","body":"當 $P(B) > 0$：\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$\n\n分子是「A 和 B 同時發生」，分母是「B 發生」。把它移項，就得到乘法法則：$P(A \\cap B) = P(A \\mid B)\\,P(B)$。","source":"投影片 W3 p.4–7"}],"keyTerms":[{"term":"條件機率","definition":"已知 B 發生下 A 的機率，記作 $P(A \\mid B)$。"},{"term":"乘法法則","definition":"$P(A \\cap B) = P(A \\mid B)P(B)$。"},{"term":"交集","definition":"$A \\cap B$：A 和 B 同時發生。"}],"notes":[{"kind":"source","text":"教科書 §2.4，pp. 58–64 · 投影片 W3 p.2–12"},{"kind":"builds-on","text":"樣本空間與事件 — 條件機率只是在一個較小的樣本空間裏計數。"},{"kind":"watch","text":"直線 `|` 左邊是你想知道的事件，右邊是已知條件。次序不可以調轉。"}]},"prequiz":[{"id":"u1-pre-1","type":"single","difficulty":1,"concept":"條件機率定義","stem":"擲一粒公平骰子。已知點數是偶數，點數是 6 的機率是多少？","options":["$1/6$","$1/3$","$1/2$","$2/3$"],"answer":1,"explanation":"已知是偶數，樣本空間縮小為 {2, 4, 6}，其中只有 6 一個結果，所以是 $1/3$。\n\n選 $1/6$ 是忘記了條件已經把樣本空間縮小。","optionFeedback":["這是沒有任何條件時的機率 — 你忽略了「已知是偶數」。",null,"1/2 是「點數是偶數」本身的機率，不是條件機率。","2/3 是偶數中不是 6 的比例。"],"source":"投影片 W3 p.5"},{"id":"u1-pre-2","type":"tf","difficulty":1,"concept":"P(A|B) 與 P(B|A)","stem":"對任何事件 A、B，$P(A \\mid B) = P(B \\mid A)$。","answer":false,"explanation":"一般不相等。$P(A \\mid B) = P(A\\cap B)/P(B)$，$P(B \\mid A) = P(A\\cap B)/P(A)$，分母不同。只有 $P(A) = P(B)$ 時兩者才會相等。"},{"id":"u1-pre-3","type":"single","difficulty":2,"concept":"條件機率定義","stem":"已知 $P(A \\cap B) = 0.2$，$P(B) = 0.5$。$P(A \\mid B)$ 是多少？","options":["$0.1$","$0.4$","$0.7$","$2.5$"],"answer":1,"explanation":"$P(A\\mid B) = 0.2 / 0.5 = 0.4$。\n\n$0.1$ 是把兩者相乘；$2.5$ 是分子分母調轉 — 機率不可能大於 1。","optionFeedback":["你把兩個數相乘了 — 定義是相除。",null,"0.7 是相加的結果，沒有意義。","分子分母調轉了；任何機率都不會大於 1。"]},{"id":"u1-pre-4","type":"single","difficulty":2,"concept":"乘法法則","stem":"袋中有 3 個紅球、2 個藍球，不放回地抽兩個。兩個都是紅球的機率是多少？","options":["$9/25$","$3/10$","$3/5$","$6/25$"],"answer":1,"explanation":"$P(\\text{第一個紅}) = 3/5$，$P(\\text{第二個紅} \\mid \\text{第一個紅}) = 2/4$。相乘：$3/5 \\times 1/2 = 3/10$。\n\n$9/25$ 是「放回」的答案。","optionFeedback":["這是放回抽樣的答案 — 不放回時第二次只剩 4 個球。",null,"3/5 只是第一個是紅球的機率。","6/25 把分母用錯了。"]},{"id":"u1-pre-5","type":"short","difficulty":2,"concept":"P(A|B) 與 P(B|A)","stem":"用一句話解釋：為甚麼「已知患病，測試呈陽性的機率」和「已知測試呈陽性，真的患病的機率」不一樣？","answer":"兩者的條件（已知的部分）不同：前者在所有患者中計算，後者在所有陽性結果中計算；當疾病罕見時，陽性結果大多來自健康的人，所以後者可以遠低於前者。","explanation":"關鍵是分母：一個是患病的人，一個是測試陽性的人。這正是貝氏定理要處理的問題。"}],"difficulties":[{"title":"把 P(A|B) 與 P(B|A) 調轉","concept":"P(A|B) 與 P(B|A)","why":"兩個式子看起來只差次序，日常語言（「如果…就…」）也常常把兩個方向混為一談。","explanation":"每次先問：**哪件事是已知的？** 已知的放在直線右邊，它決定分母。","example":"已知下雨 (B)，你帶傘 (A) 的機率可能是 0.9；但已知你帶傘，當日下雨的機率可能只有 0.3 — 因為你在陰天也會帶傘。"},{"title":"忘記樣本空間已經縮小","concept":"條件機率定義","why":"習慣了用「全部結果」做分母。","explanation":"條件機率的分母永遠是條件事件 B，不是整個樣本空間。","example":"擲兩粒骰，已知總和是 8，第一粒是 3 的機率：總和 8 的結果有 5 個，其中 (3,5) 一個，所以是 1/5，不是 1/6。"}],"classroom":{"listenFor":["老師怎樣由條件機率引出「獨立」的定義","樹狀圖 (tree diagram) 在甚麼情況下最有用"],"answers":[{"q":"條件機率的分母可以是 0 嗎？","a":"不可以。定義要求 $P(B) > 0$；如果 B 不可能發生，「已知 B 發生」本身就沒有意義。","source":"教科書 §2.4 註 2"}]},"review":{"recap":"條件機率就是在**縮小了的樣本空間**裏計算機率。\n\n- 定義：$P(A\\mid B) = P(A\\cap B)/P(B)$\n- 乘法法則：$P(A\\cap B) = P(A\\mid B)P(B)$，常用來計算「先後發生」的事件\n- 方向很重要：$P(A\\mid B)$ 與 $P(B\\mid A)$ 一般不相等","keyPoints":["條件機率的分母是已知事件 B 的機率。","不放回抽樣時，每一步的機率都要按已抽出的結果更新。","樹狀圖的每一條枝都是一個條件機率，沿路相乘就得到交集的機率。","$P(A\\mid B)$ 與 $P(B\\mid A)$ 的分母不同，所以一般不相等。"],"flashcards":[{"front":"$P(A\\mid B)$ 的定義是？","back":"$P(A\\cap B)/P(B)$，其中 $P(B) > 0$"},{"front":"乘法法則","back":"$P(A\\cap B) = P(A\\mid B)\\,P(B)$"},{"front":"直線 `|` 右邊代表甚麼？","back":"已知發生了的事件（條件）— 它決定分母。"},{"front":"不放回抽兩個紅球（3 紅 2 藍）的機率？","back":"$\\frac{3}{5}\\cdot\\frac{2}{4} = \\frac{3}{10}$"}],"connections":"下一個單元會用條件機率定義**獨立**：如果 $P(A\\mid B) = P(A)$，知道 B 對 A 毫無影響。"},"postquiz":[{"id":"u1-post-1","type":"single","difficulty":2,"concept":"乘法法則","stem":"一班有 60% 女生。女生中 30% 戴眼鏡。隨機選一位同學，她是戴眼鏡的女生的機率是？","options":["$0.18$","$0.30$","$0.50$","$0.90$"],"answer":0,"explanation":"$P(\\text{女} \\cap \\text{眼鏡}) = P(\\text{眼鏡}\\mid\\text{女})P(\\text{女}) = 0.3 \\times 0.6 = 0.18$。","optionFeedback":[null,"0.30 是條件機率 $P(\\text{眼鏡}\\mid\\text{女})$，不是交集。","沒有根據。","把兩個機率相加了。"]},{"id":"u1-post-2","type":"multi","difficulty":3,"concept":"P(A|B) 與 P(B|A)","stem":"設 $P(A)=0.5$，$P(B)=0.25$，$P(A\\cap B)=0.1$。以下哪些正確？（可選多於一項）","options":["$P(A\\mid B) = 0.4$","$P(B\\mid A) = 0.2$","$P(A\\mid B) = P(B\\mid A)$","$P(A\\cup B) = 0.65$"],"answer":[0,1,3],"explanation":"$P(A\\mid B) = 0.1/0.25 = 0.4$；$P(B\\mid A) = 0.1/0.5 = 0.2$，兩者不等；$P(A\\cup B) = 0.5 + 0.25 - 0.1 = 0.65$。"},{"id":"u1-post-3","type":"tf","difficulty":2,"concept":"條件機率定義","stem":"$P(A \\mid B)$ 一定小於或等於 $P(A)$。","answer":false,"explanation":"不一定。已知條件可以令機率上升，例如擲骰已知是偶數，得到 6 的機率由 1/6 升到 1/3。"}],"postDifficulties":[{"title":"交集與條件機率混淆","concept":"乘法法則","why":"題目中「女生中有 30% 戴眼鏡」很容易被讀成「30% 是戴眼鏡的女生」。","explanation":"「…之中」「已知…」「在…的人裏面」都是條件機率的訊號；「既是…又是…」才是交集。","example":"「女生中 30% 戴眼鏡」→ $P(\\text{眼鏡}\\mid\\text{女}) = 0.3$；「30% 的同學是戴眼鏡的女生」→ $P(\\text{女}\\cap\\text{眼鏡}) = 0.3$。"}],"homework":[{"id":"hw3-2","title":"功課 3 · 第 2 題","source":"功課 3","problem":"一個盒有 4 張好的晶片和 1 張壞的。不放回地逐張測試，直到找到壞晶片為止。求剛好要測試 3 張的機率。","hints":["「剛好 3 張」代表頭兩張都是好的，第三張是壞的。","用乘法法則，每一步都按剩下的晶片數更新機率。"],"steps":["第一張是好的：$P = 4/5$。","已知第一張好，第二張也是好的：$P = 3/4$。","已知頭兩張好，第三張是壞的：剩下 3 張中有 1 張壞，$P = 1/3$。","相乘：$\\frac{4}{5}\\cdot\\frac{3}{4}\\cdot\\frac{1}{3} = \\frac{1}{5}$。"],"answer":"$1/5$ — 其實壞晶片出現在任何一個位置的機率都是 $1/5$。","pitfalls":["忘記「剛好」：只計算第三張是壞的，沒有要求頭兩張是好的。","用了放回抽樣的機率 $1/5$ 三次。"],"concept":"乘法法則","revealMode":"hints-first"}]},{"id":"u2","title":{"zh-Hant":"離散型隨機變數","en":"Discrete random variables"},"summary":"把實驗結果變成可以相加、平均和畫圖的數字。","date":"2026-10-06","prestudy":{"minutes":25,"objectives":["說明甚麼是隨機變數 (random variable)，以及甚麼令它是離散的","寫出機率質量函數 (PMF) 並檢查總和是否等於 1","由 PMF 計算期望值 $E[X]$"],"sections":[{"heading":"由結果到數字","body":"**隨機變數**是一條規則，把樣本空間中每一個結果對應到一個數字。擲兩粒骰，結果是一對數字如 (2, 5)，但我們往往只關心總和 7 — 這個總和就是隨機變數 $X$。\n\n如果 $X$ 的可能值可以逐個列出（例如 2, 3, …, 12），它就是**離散的**，即使列表是無限長也可以。","source":"教科書 §3.1"},{"heading":"機率質量函數與期望值","body":"PMF 給出每一個值的機率：$p(x) = P(X = x)$。每個 PMF 都要通過兩個檢查：沒有負數，而且總和剛好是 1。\n\n期望值 (expected value) 是以機率加權的平均：\n\n$$E[X] = \\sum_x x\\,p(x)$$","source":"教科書 §3.2–3.3"}],"keyTerms":[{"term":"隨機變數","definition":"由結果到實數的函數。"},{"term":"PMF","definition":"$p(x) = P(X = x)$，對每個可能值 $x$。"},{"term":"期望值","definition":"機率加權平均 $\\sum x\\,p(x)$。"}],"notes":[{"kind":"source","text":"教科書 §3.1–3.3，pp. 94–110 · 投影片 W5"},{"kind":"watch","text":"大楷 $X$ 是隨機變數，細楷 $x$ 是它可能取的某一個值。"}]},"prequiz":[{"id":"u2-pre-1","type":"single","difficulty":2,"concept":"期望值","stem":"擲一粒公平骰子，$X$ 是擲出的點數。$E[X]$ 是多少？","options":["$3$","$3.5$","$4$","$21$"],"answer":1,"explanation":"$E[X] = (1+2+3+4+5+6)\\times\\frac16 = 3.5$。期望值是加權平均，不需要是 $X$ 真的可以取到的值。","optionFeedback":["3 看似是「中間」，但 1–6 沒有單一的中間值。",null,"把 3.5 四捨五入成 4 — 期望值不會被四捨五入。","21 是點數總和，還要乘以每個值的機率 1/6。"]},{"id":"u2-pre-2","type":"single","difficulty":1,"concept":"PMF 的條件","stem":"以下哪一個可以是 $\\{1, 2, 3\\}$ 上的 PMF？","options":["$(0.5, 0.4, 0.2)$","$(0.2, 0.3, 0.5)$","$(0.6, -0.1, 0.5)$","$(1, 1, 1)$"],"answer":1,"explanation":"只有 $(0.2, 0.3, 0.5)$ 全部非負而且總和是 1。$(0.5, 0.4, 0.2)$ 總和是 1.1。","optionFeedback":["總和是 1.1 — 先把它們加起來。",null,"有負數，機率不可以是負的。","總和是 3。"]},{"id":"u2-pre-3","type":"tf","difficulty":1,"concept":"離散與連續","stem":"「明天收到的電郵數目」是離散型隨機變數。","answer":true,"explanation":"它的值 0, 1, 2, … 可以逐個列出，即使沒有上限，也是離散的。"}],"difficulties":[{"title":"大楷 X 與細楷 x","concept":"PMF 的條件","why":"兩個字母出現在同一條式 $P(X = x)$ 裏，手寫時又很相似。","explanation":"把 $X$ 讀成「那個隨機的量」，把 $x$ 讀成「它可能等於的某一個數」。$P(X = 4)$ 問的是：這個變數結果是 4 的機率有幾大？","example":"$X$ = 兩粒骰的總和\n\n$P(X = 4) = P\\{(1,3),(2,2),(3,1)\\} = 3/36$"},{"title":"為甚麼 E[X] 不需要是可能取到的值","concept":"期望值","explanation":"期望值是長遠平均。擲很多次骰，平均點數會接近 3.5，雖然每一次都不可能擲出 3.5。"}],"classroom":{"listenFor":["為甚麼期望值可以是 X 永遠取不到的值"]},"review":{"recap":"隨機變數把結果變成數字；離散型的可以逐個列出可能值。\n\n- PMF：$p(x) = P(X=x)$，非負而且總和為 1\n- 期望值：$E[X] = \\sum x\\,p(x)$，是加權平均","keyPoints":["隨機變數是函數，不是「隨機的數」。","PMF 要非負而且總和為 1。","期望值是長遠平均，可以不是可能值。"],"flashcards":[{"front":"PMF 必須滿足的兩個條件？","back":"$p(x) \\ge 0$，而且 $\\sum p(x) = 1$"},{"front":"$E[X]$ 的公式","back":"$\\sum_x x\\,p(x)$"}]},"postquiz":[{"id":"u2-post-1","type":"single","difficulty":2,"concept":"期望值","stem":"$X$ 取 0、1、2 的機率分別是 0.5、0.3、0.2。$E[X]$ 是？","options":["$0.7$","$1$","$0.3$","$1.5$"],"answer":0,"explanation":"$E[X] = 0(0.5) + 1(0.3) + 2(0.2) = 0.7$。"},{"id":"u2-post-2","type":"short","difficulty":2,"concept":"期望值","stem":"一個遊戲：擲骰得 6 贏 \\$10，否則輸 \\$1。用期望值判斷應不應該玩。","answer":"$E = 10\\cdot\\frac16 + (-1)\\cdot\\frac56 = \\frac{5}{6} > 0$，長遠平均每局贏約 \\$0.83，所以（只看期望值的話）應該玩。","explanation":"把每個結果的得失乘以它的機率再相加；正數代表長遠有利。"}],"postDifficulties":[{"title":"忘記把輸錢記成負數","concept":"期望值","explanation":"期望值計的是「得到」的數值，輸錢就是負的得到。","example":"贏 \\$10（機率 1/6）、輸 \\$1（機率 5/6）：$E = 10/6 - 5/6 = 5/6$，不是 $10/6 + 5/6$。"}]}],"midterm":{"title":"期中溫習","date":"2026-10-20","scope":["u1","u2"],"overview":"兩個單元，一條主線：先學會在已知資訊下更新機率，再把結果變成可以計算平均的數字。","themes":[{"title":"已知甚麼？","body":"條件機率的分母永遠是已知事件。做題前先圈出「已知」。","units":["u1"]},{"title":"由結果到數字","body":"隨機變數讓我們計算平均 — 這是下半學期所有分佈的基礎。","units":["u2"]}],"formulaSheet":"- $P(A\\mid B) = P(A\\cap B)/P(B)$\n- $P(A\\cap B) = P(A\\mid B)P(B)$\n- $\\sum p(x) = 1,\\ p(x) \\ge 0$\n- $E[X] = \\sum x\\,p(x)$","strategy":"過往的期中試約有四成分數來自條件機率。先畫樹狀圖，只需 30 秒，可以避免大部分 $P(A\\mid B)$ / $P(B\\mid A)$ 調轉的錯誤。","timeLimitMin":15,"exam":[{"id":"mid-1","type":"single","concept":"條件機率定義","stem":"擲兩粒公平骰，已知總和是 8，第一粒是 3 的機率是？","options":["$1/6$","$1/5$","$5/36$","$1/36$"],"answer":1,"explanation":"總和為 8 的結果有 (2,6),(3,5),(4,4),(5,3),(6,2) 共 5 個，其中第一粒是 3 的只有 1 個，所以是 $1/5$。"},{"id":"mid-2","type":"tf","concept":"P(A|B) 與 P(B|A)","stem":"若 $P(A) = P(B) > 0$，則 $P(A\\mid B) = P(B\\mid A)$。","answer":true,"explanation":"兩者都等於 $P(A\\cap B)$ 除以相同的分母。"},{"id":"mid-3","type":"single","concept":"期望值","stem":"$X$ 取 1 和 3 的機率各為 1/2。$E[X]$ 是？","options":["$1$","$2$","$3$","$4$"],"answer":1,"explanation":"$E[X] = 1\\cdot\\frac12 + 3\\cdot\\frac12 = 2$。"},{"id":"mid-4","type":"short","concept":"乘法法則","stem":"袋中 2 紅 3 藍，不放回抽兩個。求一紅一藍（任何次序）的機率，並寫出步驟。","answer":"$P(\\text{紅藍}) + P(\\text{藍紅}) = \\frac25\\cdot\\frac34 + \\frac35\\cdot\\frac24 = \\frac{6}{20}+\\frac{6}{20} = \\frac{3}{5}$。","explanation":"兩種次序要分開計算再相加；每一步都用乘法法則。"}]}};
+
+/* ---------- i18n ---------- */
+const UI = {
+  "zh-Hant": {
+    langName:"繁體中文", langLabel:"介面語言", dashboard:"主頁", notebook:"錯題簿", course:"課程", units:"單元",
+    midterm:"期中溫習", final:"期末溫習", export:"匯出進度", import:"匯入進度", continueUnit:"繼續第 {n} 單元",
+    unitN:"第 {n} 單元", stageN:"第 {n} 階段", before:"課前", inClass:"課堂", after:"課後", done:"已完成", next:"下一步",
+    doneOf:"已完成 {a}/{b} 個階段", greeting:"你好！第 {n} 單元正等你進入第 {s} 階段。", allDone:"你好！所有單元都已完成，可以開始溫習考試。",
+    pathFor:"第 {n} 單元學習路徑", allUnits:"全部單元", marginNotes:"Scholia · 頁邊批註",
+    weak:"薄弱知識點", weakSub:"你錯過不止一次的概念。", weakNone:"暫時未有。做完幾份測驗後，這裏會顯示你最常錯的概念。", misses:"錯 {n} 次",
+    due:"今日待重測", dueSub:"{n} 道舊錯題按 1·3·7·14 日間隔再次出現。", dueNone:"今日沒有待重測的題目。", startRetest:"開始 {n} 題重測",
+    examIn:"距離{name} {n} 日", examToday:"{name}就在今日", examScope:"考試範圍：{units}。", openReview:"打開{name} →",
+    fromClass:"課堂提問", fromClassSub:"第 {n} 單元有 {a} 個課堂提問已獲解答。",
+    s_prestudy:"預習資料", s_prequiz:"預習題", s_premistakes:"預習錯題與難點", s_classroom:"課堂提問記錄", s_review:"課後溫習", s_postmistakes:"課後錯題與難點", s_homework:"功課解答",
+    d_prestudy:"學習目標、導讀摘要、關鍵詞彙", d_prequiz:"{n} 道題 · 即時回饋", d_premistakes:"你的錯題逐一講解", d_classroom:"隨時記低上堂的疑問", d_review:"重點回顧、記憶卡、溫習測驗", d_postmistakes:"溫習錯題與深層難點", d_homework:"先給提示，再看完整步驟",
+    minutes:"約 {n} 分鐘", objectives:"讀完之後你可以", keyTerms:"關鍵詞彙", source:"出處", buildsOn:"建基於", watch:"留意", listen:"上堂留心聽", note:"批註",
+    markRead:"讀完了 · 開始預習題 →", markDone:"標記為完成", markedDone:"已完成 ✓", objChecked:"已勾選 {a}/{b} 個目標",
+    qOf:"第 {i} 題，共 {n} 題", rightWrong:"{a} 對 · {b} 錯", single:"單選", multi:"多選（可選多於一項）", tf:"是非題", short:"簡答題",
+    easy:"易", medium:"中", hard:"難", howSure:"你有幾肯定？", conf0:"估吓", conf1:"幾肯定", conf2:"好肯定",
+    check:"檢查答案", nextQ:"下一題 →", finish:"完成", tryAgain:"重新作答", right:"答對了", rightGuess:"答對了 — 不過你是估的", notQuite:"答錯了",
+    whyTempting:"為甚麼 {k} 咁吸引：", addedNb:"↳ 已加入錯題簿 · 1 日後重測", yourAnswer:"你的答案", correct:"正確答案", answer:"答案",
+    true:"正確", false:"錯誤", writeAnswer:"在這裏寫你的答案…", showModel:"看參考答案", gotIt:"我答對了", missedIt:"我答錯了", modelAnswer:"參考答案",
+    quizDone:"做完了！", quizScore:"{a}/{n} 題答對。", toMistakes:"看錯題與難點 →", redo:"再做一次",
+    mineTitle:"你的錯題，逐一講解", mineSub:"{w} 道答錯、{g} 道估中。每道題會再次出現，直至你連續答對兩次。", fromQuiz:"來自你的測驗",
+    noMistakes:"這一部分沒有錯題，做得好！", doQuizFirst:"先完成{quiz}，你的錯題就會出現在這裏。", goQuiz:"去做{quiz} →",
+    wrongSure:"答錯 · 你{conf}", luckyGuess:"答對 · 但你是估的", retestOn:"重測：{d} · 之後 3、7、14 日", similar:"再試一次",
+    anticipated:"根據教材預計的難點", hardTitle:"這個單元難在哪裏", hardSub:"一般同學容易卡住的地方 — 在你遇到之前先寫好。",
+    linked:"與你的錯題相關", whyTrips:"為甚麼容易錯：", theFix:"解決方法：", stuck:"仍然唔明？", stuckSub:"把它寫成課堂提問 — 帶去上堂問，或者匯出後交給 Claude 解答。", addToClass:"加入課堂提問",
+    cqTitle:"課堂提問記錄", cqSub:"上堂時隨時記低疑問。之後匯出，貼給 Claude 就會得到解答。", cqPlaceholder:"例如：為甚麼期望值可以不是 X 可取的值？", add:"加入",
+    cqNone:"暫時未有提問。", export_q:"匯出提問給 Claude", copied:"已複製，可以貼到 Claude。", copyFail:"未能自動複製 — 請手動選取下面的文字。",
+    delete:"刪除", listenFor:"上堂留心聽", answered:"Scholia 已解答",
+    recap:"重點回顧", keyPoints:"要記住的重點", flashcards:"記憶卡", flip:"翻轉", know:"我記得", again:"再溫一次", cardOf:"第 {i} 張，共 {n} 張", known:"記得 {k} 張",
+    connections:"與其他單元的關係", reviewQuiz:"溫習測驗",
+    hint:"提示 {i}", showHint:"顯示下一個提示", showSolution:"顯示完整解答", lockedSolution:"先看完所有提示，才可以看完整解答。", steps:"步驟", pitfalls:"常見錯誤", lowConf:"答案未完全確定 — 請向導師核實", noHw:"這個單元沒有上載功課。",
+    readiness:"各單元準備程度", readinessSub:"答對而且有信心的比例", themes:"主要主題", formulaSheet:"公式表", strategy:"應試策略", startWith:"建議先溫：{u}。",
+    mock:"模擬考試", mockInfo:"{n} 題 · {m} 分鐘", mockSub:"混合範圍內所有單元。交卷前不會顯示對錯 — 跟真正考試一樣。", start:"開始作答", lastAttempt:"上次：{a}/{n}", best:"最佳：{a}/{n}",
+    submit:"交卷", timeLeft:"剩餘時間", flag:"標記", flagged:"已標記", submitConfirm:"確定交卷？還有 {n} 題未作答。", result:"成績", scored:"得分 {a}/{n}（{p}%）", selfMark:"自評", review_:"檢討答案", newAttempt:"再考一次", backToReview:"返回溫習",
+    nbTitle:"錯題簿", nbSub:"所有答錯或估中的題目。答對兩次就會「掌握」。", nbDue:"今日要重測", nbLater:"之後重測", nbMastered:"已掌握", nbEmpty:"錯題簿是空的。", dueOn:"{d} 重測", retestTitle:"重測",
+    exportTitle:"匯出進度", exportSub:"下載備份檔（可在其他電腦匯入），或者複製學習摘要貼給 Claude，讓它針對你的弱項講解。", download:"下載備份檔", copySummary:"複製學習摘要給 Claude", close:"關閉", importDone:"已匯入進度。", importFail:"無法讀取這個檔案。",
+    today:"今日", tomorrow:"明日", inDays:"{n} 日後", theme:"主題", light:"淺色", dark:"深色", auto:"自動", localNote:"進度只儲存在這個瀏覽器。", min:"分鐘", contentOnly:"課程內容只有{langs}版本；切換語言只會改變介面。"
+  },
+  "zh-Hans": null,
+  "en": {
+    langName:"English", langLabel:"Interface language", dashboard:"Dashboard", notebook:"Mistake notebook", course:"Course", units:"Units",
+    midterm:"Midterm review", final:"Final review", export:"Export progress", import:"Import progress", continueUnit:"Continue Unit {n}",
+    unitN:"Unit {n}", stageN:"Stage {n}", before:"Before", inClass:"In class", after:"After", done:"Done", next:"Next",
+    doneOf:"{a} of {b} stages done", greeting:"Hello! Unit {n} is waiting at stage {s}.", allDone:"Hello! Every unit is done — time to review for exams.",
+    pathFor:"The path for Unit {n}", allUnits:"All units", marginNotes:"Scholia · margin notes",
+    weak:"Weak spots", weakSub:"Concepts you've missed more than once.", weakNone:"Nothing yet. After a few quizzes, the concepts you miss most will show here.", misses:"{n} misses",
+    due:"Due for re-test today", dueSub:"{n} old mistakes are back, spaced 1 · 3 · 7 · 14 days apart.", dueNone:"Nothing to re-test today.", startRetest:"Start {n}-question re-test",
+    examIn:"{name} in {n} days", examToday:"{name} is today", examScope:"Covers {units}.", openReview:"Open {name} →",
+    fromClass:"From class", fromClassSub:"{a} classroom questions are answered in Unit {n}.",
+    s_prestudy:"Pre-study materials", s_prequiz:"Pre-study quiz", s_premistakes:"Mistakes & difficulties", s_classroom:"Classroom questions", s_review:"After-class review", s_postmistakes:"Mistakes & difficulties", s_homework:"Homework solutions",
+    d_prestudy:"Objectives, guided summary, key terms", d_prequiz:"{n} questions · instant feedback", d_premistakes:"Your errors, explained", d_classroom:"Log questions as they come", d_review:"Recap, flashcards, review quiz", d_postmistakes:"Review-quiz errors, deeper fixes", d_homework:"Hints first, then full steps",
+    minutes:"about {n} min", objectives:"After this you can", keyTerms:"Key terms", source:"Source", buildsOn:"Builds on", watch:"Watch for", listen:"Listen for in class", note:"Note",
+    markRead:"Mark read · start the pre-study quiz →", markDone:"Mark as done", markedDone:"Done ✓", objChecked:"{a} of {b} objectives checked",
+    qOf:"Question {i} of {n}", rightWrong:"{a} right · {b} wrong", single:"Single answer", multi:"Select all that apply", tf:"True or false", short:"Short answer",
+    easy:"easy", medium:"medium", hard:"hard", howSure:"How sure are you?", conf0:"Guessing", conf1:"Fairly sure", conf2:"Certain",
+    check:"Check answer", nextQ:"Next question →", finish:"Finish", tryAgain:"Try again", right:"Right", rightGuess:"Right — but you were guessing", notQuite:"Not quite",
+    whyTempting:"Why {k} is tempting:", addedNb:"↳ Added to your mistake notebook · re-test in 1 day", yourAnswer:"You said", correct:"Answer", answer:"Answer",
+    true:"True", false:"False", writeAnswer:"Write your answer here…", showModel:"Show model answer", gotIt:"I got it", missedIt:"I missed it", modelAnswer:"Model answer",
+    quizDone:"Finished!", quizScore:"{a} of {n} right.", toMistakes:"See mistakes & difficulties →", redo:"Do it again",
+    mineTitle:"Your mistakes, explained", mineSub:"{w} wrong and {g} lucky guesses. Each comes back until you get it right twice.", fromQuiz:"From your quiz",
+    noMistakes:"No mistakes here — nice work!", doQuizFirst:"Finish the {quiz} and your mistakes will appear here.", goQuiz:"Go to the {quiz} →",
+    wrongSure:"Wrong · you were {conf}", luckyGuess:"Right · but guessing", retestOn:"Re-test: {d} · then 3, 7, 14 days", similar:"Try it again",
+    anticipated:"Anticipated from the materials", hardTitle:"Where this unit gets hard", hardSub:"Spots where students usually stumble, written before you meet them.",
+    linked:"linked to your mistakes", whyTrips:"Why it trips people:", theFix:"The fix:", stuck:"Still stuck?", stuckSub:"Write it down as a classroom question — ask in lecture, or export it and paste it to Claude.", addToClass:"Add to classroom questions",
+    cqTitle:"Classroom questions", cqSub:"Jot questions down during lecture. Export them later and paste to Claude for answers.", cqPlaceholder:"e.g. Why can an expected value be a value X never takes?", add:"Add",
+    cqNone:"No questions yet.", export_q:"Export questions for Claude", copied:"Copied — paste it to Claude.", copyFail:"Couldn't copy automatically — select the text below.",
+    delete:"Delete", listenFor:"Listen for in class", answered:"Answered by Scholia",
+    recap:"Recap", keyPoints:"Key points", flashcards:"Flashcards", flip:"Flip", know:"I know it", again:"Again", cardOf:"Card {i} of {n}", known:"{k} known",
+    connections:"How this connects", reviewQuiz:"Review quiz",
+    hint:"Hint {i}", showHint:"Show next hint", showSolution:"Show full solution", lockedSolution:"Work through every hint first; then the full solution unlocks.", steps:"Steps", pitfalls:"Common pitfalls", lowConf:"Not fully certain — check with your instructor", noHw:"No homework uploaded for this unit.",
+    readiness:"Readiness by unit", readinessSub:"share of answers right and sure", themes:"The big themes", formulaSheet:"Formula sheet", strategy:"Exam strategy", startWith:"Start with {u}.",
+    mock:"Mock exam", mockInfo:"{n} questions · {m} minutes", mockSub:"Mixed across the scope. No feedback until you submit — like the real thing.", start:"Start", lastAttempt:"Last: {a}/{n}", best:"Best: {a}/{n}",
+    submit:"Submit", timeLeft:"Time left", flag:"Flag", flagged:"Flagged", submitConfirm:"Submit now? {n} questions are unanswered.", result:"Result", scored:"Scored {a}/{n} ({p}%)", selfMark:"Self-mark", review_:"Review answers", newAttempt:"New attempt", backToReview:"Back to review",
+    nbTitle:"Mistake notebook", nbSub:"Every wrong answer and lucky guess. Get one right twice and it's mastered.", nbDue:"Due today", nbLater:"Coming up", nbMastered:"Mastered", nbEmpty:"Your notebook is empty.", dueOn:"re-test {d}", retestTitle:"Re-test",
+    exportTitle:"Export progress", exportSub:"Download a backup (import it on another computer), or copy a study summary to paste to Claude so it can target your weak spots.", download:"Download backup", copySummary:"Copy summary for Claude", close:"Close", importDone:"Progress imported.", importFail:"Couldn't read that file.",
+    today:"today", tomorrow:"tomorrow", inDays:"in {n} days", theme:"Theme", light:"Light", dark:"Dark", auto:"Auto", localNote:"Progress is saved in this browser only.", min:"min", contentOnly:"Course content is only available in {langs}; switching changes the interface only."
+  }
+};
+// Simplified Chinese: derive from Traditional with a small character map (UI strings only).
+(function(){
+  const T2S = {"體":"体","單":"单","課":"课","題":"题","習":"习","頁":"页","錯":"错","識":"识","測":"测","詞":"词","彙":"汇","階":"阶","段":"段","進":"进","繼":"继","續":"续","導":"导","記":"记","復":"复","溫":"温","學":"学","這":"这","個":"个","為":"为","會":"会","說":"说","時":"时","問":"问","對":"对","後":"后","們":"们","裏":"里","麼":"么","於":"于","與":"与","應":"应","試":"试","準":"准","備":"备","項":"项","選":"选","論":"论","範":"范","圍":"围","離":"离","開":"开","間":"间","隔":"隔","現":"现","讀":"读","標":"标","勾":"勾","據":"据","計":"计","難":"难","點":"点","決":"决","法":"法","帶":"带","貼":"贴","給":"给","據":"据","會":"会","處":"处","語":"语","言":"言","匯":"汇","出":"出","入":"入","頁":"页","邊":"边","註":"注","批":"批","斷":"断","績":"绩","評":"评","剩":"剩","餘":"余","確":"确","定":"定","還":"还","張":"张","翻":"翻","轉":"转","關":"关","係":"系","顯":"显","示":"示","專":"专","業":"业","將":"将","儲":"储","存":"存","覽":"览","器":"器","載":"载","檔":"档","複":"复","製":"制","摘":"摘","針":"针","講":"讲","解":"解","淺":"浅","深":"深","動":"动","鐘":"钟","約":"约","聽":"听","寫":"写","議":"议","掌":"掌","握":"握","簿":"本","嗎":"吗","啲":"些","咁":"这么","喺":"在","冇":"没有","唔":"不","嘅":"的","吓":"一下","幾":"几","肯":"肯","估":"猜","當":"当","並":"并","從":"从","們":"们","賽":"赛","極":"极","經":"经","驗":"验","過":"过","樣":"样","無":"无","層":"层","號":"号","筆":"笔","練":"练","級":"级","數":"数","據":"据","價":"价","態":"态","機":"机","率":"率","統":"统","條":"条","變":"变","積":"积","術":"术","語":"语","資":"资","料":"料","即":"即","時":"时","饋":"馈","低":"下","堂":"堂","嚟":"来","畀":"给","睇":"看","係":"是","佢":"它","揀":"选","徑":"径","暫":"暂","舊":"旧","沒":"没","獲":"获","預":"预","錄":"录","鍵":"键","隨":"随","顧":"顾","憶":"忆","驟":"骤","簡":"简","檢":"检","誤":"误","參":"参","連":"连","兩":"两","來":"来","請":"请","刪":"删","見":"见","師":"师","實":"实","擬":"拟","內":"内","討":"讨","電":"电","腦":"脑","讓":"让","閉":"闭","瀏":"浏","換":"换","僅":"仅","與":"与"};
+  const conv = s => s.replace(/介面/g,"界面").replace(/匯出/g,"导出").replace(/匯入/g,"导入").replace(/估吓/g,"猜一下").replace(/幾肯定/g,"比较肯定").replace(/好肯定/g,"非常肯定").replace(/咁吸引/g,"这么吸引").replace(/仍然唔明/g,"仍然不明白").replace(/記低上堂的疑問/g,"记下上课的疑问").replace(/上堂/g,"上课").replace(/估中/g,"猜中").replace(/估的/g,"猜的").replace(/功課/g,"作业").replace(/溫習/g,"复习").replace(/./g, c => T2S[c] || c);
+  const zs = {}; const zt = UI["zh-Hant"];
+  for (const k in zt) zs[k] = conv(zt[k]);
+  zs.langName = "简体中文"; zs.langLabel = "界面语言"; zs.notebook = "错题本"; zs.s_homework = "作业解答"; zs.nbTitle = "错题本";
+  UI["zh-Hans"] = zs;
+})();
+const LANGS = ["zh-Hant","zh-Hans","en"];
+const CONTENT_LANGS = (DATA && DATA.course && (DATA.course.contentLangs || [DATA.course.lang || "zh-Hant"])) || ["zh-Hant"];
+
+/* ---------- storage ---------- */
+const COURSE = DATA && DATA.course ? DATA.course : {title:"Scholia",lang:"zh-Hant"};
+const KEY = "scholia:" + (typeof COURSE.title === "string" ? COURSE.title : JSON.stringify(COURSE.title));
+const DAY = 86400000;
+const INTERVALS = [1,3,7,14];
+function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null}; }
+function loadState(){ try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && s.v === 1 ? Object.assign(blank(), s) : blank(); } catch(e){ return blank(); } }
+let S = loadState();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+
+/* ---------- helpers ---------- */
+let LANG = S.lang || COURSE.lang || "zh-Hant"; if (!LANGS.includes(LANG)) LANG = "zh-Hant";
+const t = (k, p) => { let s = (UI[LANG] && UI[LANG][k]) ?? UI.en[k] ?? k; if (p) for (const x in p) s = s.split("{"+x+"}").join(p[x]); return s; };
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function tx(v){
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  if (typeof v === "object") { if (v[LANG]) return v[LANG]; if (LANG === "zh-Hans" && v["zh-Hant"]) return v["zh-Hant"]; if (LANG === "zh-Hant" && v["zh-Hans"]) return v["zh-Hans"]; if (v[COURSE.lang]) return v[COURSE.lang]; const k = Object.keys(v)[0]; return k ? v[k] : ""; }
+  return String(v);
+}
+function inline(s){
+  return s.replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g,"$1<em>$2</em>");
+}
+function md(v){
+  let s = tx(v); if (!s) return "";
+  const math = [];
+  s = s.replace(/\\\$/g, "\u0001");   // escaped dollar sign = literal $
+  s = s.replace(/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/g, m => { math.push(m.replace(/\u0001/g, "\\$")); return "\u0000" + (math.length-1) + "\u0000"; });
+  s = esc(s);
+  const out = [];
+  for (const block of s.split(/\n{2,}/)) {
+    const lines = block.split("\n"); let i = 0;
+    while (i < lines.length) {
+      if (/^\s*[-*•] /.test(lines[i])) { const items=[]; while (i<lines.length && /^\s*[-*•] /.test(lines[i])) items.push(lines[i++].replace(/^\s*[-*•] /,"")); out.push("<ul>"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</ul>"); }
+      else if (/^\s*\d+[.)] /.test(lines[i])) { const items=[]; while (i<lines.length && /^\s*\d+[.)] /.test(lines[i])) items.push(lines[i++].replace(/^\s*\d+[.)] /,"")); out.push("<ol>"+items.map(x=>"<li>"+inline(x)+"</li>").join("")+"</ol>"); }
+      else { const para=[]; while (i<lines.length && !/^\s*([-*•]|\d+[.)]) /.test(lines[i])) para.push(lines[i++]); out.push("<p>"+inline(para.join("<br>"))+"</p>"); }
+    }
+  }
+  // a literal $ goes in its own element so KaTeX's auto-render (which works per text node) never pairs it
+  return out.join("").replace(/\u0000(\d+)\u0000/g, (_, n) => esc(math[+n])).replace(/\u0001/g, "<span>$</span>");
+}
+function mdi(v){ return md(v).replace(/^<p>|<\/p>$/g, ""); }
+const plain = v => tx(v).replace(/[*`$]/g, "");
+function fmtDay(ts){
+  const d = Math.round((startOfDay(ts) - startOfDay(Date.now())) / DAY);
+  if (d <= 0) return t("today"); if (d === 1) return t("tomorrow"); return t("inDays",{n:d});
+}
+function startOfDay(ts){ const d = new Date(ts); d.setHours(0,0,0,0); return d.getTime(); }
+function fmtDate(iso){
+  if (!iso) return ""; const d = new Date(iso + "T00:00:00"); if (isNaN(d)) return iso;
+  return LANG === "en" ? d.toLocaleDateString("en-GB",{day:"numeric",month:"short"}) : (d.getMonth()+1) + "月" + d.getDate() + "日";
+}
+function toast(msg){ const el = document.getElementById("toast"); el.textContent = msg; el.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => el.hidden = true, 2600); }
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); toast(t("copied")); return true; }
+  catch(e){ toast(t("copyFail")); return false; }
+}
+
+/* ---------- course model ---------- */
+const UNITS = (DATA && DATA.units) || [];
+const REVIEWS = ["midterm","final"].filter(k => DATA && DATA[k]);
+const STAGES = ["prestudy","prequiz","premistakes","classroom","review","postmistakes","homework"];
+const PHASE = {prestudy:"before",prequiz:"before",premistakes:"before",classroom:"inClass",review:"after",postmistakes:"after",homework:"after"};
+const QIDX = {};
+UNITS.forEach((u, ui) => {
+  (u.prequiz||[]).forEach(q => QIDX[q.id] = {q, unit:u.id, ui, stage:"prequiz"});
+  (u.postquiz||[]).forEach(q => QIDX[q.id] = {q, unit:u.id, ui, stage:"postquiz"});
+});
+REVIEWS.forEach(k => (DATA[k].exam||[]).forEach(q => QIDX[q.id] = {q, unit:k, ui:-1, stage:"exam"}));
+const unitById = id => UNITS.find(u => u.id === id);
+const unitNum = id => UNITS.findIndex(u => u.id === id) + 1;
+function stagesOf(u){ return STAGES.filter(s => s !== "homework" || (u.homework && u.homework.length)); }
+function isDone(u, s){ return !!S.done[u.id + ":" + s]; }
+function setDone(u, s, v){ if (v) S.done[u.id + ":" + s] = Date.now(); else delete S.done[u.id + ":" + s]; save(); }
+function doneCount(u){ return stagesOf(u).filter(s => isDone(u, s)).length; }
+function nextStage(u){ return stagesOf(u).find(s => !isDone(u, s)); }
+function currentUnit(){ return UNITS.find(u => nextStage(u)) || null; }
+function stageNum(s){ return STAGES.indexOf(s) + 1; }
+
+/* answers */
+function isRight(q, choice){
+  if (choice == null) return false;
+  if (q.type === "single") return choice === q.answer;
+  if (q.type === "tf") return choice === q.answer;
+  if (q.type === "multi") { const a = [...q.answer].sort().join(","), b = [...choice].sort().join(","); return a === b; }
+  if (q.type === "short") return choice === true;
+  return false;
+}
+function answerText(q, choice){
+  if (choice == null) return "—";
+  if (q.type === "single") return mdi((q.options||[])[choice]);
+  if (q.type === "multi") return (choice||[]).map(i => mdi(q.options[i])).join("；");
+  if (q.type === "tf") return t(choice ? "true" : "false");
+  return "";
+}
+function correctText(q){
+  if (q.type === "single") return mdi(q.options[q.answer]);
+  if (q.type === "multi") return q.answer.map(i => mdi(q.options[i])).join("；");
+  if (q.type === "tf") return t(q.answer ? "true" : "false");
+  return md(q.answer);
+}
+function record(q, ok, conf, choice, mode){
+  const info = QIDX[q.id] || {};
+  const a = S.att[q.id] || {n:0, wrongs:0};
+  a.n++; a.ok = ok; a.conf = conf; a.choice = choice; a.ts = Date.now(); if (!ok) a.wrongs++;
+  S.att[q.id] = a;
+  const lucky = ok && conf === 0;
+  let e = S.nb[q.id];
+  if (mode === "retest" && e) {
+    if (ok && conf > 0) { e.streak++; if (e.streak >= 2) e.mastered = Date.now(); e.due = startOfDay(Date.now()) + INTERVALS[Math.min(e.streak, 3)] * DAY; }
+    else { e.streak = 0; e.misses++; e.due = startOfDay(Date.now()) + DAY; delete e.mastered; }
+  } else if (!ok || lucky) {
+    if (!e) e = S.nb[q.id] = {unit: info.unit, stage: info.stage, added: Date.now(), misses: 0, streak: 0};
+    e.misses++; e.streak = 0; e.wasRight = ok; e.lastChoice = choice; e.lastConf = conf; e.due = startOfDay(Date.now()) + DAY; delete e.mastered;
+  }
+  save();
+  return !ok || lucky;
+}
+function weakSpots(filterUnits){
+  const m = {};
+  for (const id in S.nb) { const e = S.nb[id], info = QIDX[id]; if (!info) continue; if (filterUnits && !filterUnits.includes(info.unit)) continue;
+    const c = plain(info.q.concept) || "—"; m[c] = (m[c] || 0) + (S.att[id] ? S.att[id].wrongs || 1 : 1); }
+  return Object.entries(m).filter(([,n]) => n >= 2).sort((a,b) => b[1]-a[1]).slice(0, 5);
+}
+function dueList(){ const now = Date.now(); return Object.keys(S.nb).filter(id => QIDX[id] && !S.nb[id].mastered && S.nb[id].due <= now); }
+function readiness(u){
+  const qs = [...(u.prequiz||[]), ...(u.postquiz||[])]; if (!qs.length) return null;
+  const tried = qs.filter(q => S.att[q.id]); if (!tried.length) return null;
+  return Math.round(100 * qs.filter(q => S.att[q.id] && S.att[q.id].ok && S.att[q.id].conf > 0).length / qs.length);
+}
+
+/* ---------- router ---------- */
+function route(){ const h = location.hash.replace(/^#\/?/, "").split("/"); return {view: h[0] || "home", a: h[1], b: h[2]}; }
+const QS = {};   // transient quiz state by key
+const FC = {};   // transient flashcard state
+const HWV = {};  // transient homework reveal
+let examTimer = null;
+
+/* ---------- top bar ---------- */
+function topBar(sub){
+  const cur = currentUnit();
+  return `<header class="top">
+    <div class="brand"><a class="logo" href="#/">Scholia<span>.</span></a><span class="label">${esc(sub || [tx(COURSE.title), tx(COURSE.subtitle)].filter(Boolean).join(" · "))}</span></div>
+    <div class="top-actions">
+      <div class="seg" role="group" aria-label="${esc(t("langLabel"))}">${LANGS.map(l => `<button type="button" data-act="lang" data-v="${l}" aria-pressed="${l===LANG}">${esc(UI[l].langName)}</button>`).join("")}</div>
+      <button type="button" class="btn" data-act="export">${esc(t("export"))}</button>
+      ${cur ? `<a class="btn dark" href="#/u/${esc(cur.id)}/${nextStage(cur)}">${esc(t("continueUnit",{n:unitNum(cur.id)}))}</a>` : ""}
+    </div></header>${CONTENT_LANGS.includes(LANG) ? "" : `<div class="langnote" role="note">${esc(t("contentOnly",{langs: CONTENT_LANGS.map(l => UI[l].langName).join(" / ")}))}</div>`}`;
+}
+function stageBar(u, active){
+  const ss = stagesOf(u);
+  return `<nav class="stagebar" aria-label="${esc(t("units"))}">` + ss.map((s, i) => {
+    const sep = (s === "classroom" || s === "review") ? `<span class="sep" aria-hidden="true">·</span>` : "";
+    const cls = s === active ? "pill on" : (isDone(u, s) ? "pill" : "pill todo");
+    return sep + `<a class="${cls}" href="#/u/${esc(u.id)}/${s}" ${s===active?'aria-current="step"':""}><span class="n">${stageNum(s)}</span>${esc(t("s_"+s))}${isDone(u,s)&&s!==active?' <span aria-hidden="true" style="color:var(--blue)">✓</span>':""}</a>`;
+  }).join("") + `</nav>`;
+}
+function sideNav(activeUnit, activeView){
+  const nbCount = Object.keys(S.nb).filter(id => QIDX[id] && !S.nb[id].mastered).length;
+  return `<nav class="side" aria-label="${esc(t("course"))}">
+    <span class="label">${esc(t("course"))}</span>
+    <a href="#/" class="${activeView==="home"?"on":""}">${esc(t("dashboard"))}</a>
+    <a href="#/notebook" class="${activeView==="notebook"?"on":""}">${esc(t("notebook"))} <span class="mono" style="color:var(--orange)">${nbCount||""}</span></a>
+    ${REVIEWS.map(k => `<a href="#/review/${k}" class="${activeView===k?"on":""}">${esc(tx(DATA[k].title) || t(k))} <span class="mono">${esc(fmtDate(DATA[k].date))}</span></a>`).join("")}
+    <span class="label">${esc(t("units"))}</span>
+    ${UNITS.map((u, i) => `<a href="#/u/${esc(u.id)}/${nextStage(u) || "review"}" class="${activeUnit===u.id?"on":""}" style="justify-content:flex-start"><span class="num">${i+1}</span>${esc(plain(u.title))}</a>`).join("")}
+  </nav>`;
+}
+
+/* ---------- views ---------- */
+function viewHome(){
+  const cur = currentUnit();
+  const sel = cur || UNITS[UNITS.length-1];
+  const n = unitNum(sel.id);
+  const ns = nextStage(sel);
+  const ss = stagesOf(sel);
+  const stagesHtml = ss.map(s => {
+    const st = isDone(sel, s) ? "done" : (s === ns ? "now" : "");
+    const detail = s === "prequiz" ? t("d_prequiz",{n:(sel.prequiz||[]).length}) : t("d_"+s);
+    return `<a class="stage ${st}" href="#/u/${esc(sel.id)}/${s}">
+      <span class="between label" style="letter-spacing:.06em"><span>${esc(t(PHASE[s]))}</span><span style="color:${st==="done"?"var(--blue)":"var(--rubric)"}">${st==="done"?esc(t("done")):st==="now"?esc(t("next")):""}</span></span>
+      <span class="t"><span style="color:var(--rubric)">${stageNum(s)}</span> ${esc(t("s_"+s))}</span>
+      <span class="small muted" style="line-height:1.45">${esc(detail)}</span></a>`;
+  }).join("");
+  const cards = UNITS.map((u, i) => {
+    const dc = doneCount(u), tot = stagesOf(u).length, nx = nextStage(u);
+    return `<a class="unitcard ${u===sel&&cur?"cur":""}" href="#/u/${esc(u.id)}/${nx || "review"}">
+      <span class="between mono small muted" style="font-size:12px"><span style="color:var(--rubric)">${esc(t("unitN",{n:i+1}))}</span><span>${esc(fmtDate(u.date))}</span></span>
+      <span class="t">${mdi(u.title)}</span>
+      <span class="dots" role="img" aria-label="${esc(t("doneOf",{a:dc,b:tot}))}">${stagesOf(u).map(s => `<i class="${isDone(u,s)?"d":(s===nx?"n":"")}"></i>`).join("")}</span></a>`;
+  }).join("");
+  return topBar() + `<div class="shell">${sideNav(null,"home")}
+  <main class="main">
+    <section class="stack g8">
+      <span class="label r">${esc(fmtDate(sel.date) ? t("unitN",{n}) + " · " + fmtDate(sel.date) : t("unitN",{n}))}</span>
+      <h1 class="big" style="font-size:40px;line-height:1.15">${esc(cur ? t("greeting",{n, s:stageNum(ns)}) : t("allDone"))}</h1>
+      <p class="muted" style="max-width:62ch">${mdi(sel.title)}${sel.summary ? " — " + mdi(sel.summary) : ""}</p>
+    </section>
+    <section class="card stack g16" aria-label="${esc(t("pathFor",{n}))}">
+      <div class="between"><h2 style="font-size:22px">${esc(t("pathFor",{n}))}</h2><span class="mono small muted">${esc(t("doneOf",{a:doneCount(sel),b:ss.length}))}</span></div>
+      <div class="stages">${stagesHtml}</div>
+    </section>
+    <section class="stack g14"><h2 style="font-size:22px">${esc(t("allUnits"))}</h2><div class="grid-auto">${cards}</div></section>
+  </main>
+  ${marginHome()}
+  </div>`;
+}
+function marginHome(){
+  const weak = weakSpots();
+  const due = dueList();
+  const maxMiss = weak.length ? weak[0][1] : 1;
+  let exams = "";
+  for (const k of REVIEWS) {
+    const r = DATA[k]; if (!r.date) continue;
+    const days = Math.round((new Date(r.date+"T00:00:00") - startOfDay(Date.now())) / DAY); if (days < 0) continue;
+    const name = tx(r.title) || t(k);
+    exams += `<div class="stack g4"><h3 style="font-size:19px">${esc(days === 0 ? t("examToday",{name}) : t("examIn",{name, n:days}))}</h3>
+      <p class="small muted">${esc(t("examScope",{units:(r.scope||[]).map(id => t("unitN",{n:unitNum(id)})).join("、")}))}</p>
+      <a class="small" href="#/review/${k}">${esc(t("openReview",{name}))}</a></div>`;
+    break;
+  }
+  const ans = UNITS.map(u => [u, ((u.classroom||{}).answers||[]).length]).filter(x => x[1]).slice(-1)[0];
+  return `<aside class="aside ruled" aria-label="${esc(t("marginNotes"))}">
+    <span class="label">${esc(t("marginNotes"))}</span>
+    <div class="stack g10"><h3 style="font-size:19px">${esc(t("weak"))}</h3>
+      <p class="small muted">${esc(weak.length ? t("weakSub") : t("weakNone"))}</p>
+      ${weak.map(([c, n]) => `<div class="stack g4"><span class="between small"><span>${esc(c)}</span><span class="mono" style="font-size:12px;color:var(--orange)">${esc(t("misses",{n}))}</span></span><span class="bar"><i style="width:${Math.round(100*n/maxMiss)}%;background:var(--orange)"></i></span></div>`).join("")}
+    </div>
+    <div class="card stack g10" style="padding:16px">
+      <h3 style="font-size:19px">${esc(t("due"))}</h3>
+      <p class="small muted">${esc(due.length ? t("dueSub",{n:due.length}) : t("dueNone"))}</p>
+      ${due.length ? `<a class="btn primary" href="#/retest">${esc(t("startRetest",{n:Math.min(due.length,10)}))}</a>` : ""}
+    </div>
+    ${exams}
+    ${ans ? `<div class="stack g4"><h3 style="font-size:19px">${esc(t("fromClass"))}</h3><p class="small muted">${esc(t("fromClassSub",{n:unitNum(ans[0].id),a:ans[1]}))}</p><a class="small" href="#/u/${esc(ans[0].id)}/classroom">${esc(t("s_classroom"))} →</a></div>` : ""}
+    <p class="small muted" style="margin-top:8px">${esc(t("localNote"))}</p>
+  </aside>`;
+}
+
+function unitHeader(u, s, extra){
+  return `<header class="stack g8">
+    <span class="label r">${esc(t("stageN",{n:stageNum(s)}))} · ${esc(t(PHASE[s]))}${extra ? " · " + esc(extra) : ""}</span>
+    <h1 class="big" style="font-size:42px;line-height:1.1">${esc(t("s_"+s))}</h1>
+  </header>`;
+}
+function doneButton(u, s, label){
+  return isDone(u, s)
+    ? `<button type="button" class="btn" data-act="undone" data-u="${esc(u.id)}" data-s="${s}">${esc(t("markedDone"))}</button>`
+    : `<button type="button" class="btn primary" data-act="done" data-u="${esc(u.id)}" data-s="${s}">${esc(label || t("markDone"))}</button>`;
+}
+
+function viewUnit(u, s){
+  if (!stagesOf(u).includes(s)) s = "prestudy";
+  const n = unitNum(u.id);
+  const sub = t("unitN",{n}) + " · " + plain(u.title);
+  let body = "";
+  if (s === "prestudy") body = vPrestudy(u);
+  else if (s === "prequiz") body = vQuizStage(u, "prequiz");
+  else if (s === "premistakes") body = vMistakes(u, "prequiz", u.difficulties || []);
+  else if (s === "classroom") body = vClassroom(u);
+  else if (s === "review") body = vReview(u);
+  else if (s === "postmistakes") body = vMistakes(u, "postquiz", u.postDifficulties || []);
+  else if (s === "homework") body = vHomework(u);
+  return topBar(sub) + stageBar(u, s) + body;
+}
+
+function vPrestudy(u){
+  const p = u.prestudy || {};
+  const objs = p.objectives || [];
+  const checked = objs.filter((_, i) => S.obj[u.id+":"+i]).length;
+  const KIND = {source:["source","r"], "builds-on":["buildsOn",""], watch:["watch",""], listen:["listen","b"]};
+  const notes = (p.notes || []).map(nt => { const k = KIND[nt.kind] || ["note",""]; return `<div class="margin-note ${k[1]==="r"?"r":""}"><span class="label ${k[1]}">${esc(t(k[0]))}</span><div class="md">${md(nt.text)}</div></div>`; });
+  const srcs = (p.sections || []).filter(x => x.source).map(x => esc(tx(x.source)));
+  if (!(p.notes||[]).some(nt => nt.kind === "source") && srcs.length) notes.unshift(`<div class="margin-note r"><span class="label r">${esc(t("source"))}</span><span>${srcs.join(" · ")}</span></div>`);
+  const listen = ((u.classroom||{}).listenFor||[]);
+  if (listen.length && !(p.notes||[]).some(nt => nt.kind === "listen")) notes.push(`<div class="card stack g4" style="padding:14px"><span class="label b">${esc(t("listen"))}</span>${listen.map(x => `<div class="md small">${md(x)}</div>`).join("")}</div>`);
+  return `<div class="read"><article class="col">
+    <header class="stack g8">
+      <span class="label r">${esc(t("stageN",{n:1}))} · ${esc(t("before"))}${p.minutes ? " · " + esc(t("minutes",{n:p.minutes})) : ""}</span>
+      <h1 class="big" style="font-size:44px;line-height:1.08">${mdi(u.title)}</h1>
+      ${u.summary ? `<p class="prose" style="font-style:italic;color:var(--ink2);font-size:20px">${mdi(u.summary)}</p>` : ""}
+    </header>
+    ${objs.length ? `<section class="card stack g10" style="padding:20px 24px"><h2 class="label">${esc(t("objectives"))}</h2>
+      ${objs.map((o, i) => `<label class="row" style="gap:12px;align-items:flex-start;flex-wrap:nowrap;min-height:32px"><input type="checkbox" data-act="obj" data-k="${esc(u.id+":"+i)}" ${S.obj[u.id+":"+i]?"checked":""} style="width:18px;height:18px;margin-top:4px;accent-color:var(--blue);flex:none"><span>${mdi(o)}</span></label>`).join("")}</section>` : ""}
+    <section class="prose stack g14">${(p.sections||[]).map((sec, i) => `<h2 style="font-size:28px;line-height:1.25;${i?"margin-top:14px":""}">${i+1}. ${mdi(sec.heading)}</h2><div>${md(sec.body)}</div>`).join("")}</section>
+    ${(p.keyTerms||[]).length ? `<section class="stack g12"><h2 style="font-size:24px">${esc(t("keyTerms"))}</h2><dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+      ${p.keyTerms.map(k => `<div class="card" style="padding:14px 16px"><dt style="font-weight:600">${mdi(k.term)}</dt><dd class="small muted" style="margin:4px 0 0">${mdi(k.definition)}</dd></div>`).join("")}</dl></section>` : ""}
+    <div class="between" style="padding-top:12px;border-top:1px solid var(--rule)">
+      <span class="small muted">${objs.length ? esc(t("objChecked",{a:checked,b:objs.length})) : ""}</span>
+      <button type="button" class="btn primary" style="min-height:48px" data-act="done-go" data-u="${esc(u.id)}" data-s="prestudy" data-go="#/u/${esc(u.id)}/prequiz">${esc(t("markRead"))}</button>
+    </div>
+  </article><aside class="mar" aria-label="${esc(t("marginNotes"))}">${notes.join("")}</aside></div>`;
+}
+
+/* ----- quiz ----- */
+function qs(key){ return QS[key] || (QS[key] = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[]}); }
+function vQuizStage(u, field){
+  const stage = field === "prequiz" ? "prequiz" : "review";
+  const questions = u[field] || [];
+  return `<div class="read"><main class="col">${quizBlock(u.id+":"+field, questions, "practice", {u, stage, after: field === "prequiz" ? "premistakes" : "postmistakes"})}</main>
+  <aside class="mar" aria-label="${esc(t("marginNotes"))}">${quizMargin(u.id+":"+field, questions)}</aside></div>`;
+}
+function quizMargin(key, questions){
+  const st = qs(key); const q = questions[st.i]; if (!q || st.finished) return "";
+  return `<div class="margin-note r" style="margin-top:44px"><span class="label r">${esc(LANG==="en"?"Concept":"概念")}</span><span>${mdi(q.concept)}</span></div>
+    ${q.source ? `<div class="margin-note"><span class="label">${esc(t("source"))}</span><span>${mdi(q.source)}</span></div>` : ""}
+    <div class="margin-note"><span class="label">${esc(t("howSure"))}</span><span class="small muted">${esc(LANG==="en" ? "A right answer marked “guessing” still goes into your notebook — lucky guesses are the gaps that show up on exams." : LANG==="zh-Hans" ? "标为「猜一下」的答对题目，也会放进错题本 — 侥幸猜中的地方，往往就是考试失分的地方。" : "標為「估吓」的答對題目，也會放入錯題簿 — 僥倖估中的地方，往往就是考試失分的地方。")}</span></div>`;
+}
+function quizBlock(key, questions, mode, ctx){
+  const st = qs(key);
+  if (!questions.length) return `<div class="empty">—</div>`;
+  if (st.finished) {
+    const right = st.results.filter(r => r === "ok").length;
+    const wrongs = st.results.length - right;
+    return `<section class="card stack g16" style="padding:28px">
+      <span class="label r">${esc(mode === "retest" ? t("retestTitle") : t("s_"+(ctx.stage==="review"?"review":"prequiz")))}</span>
+      <h1 style="font-size:34px">${esc(t("quizDone"))}</h1>
+      <p class="prose">${esc(t("quizScore",{a:right,n:st.results.length}))}</p>
+      <div class="prog">${st.results.map(r => `<i class="${r}"></i>`).join("")}</div>
+      <div class="row">${ctx.after && wrongs ? `<a class="btn primary" href="#/u/${esc(ctx.u.id)}/${ctx.after}">${esc(t("toMistakes"))}</a>` : ""}
+      ${mode === "retest" ? `<a class="btn primary" href="#/notebook">${esc(t("notebook"))} →</a>` : ""}
+      <button type="button" class="btn" data-act="q-redo" data-k="${esc(key)}">${esc(t("redo"))}</button></div></section>`;
+  }
+  const q = questions[st.i];
+  const right = st.results.filter(r => r === "ok").length, wrong = st.results.filter(r => r === "no").length;
+  const diff = q.difficulty ? " · " + t(["","easy","medium","hard"][q.difficulty] || "medium") : "";
+  let opts = "";
+  if (q.type === "single" || q.type === "multi" || q.type === "tf") {
+    const list = q.type === "tf" ? [t("true"), t("false")] : q.options;
+    opts = `<fieldset style="border:0;margin:0;padding:0" class="stack g10"><legend class="sr">${esc(t(q.type))}</legend>` + list.map((o, i) => {
+      const val = q.type === "tf" ? (i === 0) : i;
+      const picked = q.type === "multi" ? (st.sel||[]).includes(i) : st.sel === val;
+      const isAns = q.type === "multi" ? q.answer.includes(i) : (q.type === "tf" ? q.answer === val : q.answer === i);
+      let cls = "", mark = "";
+      if (st.checked) { if (isAns) { cls = "right"; mark = t("correct"); } else if (picked) { cls = "wrong"; mark = t("yourAnswer"); } }
+      else if (picked) cls = "sel";
+      return `<button type="button" class="opt ${cls}" data-act="q-pick" data-k="${esc(key)}" data-v="${i}" aria-pressed="${picked}" ${st.checked?"disabled":""}><span class="k">${"ABCDEF"[i]}</span><span class="txt">${mdi(o)}</span><span class="m">${esc(mark)}</span></button>`;
+    }).join("") + `</fieldset>`;
+  } else {
+    opts = `<label class="stack g8"><span class="sr">${esc(t("short"))}</span><textarea data-act="q-text" data-k="${esc(key)}" placeholder="${esc(t("writeAnswer"))}" ${st.revealed?"readonly":""}>${esc(st.text||"")}</textarea></label>`;
+  }
+  const hasSel = q.type === "multi" ? (st.sel||[]).length > 0 : st.sel != null;
+  const confRow = `<div class="stack g8"><span class="small muted">${esc(t("howSure"))}</span><div class="row" style="gap:8px">${[0,1,2].map(c => `<button type="button" class="pill ${st.conf===c?"on":""}" data-act="q-conf" data-k="${esc(key)}" data-v="${c}" aria-pressed="${st.conf===c}" ${st.checked?"disabled":""}>${esc(t("conf"+c))}</button>`).join("")}</div></div>`;
+  let fb = "";
+  if (st.checked) {
+    const ok = st.ok, lucky = ok && st.conf === 0;
+    let why = "";
+    if (!ok && q.optionFeedback && typeof st.sel === "number" && q.optionFeedback[st.sel]) why = `<p class="small"><strong>${esc(t("whyTempting",{k:"ABCDEF"[st.sel]}))}</strong> ${mdi(q.optionFeedback[st.sel])}</p>`;
+    fb = `<div class="fb ${ok?"ok":"no"}" role="status"><span class="label ${ok?"b":"o"}">${esc(ok ? (lucky ? t("rightGuess") : t("right")) : t("notQuite"))}</span>
+      ${q.type === "short" ? `<div class="stack g4"><span class="label">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div></div>` : ""}
+      <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>${why}
+      ${(!ok || lucky) && mode !== "retest" ? `<p class="mono small" style="color:var(--orange)">${esc(t("addedNb"))}</p>` : ""}</div>`;
+  }
+  let actions;
+  if (q.type === "short" && !st.checked) {
+    actions = st.revealed
+      ? `<div class="stack g12"><div class="fb ok"><span class="label b">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div></div>
+         <div class="row"><button type="button" class="btn" data-act="q-self" data-k="${esc(key)}" data-v="1" style="border-color:var(--blue);color:var(--blue)">${esc(t("gotIt"))}</button><button type="button" class="btn" data-act="q-self" data-k="${esc(key)}" data-v="0" style="border-color:var(--orange);color:var(--orange)">${esc(t("missedIt"))}</button></div></div>`
+      : `<div class="row" style="justify-content:flex-end"><button type="button" class="btn primary" data-act="q-reveal" data-k="${esc(key)}" ${st.conf==null?"disabled":""}>${esc(t("showModel"))}</button></div>`;
+  } else if (!st.checked) {
+    actions = `<div class="row" style="justify-content:flex-end"><button type="button" class="btn primary" style="min-height:48px" data-act="q-check" data-k="${esc(key)}" ${hasSel && st.conf!=null?"":"disabled"}>${esc(t("check"))}</button></div>`;
+  } else {
+    actions = `<div class="row" style="justify-content:flex-end"><button type="button" class="btn dark" style="min-height:48px" data-act="q-next" data-k="${esc(key)}">${esc(st.i === questions.length-1 ? t("finish") : t("nextQ"))}</button></div>`;
+  }
+  return `<div class="stack g10">
+      <div class="between mono small muted" style="font-size:12px"><span>${esc(t("qOf",{i:st.i+1,n:questions.length}))}</span><span>${esc(t("rightWrong",{a:right,b:wrong}))}</span></div>
+      <div class="prog" aria-hidden="true">${questions.map((_, i) => `<i class="${st.results[i] || (i===st.i?"cur":"")}"></i>`).join("")}</div>
+    </div>
+    <section class="card stack g20" style="padding:28px">
+      <span class="label r">${esc(t(q.type))}${esc(diff)}</span>
+      <div class="prose" style="font-size:24px;line-height:1.4">${md(q.stem)}</div>
+      ${opts}${confRow}${fb}${actions}
+    </section>`;
+}
+function quizQuestions(key){
+  if (key === "retest") return (QS.retest && QS.retest.list || []).map(id => QIDX[id].q);
+  const [uid, field] = key.split(":"); const u = unitById(uid); return u ? (u[field] || []) : [];
+}
+function quizAct(act, key, v){
+  const st = qs(key), questions = quizQuestions(key), q = questions[st.i];
+  if (act === "q-pick") {
+    const i = +v;
+    if (q.type === "multi") { const s = new Set(st.sel || []); s.has(i) ? s.delete(i) : s.add(i); st.sel = [...s]; }
+    else if (q.type === "tf") st.sel = (i === 0); else st.sel = i;
+  } else if (act === "q-conf") st.conf = +v;
+  else if (act === "q-reveal") st.revealed = true;
+  else if (act === "q-self" || act === "q-check") {
+    st.ok = act === "q-self" ? v === "1" : isRight(q, st.sel);
+    st.checked = true;
+    record(q, st.ok, st.conf, act === "q-self" ? st.ok : st.sel, key === "retest" ? "retest" : "practice");
+    st.results[st.i] = st.ok ? "ok" : "no";
+  } else if (act === "q-next") {
+    if (st.i >= questions.length - 1) {
+      st.finished = true;
+      if (key !== "retest") { const [uid, field] = key.split(":"); const u = unitById(uid); if (field === "prequiz") setDone(u, "prequiz", true); }
+    } else Object.assign(st, {i: st.i+1, sel:null, conf:null, checked:false, revealed:false, text:"", ok:null});
+  } else if (act === "q-redo") {
+    const list = st.list; QS[key] = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[], list};
+  }
+}
+
+/* ----- mistakes & difficulties ----- */
+function vMistakes(u, field, diffs){
+  const qsList = u[field] || [];
+  const ids = qsList.map(q => q.id);
+  const mine = ids.filter(id => S.nb[id]);
+  const attempted = ids.some(id => S.att[id]);
+  const conceptsHit = new Set(mine.map(id => plain(QIDX[id].q.concept)));
+  const quizName = t(field === "prequiz" ? "s_prequiz" : "reviewQuiz");
+  const goTo = field === "prequiz" ? "prequiz" : "review";
+  const wrongN = mine.filter(id => !S.nb[id].wasRight).length, luckyN = mine.length - wrongN;
+  const stage = field === "prequiz" ? "premistakes" : "postmistakes";
+  let left;
+  if (!attempted) left = `<div class="empty"><span>${esc(t("doQuizFirst",{quiz:quizName}))}</span><a class="btn primary" href="#/u/${esc(u.id)}/${goTo}">${esc(t("goQuiz",{quiz:quizName}))}</a></div>`;
+  else if (!mine.length) left = `<div class="empty">${esc(t("noMistakes"))}</div>`;
+  else left = mine.map(id => mistakeCard(id)).join("");
+  return `<div style="display:flex;flex-wrap:wrap;gap:32px 48px;padding:32px 28px 64px;max-width:1360px;margin:0 auto">
+    <section class="stack g16" style="flex:1 1 460px;min-width:0" aria-labelledby="mine">
+      <div class="stack g4"><span class="label o">${esc(t("fromQuiz"))}</span><h1 id="mine" style="font-size:34px;line-height:1.15">${esc(t("mineTitle"))}</h1>
+      ${mine.length ? `<p class="muted">${esc(t("mineSub",{w:wrongN,g:luckyN}))}</p>` : ""}</div>
+      ${left}
+    </section>
+    <section class="stack g16" style="flex:1 1 400px;min-width:0" aria-labelledby="hard">
+      <div class="stack g4"><span class="label r">${esc(t("anticipated"))}</span><h2 id="hard" style="font-size:34px;line-height:1.15">${esc(t("hardTitle"))}</h2><p class="muted">${esc(t("hardSub"))}</p></div>
+      ${diffs.map((d, i) => { const hit = d.concept && conceptsHit.has(plain(d.concept)); return `<details class="diff" ${hit || i===0 ? "open" : ""}>
+        <summary><span>${mdi(d.title)}</span>${hit ? `<span class="tag o">${esc(t("linked"))}</span>` : ""}</summary>
+        <div class="stack g12">${d.why ? `<div class="md"><strong>${esc(t("whyTrips"))}</strong> ${mdi(d.why)}</div>` : ""}
+        <div class="md"><strong>${esc(t("theFix"))}</strong> ${md(d.explanation).replace(/^<p>/,"").replace(/<\/p>/,"</p>")}</div>
+        ${d.example ? `<div class="example md">${md(d.example)}</div>` : ""}
+        ${d.source ? `<span class="mono small muted" style="font-size:12px">${esc(t("source"))}: ${esc(plain(d.source))}</span>` : ""}</div></details>`; }).join("")}
+      <div class="stack g10" style="padding:18px 20px;border-radius:14px;background:var(--rubric-soft)">
+        <span class="label r">${esc(t("stuck"))}</span><p class="small">${esc(t("stuckSub"))}</p>
+        <a class="btn primary" style="align-self:flex-start" href="#/u/${esc(u.id)}/classroom">${esc(t("addToClass"))}</a></div>
+      <div>${doneButton(u, stage)}</div>
+    </section></div>`;
+}
+function mistakeCard(id, withUnit){
+  const e = S.nb[id], info = QIDX[id], q = info.q;
+  // show the mistake as it was made, not the latest re-test
+  const a = {ok: e.wasRight, conf: e.lastConf, choice: e.lastChoice};
+  const status = a.ok ? `<span style="color:var(--blue)">${esc(t("luckyGuess"))}</span>` : `<span style="color:var(--orange)">${esc(t("wrongSure",{conf:t("conf"+(a.conf ?? 1)).toLowerCase()}))}</span>`;
+  const unitLabel = withUnit ? (info.ui >= 0 ? t("unitN",{n:info.ui+1}) + " · " : tx(DATA[info.unit].title || t(info.unit)) + " · ") : "";
+  return `<article class="card stack g14" style="${a.ok?"border-style:dashed":""}">
+    <div class="between mono" style="font-size:12px"><span style="color:var(--rubric)">${esc(unitLabel)}${mdi(q.concept)}</span>${status}</div>
+    <div class="prose" style="font-size:20px;line-height:1.4">${md(q.stem)}</div>
+    ${q.type !== "short" ? `<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;font-size:14px">
+      <div style="padding:12px 14px;border-radius:10px;background:var(--orange-soft);border:1px solid var(--orange-rule)"><span class="label o" style="display:block">${esc(t("yourAnswer"))}</span>${answerText(q, a.choice)}</div>
+      <div style="padding:12px 14px;border-radius:10px;background:var(--blue-soft);border:1px solid var(--blue-rule)"><span class="label b" style="display:block">${esc(t("correct"))}</span>${correctText(q)}</div></div>`
+      : `<div style="padding:12px 14px;border-radius:10px;background:var(--blue-soft)"><span class="label b" style="display:block">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div></div>`}
+    <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>
+    <div class="between" style="padding-top:12px;border-top:1px solid var(--sunk)">
+      <span class="mono small muted" style="font-size:12px">${e.mastered ? esc(t("nbMastered")) + " ✓" : esc(t("retestOn",{d:fmtDay(e.due)}))}</span>
+      ${e.mastered ? "" : `<button type="button" class="btn" data-act="retest-one" data-id="${esc(id)}">${esc(t("similar"))}</button>`}
+    </div></article>`;
+}
+
+/* ----- classroom ----- */
+function vClassroom(u){
+  const list = S.cq[u.id] || [];
+  const c = u.classroom || {};
+  return `<div class="read"><main class="col">
+    ${unitHeader(u, "classroom")}
+    <p class="muted">${esc(t("cqSub"))}</p>
+    <form class="card stack g12" data-act="cq-add" data-u="${esc(u.id)}">
+      <label class="sr" for="cq-input">${esc(t("cqTitle"))}</label>
+      <textarea id="cq-input" name="q" placeholder="${esc(t("cqPlaceholder"))}"></textarea>
+      <div class="row" style="justify-content:flex-end"><button type="submit" class="btn primary">${esc(t("add"))}</button></div>
+    </form>
+    <section class="stack g10">${list.length ? list.map((x, i) => `<div class="card between" style="padding:14px 18px;flex-wrap:nowrap;align-items:flex-start">
+      <div class="stack g4" style="min-width:0"><span class="mono small muted" style="font-size:12px">#${i+1} · ${esc(new Date(x.ts).toLocaleString(LANG==="en"?"en-GB":"zh-HK",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}))}</span><span style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(x.text)}</span></div>
+      <button type="button" class="btn link" data-act="cq-del" data-u="${esc(u.id)}" data-i="${i}" aria-label="${esc(t("delete"))} #${i+1}">${esc(t("delete"))}</button></div>`).join("") : `<div class="empty">${esc(t("cqNone"))}</div>`}</section>
+    ${list.length ? `<div class="row"><button type="button" class="btn dark" data-act="cq-export" data-u="${esc(u.id)}">${esc(t("export_q"))}</button></div><pre id="cq-out" hidden style="white-space:pre-wrap;padding:14px;border-radius:10px;background:var(--sunk);font-size:13px"></pre>` : ""}
+    ${(c.answers||[]).length ? `<section class="stack g12"><h2 style="font-size:24px">${esc(t("answered"))}</h2>${c.answers.map(a => `<details class="diff"><summary><span>${mdi(a.q)}</span></summary><div class="md">${md(a.a)}</div>${a.source?`<p class="mono small muted" style="font-size:12px;margin-top:8px">${esc(t("source"))}: ${esc(plain(a.source))}</p>`:""}</details>`).join("")}</section>` : ""}
+    <div>${doneButton(u, "classroom")}</div>
+  </main><aside class="mar" aria-label="${esc(t("marginNotes"))}">
+    ${(c.listenFor||[]).length ? `<div class="card stack g8" style="padding:16px;margin-top:84px"><span class="label b">${esc(t("listenFor"))}</span>${c.listenFor.map(x => `<div class="md small">${md(x)}</div>`).join("")}</div>` : ""}
+  </aside></div>`;
+}
+
+/* ----- after-class review ----- */
+function fcState(u){ return FC[u.id] || (FC[u.id] = {i:0, back:false}); }
+function vReview(u){
+  const r = u.review || {};
+  const cards = r.flashcards || [];
+  const f = fcState(u); if (f.i >= cards.length) f.i = 0;
+  const known = cards.filter((_, i) => S.fc[u.id+":"+i] === "know").length;
+  const card = cards[f.i];
+  const quizKey = u.id + ":postquiz";
+  return `<div class="read"><article class="col">
+    ${unitHeader(u, "review")}
+    <section class="stack g12"><h2 style="font-size:26px">${esc(t("recap"))}</h2><div class="prose">${md(r.recap)}</div></section>
+    ${(r.keyPoints||[]).length ? `<section class="card stack g10"><h2 class="label">${esc(t("keyPoints"))}</h2><ol class="md" style="margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol></section>` : ""}
+    ${card ? `<section class="stack g12" aria-labelledby="fc"><div class="between"><h2 id="fc" style="font-size:26px">${esc(t("flashcards"))}</h2><span class="mono small muted">${esc(t("cardOf",{i:f.i+1,n:cards.length}))} · ${esc(t("known",{k:known}))}</span></div>
+      <button type="button" class="flash ${f.back?"back":""}" data-act="fc-flip" data-u="${esc(u.id)}" aria-label="${esc(t("flip"))}"><span class="md">${md(f.back ? card.back : card.front)}</span></button>
+      <div class="between"><div class="row" style="gap:8px"><button type="button" class="btn" data-act="fc-prev" data-u="${esc(u.id)}" aria-label="prev">←</button><button type="button" class="btn" data-act="fc-flip" data-u="${esc(u.id)}">${esc(t("flip"))}</button><button type="button" class="btn" data-act="fc-next" data-u="${esc(u.id)}" aria-label="next">→</button></div>
+      <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="again">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="know">${esc(t("know"))}</button></div></div></section>` : ""}
+    ${r.connections ? `<section class="stack g8"><h2 style="font-size:22px">${esc(t("connections"))}</h2><div class="md">${md(r.connections)}</div></section>` : ""}
+    ${(u.postquiz||[]).length ? `<section class="stack g14"><h2 style="font-size:26px">${esc(t("reviewQuiz"))}</h2>${quizBlock(quizKey, u.postquiz, "practice", {u, stage:"review", after:"postmistakes"})}</section>` : ""}
+    <div>${doneButton(u, "review")}</div>
+  </article><aside class="mar" aria-label="${esc(t("marginNotes"))}">${(u.postquiz||[]).length ? quizMargin(quizKey, u.postquiz) : ""}</aside></div>`;
+}
+
+/* ----- homework ----- */
+function vHomework(u){
+  const list = u.homework || [];
+  if (!list.length) return `<div class="read"><main class="col">${unitHeader(u,"homework")}<div class="empty">${esc(t("noHw"))}</div></main></div>`;
+  return `<div class="read"><main class="col">${unitHeader(u, "homework")}
+    ${list.map(h => {
+      const v = HWV[h.id] || (HWV[h.id] = {hints: 0, sol: false});
+      const hints = h.hints || [];
+      const locked = h.revealMode === "hints-first" && v.hints < hints.length;
+      return `<article class="card stack g14" id="hw-${esc(h.id)}">
+        <div class="between"><span class="label r">${mdi(h.title || h.id)}${h.source ? " · " + esc(plain(h.source)) : ""}</span>${h.confidence === "low" ? `<span class="tag o">${esc(t("lowConf"))}</span>` : ""}</div>
+        <div class="prose" style="font-size:19px">${md(h.problem)}</div>
+        ${hints.slice(0, v.hints).map((x, i) => `<div class="margin-note r"><span class="label r">${esc(t("hint",{i:i+1}))}</span><div class="md">${md(x)}</div></div>`).join("")}
+        ${!v.sol ? `<div class="row">${v.hints < hints.length ? `<button type="button" class="btn" data-act="hw-hint" data-id="${esc(h.id)}">${esc(t("showHint"))}</button>` : ""}
+          <button type="button" class="btn primary" data-act="hw-sol" data-id="${esc(h.id)}" ${locked?"disabled":""}>${esc(t("showSolution"))}</button></div>
+          ${locked ? `<p class="small muted">${esc(t("lockedSolution"))}</p>` : ""}` :
+        `<section class="stack g10"><h3 class="label">${esc(t("steps"))}</h3><ol class="md" style="margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:10px">${(h.steps||[]).map(s => `<li>${md(s)}</li>`).join("")}</ol></section>
+         <div class="fb ok"><span class="label b">${esc(t("answer"))}</span><div class="md prose" style="font-size:18px">${md(h.answer)}</div></div>
+         ${(h.pitfalls||[]).length ? `<div class="fb no"><span class="label o">${esc(t("pitfalls"))}</span><ul class="md" style="margin:0">${h.pitfalls.map(p => `<li>${mdi(p)}</li>`).join("")}</ul></div>` : ""}`}
+      </article>`; }).join("")}
+    <div>${doneButton(u, "homework")}</div></main></div>`;
+}
+
+/* ----- notebook & retest ----- */
+function viewNotebook(){
+  const ids = Object.keys(S.nb).filter(id => QIDX[id]);
+  const now = Date.now();
+  const due = ids.filter(id => !S.nb[id].mastered && S.nb[id].due <= now);
+  const later = ids.filter(id => !S.nb[id].mastered && S.nb[id].due > now).sort((a,b) => S.nb[a].due - S.nb[b].due);
+  const mastered = ids.filter(id => S.nb[id].mastered);
+  const sec = (title, list, cls) => list.length ? `<section class="stack g14"><div class="between"><h2 style="font-size:24px">${esc(title)}</h2><span class="tag ${cls}">${list.length}</span></div>${list.map(id => mistakeCard(id, true)).join("")}</section>` : "";
+  return topBar() + `<div class="shell">${sideNav(null,"notebook")}<main class="main" style="max-width:860px">
+    <header class="stack g8"><span class="label o">${esc(plain(COURSE.title))}</span><h1 class="big" style="font-size:42px">${esc(t("nbTitle"))}</h1><p class="muted">${esc(t("nbSub"))}</p>
+    ${due.length ? `<div><a class="btn primary" href="#/retest">${esc(t("startRetest",{n:Math.min(due.length,10)}))}</a></div>` : ""}</header>
+    ${ids.length ? sec(t("nbDue"), due, "o") + sec(t("nbLater"), later, "r") + sec(t("nbMastered"), mastered, "b") : `<div class="empty">${esc(t("nbEmpty"))}</div>`}
+  </main>${marginHome()}</div>`;
+}
+function viewRetest(){
+  if (!QS.retest || (!QS.retest.list || !QS.retest.list.length)) { QS.retest = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[], list: dueList().slice(0,10)}; }
+  const questions = quizQuestions("retest");
+  if (!questions.length) { QS.retest = null; return topBar() + `<div class="read"><main class="col"><div class="empty">${esc(t("dueNone"))}<a class="btn" href="#/notebook">${esc(t("notebook"))}</a></div></main></div>`; }
+  return topBar(t("retestTitle")) + `<div class="read"><main class="col">${quizBlock("retest", questions, "retest", {})}</main><aside class="mar">${quizMargin("retest", questions)}</aside></div>`;
+}
+
+/* ----- midterm / final ----- */
+function viewReview(kind){
+  const r = DATA[kind]; if (!r) { location.hash = "#/"; return ""; }
+  const name = tx(r.title) || t(kind);
+  const ex = S.exam[kind] || (S.exam[kind] = {attempts: []});
+  if (ex.current) return viewExam(kind);
+  const scope = (r.scope||[]).map(unitById).filter(Boolean);
+  const rows = scope.map(u => { const p = readiness(u); return {u, p}; });
+  const low = rows.filter(x => x.p != null && x.p < 65).map(x => t("unitN",{n:unitNum(x.u.id)}));
+  const weak = weakSpots(r.scope);
+  const days = r.date ? Math.round((new Date(r.date+"T00:00:00") - startOfDay(Date.now())) / DAY) : null;
+  const n = (r.exam||[]).length, mins = r.timeLimitMin || Math.max(10, n * 3);
+  const last = ex.attempts[ex.attempts.length-1], best = ex.attempts.reduce((m, a) => !m || a.score > m.score ? a : m, null);
+  return topBar(name) + `<div class="shell">${sideNav(null, kind)}<div style="flex:999 1 700px;min-width:0">
+    <div style="padding:28px 32px 8px;display:flex;flex-direction:column;gap:6px">
+      ${days != null && days >= 0 ? `<span class="label r">${esc(days === 0 ? t("examToday",{name}) : t("examIn",{name, n:days}))}</span>` : ""}
+      <h1 class="big" style="font-size:44px;line-height:1.08">${esc(name)}</h1>
+      <div class="prose" style="font-style:italic;color:var(--ink2);max-width:64ch">${md(r.overview)}</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:28px 36px;padding:20px 32px 64px;align-items:flex-start">
+      <div class="stack g20" style="flex:999 1 520px;min-width:0">
+        <section class="card stack g14"><div class="between"><h2 style="font-size:24px">${esc(t("readiness"))}</h2><span class="mono small muted" style="font-size:12px">${esc(t("readinessSub"))}</span></div>
+          <div class="readiness">${rows.map(({u, p}) => `<a href="#/u/${esc(u.id)}/review" style="color:var(--ink);text-decoration:none">${unitNum(u.id)} · ${esc(plain(u.title))}</a><span class="bar lg"><i style="width:${p??0}%;background:${p!=null&&p<65?"var(--orange)":"var(--blue)"}"></i></span><span class="mono" style="text-align:right;${p!=null&&p<65?"color:var(--orange)":""}">${p==null?"—":p+"%"}</span>`).join("")}</div>
+          ${low.length ? `<p class="small muted">${esc(t("startWith",{u:low.join("、")}))}</p>` : ""}</section>
+        ${(r.themes||[]).length ? `<section class="stack g12"><h2 style="font-size:24px">${esc(t("themes"))}</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+          ${r.themes.map(th => `<div class="card stack g8" style="padding:18px">${(th.units||[]).length ? `<span class="label r">${esc(th.units.map(id => t("unitN",{n:unitNum(id)})).join(" · "))}</span>` : ""}<span style="font-family:var(--serif);font-size:19px">${mdi(th.title)}</span><div class="md small muted">${md(th.body)}</div></div>`).join("")}</div></section>` : ""}
+        ${r.formulaSheet ? `<section class="card stack g12"><h2 style="font-size:24px">${esc(t("formulaSheet"))}</h2><div class="md" style="font-size:16px">${md(r.formulaSheet)}</div></section>` : ""}
+      </div>
+      <aside class="stack g16" style="flex:1 1 300px;max-width:400px">
+        ${n ? `<section class="dark-card"><span class="label" style="color:#F2B8A8">${esc(t("mock"))}</span><h2 style="font-size:28px;line-height:1.15">${esc(t("mockInfo",{n, m:mins}))}</h2>
+          <p class="small muted">${esc(t("mockSub"))}</p>
+          ${last ? `<div class="between mono small muted"><span>${esc(t("lastAttempt",{a:last.score,n:last.total}))}</span><span>${esc(t("best",{a:best.score,n:best.total}))}</span></div>` : ""}
+          <button type="button" class="btn primary" style="min-height:52px" data-act="exam-start" data-k="${kind}">${esc(t("start"))}</button></section>` : ""}
+        ${weak.length ? `<section class="stack g10"><h3 style="font-size:19px">${esc(t("weak"))}</h3>${weak.map(([c, m]) => `<span class="between small"><span>${esc(c)}</span><span class="mono" style="font-size:12px;color:var(--orange)">${esc(t("misses",{n:m}))}</span></span>`).join("")}</section>` : ""}
+        ${r.strategy ? `<section class="margin-note r stack g8"><span class="label r">Scholia · ${esc(t("strategy"))}</span><div class="md">${md(r.strategy)}</div></section>` : ""}
+      </aside>
+    </div></div></div>`;
+}
+function viewExam(kind){
+  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = r.exam || [];
+  const name = tx(r.title) || t(kind);
+  if (cur.submitted) return examResult(kind);
+  const answered = qsList.filter(q => cur.ans[q.id] != null && !(Array.isArray(cur.ans[q.id]) && !cur.ans[q.id].length)).length;
+  const body = qsList.map((q, qi) => {
+    const a = cur.ans[q.id];
+    let ctl;
+    if (q.type === "short") ctl = `<textarea data-act="ex-text" data-k="${kind}" data-id="${esc(q.id)}" placeholder="${esc(t("writeAnswer"))}">${esc(a || "")}</textarea>`;
+    else { const list = q.type === "tf" ? [t("true"), t("false")] : q.options;
+      ctl = `<div class="stack g8">${list.map((o, i) => { const val = q.type === "tf" ? (i===0) : i; const picked = q.type === "multi" ? (a||[]).includes(i) : a === val;
+        return `<button type="button" class="opt ${picked?"sel":""}" data-act="ex-pick" data-k="${kind}" data-id="${esc(q.id)}" data-v="${i}" aria-pressed="${picked}"><span class="k">${"ABCDEF"[i]}</span><span class="txt">${mdi(o)}</span></button>`; }).join("")}</div>`; }
+    return `<section class="card stack g14" id="q-${esc(q.id)}"><div class="between"><span class="label r">${qi+1} · ${esc(t(q.type))}</span>
+      <button type="button" class="btn link" data-act="ex-flag" data-k="${kind}" data-id="${esc(q.id)}" style="${cur.flag[q.id]?"color:var(--orange)":""}">${esc(cur.flag[q.id] ? t("flagged") : t("flag"))}</button></div>
+      <div class="prose" style="font-size:21px;line-height:1.45">${md(q.stem)}</div>${ctl}</section>`;
+  }).join("");
+  const map = qsList.map((q, i) => { const a = cur.ans[q.id]; const has = a != null && !(Array.isArray(a) && !a.length) && a !== ""; return `<a href="javascript:void 0" data-act="ex-jump" data-id="${esc(q.id)}" class="${cur.flag[q.id]?"f":has?"a":""}">${i+1}</a>`; }).join("");
+  return topBar(name + " · " + t("mock")) + `<div style="display:flex;flex-wrap:wrap;gap:28px;padding:28px;max-width:1300px;margin:0 auto;align-items:flex-start">
+    <main class="stack g16" style="flex:999 1 560px;min-width:0">${body}
+      <div class="row" style="justify-content:flex-end"><button type="button" class="btn primary" style="min-height:52px" data-act="exam-submit" data-k="${kind}">${esc(t("submit"))}</button></div></main>
+    <aside class="dark-card" style="flex:1 1 280px;max-width:340px;position:sticky;top:84px">
+      <span class="label" style="color:#F2B8A8">${esc(t("timeLeft"))}</span>
+      <span id="timer" class="mono" style="font-size:40px;line-height:1">--:--</span>
+      <span class="mono small muted">${answered}/${qsList.length}</span>
+      <nav class="qmap" aria-label="questions">${map}</nav>
+      <button type="button" class="btn primary" data-act="exam-submit" data-k="${kind}">${esc(t("submit"))}</button>
+    </aside></div>`;
+}
+function examResult(kind){
+  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = r.exam || [];
+  const name = tx(r.title) || t(kind);
+  const total = qsList.length;
+  const score = qsList.filter(q => q.type === "short" ? cur.self[q.id] === true : isRight(q, cur.ans[q.id])).length;
+  const pendingShort = qsList.filter(q => q.type === "short" && cur.self[q.id] == null).length;
+  return topBar(name + " · " + t("result")) + `<div class="read"><main class="col">
+    <section class="dark-card"><span class="label" style="color:#F2B8A8">${esc(t("result"))}</span>
+      <h1 style="font-size:40px">${esc(t("scored",{a:score,n:total,p:Math.round(100*score/Math.max(1,total))}))}</h1>
+      <div class="row"><button type="button" class="btn primary" data-act="exam-close" data-k="${kind}" ${pendingShort?"disabled":""}>${esc(t("backToReview"))}</button></div>
+      ${pendingShort ? `<p class="small muted">${esc(t("selfMark"))}: ${pendingShort}</p>` : ""}</section>
+    ${qsList.map((q, i) => {
+      const a = cur.ans[q.id];
+      const ok = q.type === "short" ? cur.self[q.id] : isRight(q, a);
+      return `<section class="card stack g12" style="border-color:${ok===true?"var(--blue-rule)":ok===false?"var(--orange-rule)":"var(--rule)"}">
+        <div class="between"><span class="label r">${i+1} · ${mdi(q.concept)}</span><span class="label ${ok?"b":"o"}">${ok===true?esc(t("right")):ok===false?esc(t("notQuite")):""}</span></div>
+        <div class="prose" style="font-size:19px">${md(q.stem)}</div>
+        ${q.type === "short" ? `<div class="stack g8"><span class="label">${esc(t("yourAnswer"))}</span><div style="white-space:pre-wrap">${esc(a || "—")}</div><span class="label b">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div>
+          ${cur.self[q.id] == null ? `<div class="row"><button type="button" class="btn" style="color:var(--blue)" data-act="ex-self" data-k="${kind}" data-id="${esc(q.id)}" data-v="1">${esc(t("gotIt"))}</button><button type="button" class="btn" style="color:var(--orange)" data-act="ex-self" data-k="${kind}" data-id="${esc(q.id)}" data-v="0">${esc(t("missedIt"))}</button></div>` : ""}</div>`
+        : `<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;font-size:14px"><div style="padding:10px 12px;border-radius:10px;background:var(--sunk)"><span class="label" style="display:block">${esc(t("yourAnswer"))}</span>${answerText(q, a)}</div><div style="padding:10px 12px;border-radius:10px;background:var(--blue-soft)"><span class="label b" style="display:block">${esc(t("correct"))}</span>${correctText(q)}</div></div>`}
+        <div class="md">${md(q.explanation)}</div></section>`; }).join("")}
+  </main></div>`;
+}
+function startTimer(kind){
+  clearInterval(examTimer);
+  const r = DATA[kind], cur = S.exam[kind] && S.exam[kind].current; if (!cur || cur.submitted) return;
+  const n = (r.exam||[]).length, end = cur.start + (r.timeLimitMin || Math.max(10, n*3)) * 60000;
+  const tick = () => { const el = document.getElementById("timer"); const left = Math.max(0, end - Date.now());
+    if (el) el.textContent = String(Math.floor(left/60000)).padStart(2,"0") + ":" + String(Math.floor(left/1000)%60).padStart(2,"0");
+    if (!left) { clearInterval(examTimer); submitExam(kind); render(); } };
+  tick(); examTimer = setInterval(tick, 1000);
+}
+function submitExam(kind){
+  const r = DATA[kind], cur = S.exam[kind].current; cur.submitted = Date.now(); clearInterval(examTimer);
+  for (const q of r.exam || []) if (q.type !== "short") { const ok = isRight(q, cur.ans[q.id]); record(q, ok, 1, cur.ans[q.id], "exam"); }
+  save();
+}
+
+/* ---------- export / import ---------- */
+function progressSummary(){
+  const lines = ["SCHOLIA-PROGRESS v1", "course: " + plain(COURSE.title), "lang: " + LANG, ""];
+  UNITS.forEach((u, i) => { const p = readiness(u); lines.push(`Unit ${i+1} [${u.id}] ${plain(u.title)} — stages ${doneCount(u)}/${stagesOf(u).length}` + (p != null ? `, readiness ${p}%` : "")); });
+  const w = weakSpots(); if (w.length) { lines.push("", "Weak concepts:"); w.forEach(([c, n]) => lines.push(`- ${c} (${n} misses)`)); }
+  const open = Object.keys(S.nb).filter(id => QIDX[id] && !S.nb[id].mastered);
+  if (open.length) { lines.push("", "Open mistakes:"); open.forEach(id => { const q = QIDX[id].q; lines.push(`- [${id}] ${plain(q.stem).slice(0,120)} — chose: ${plain(answerText(q, S.att[id] && S.att[id].choice)).slice(0,60)}`); }); }
+  for (const k of REVIEWS) { const a = (S.exam[k]||{}).attempts || []; if (a.length) lines.push("", `${k} mock exams: ` + a.map(x => `${x.score}/${x.total}`).join(", ")); }
+  return lines.join("\n");
+}
+function openExport(){
+  const d = document.createElement("dialog");
+  d.style.cssText = "border:1px solid var(--rule);border-radius:14px;padding:24px;max-width:520px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)";
+  d.innerHTML = `<div class="stack g14"><h2 style="font-size:24px">${esc(t("exportTitle"))}</h2><p class="small muted">${esc(t("exportSub"))}</p>
+    <div class="stack g8"><button type="button" class="btn primary" data-x="dl">${esc(t("download"))}</button><button type="button" class="btn" data-x="sum">${esc(t("copySummary"))}</button>
+    <label class="btn" style="cursor:pointer">${esc(t("import"))}<input type="file" accept="application/json,.json" data-x="imp" class="sr"></label></div>
+    <pre data-x="out" hidden style="white-space:pre-wrap;max-height:200px;overflow:auto;padding:12px;border-radius:10px;background:var(--sunk);font-size:12px"></pre>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-x="close">${esc(t("close"))}</button></div></div>`;
+  document.body.appendChild(d);
+  d.addEventListener("click", async e => {
+    const x = e.target.closest("[data-x]"); if (!x) { if (e.target === d) d.close(); return; }
+    if (x.dataset.x === "close") d.close();
+    if (x.dataset.x === "dl") { const blob = new Blob([JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1)], {type:"application/json"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "scholia-progress-" + new Date().toISOString().slice(0,10) + ".json"; document.body.appendChild(a); a.click(); a.remove(); }
+    if (x.dataset.x === "sum") { const s = progressSummary(); if (!(await copyText(s))) { const o = d.querySelector('[data-x="out"]'); o.textContent = s; o.hidden = false; } }
+  });
+  d.querySelector('[data-x="imp"]').addEventListener("change", async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { const j = JSON.parse(await f.text()); if (!j.state || j.state.v !== 1) throw 0; S = Object.assign(blank(), j.state); save(); toast(t("importDone")); d.close(); render(); }
+    catch(err){ toast(t("importFail")); }
+  });
+  d.addEventListener("close", () => d.remove());
+  d.showModal();
+}
+
+/* ---------- render & events ---------- */
+function render(){
+  document.documentElement.lang = LANG;
+  const app = document.getElementById("app");
+  if (!DATA || !UNITS.length) { app.innerHTML = `<div class="read"><div class="col"><div class="empty">Scholia: no course data.</div></div></div>`; return; }
+  const r = route(); let html = "";
+  clearInterval(examTimer);
+  if (r.view === "u" && unitById(r.a)) html = viewUnit(unitById(r.a), r.b || "prestudy");
+  else if (r.view === "notebook") html = viewNotebook();
+  else if (r.view === "retest") html = viewRetest();
+  else if (r.view === "review" && DATA[r.a]) html = viewReview(r.a);
+  else html = viewHome();
+  app.innerHTML = html;
+  if (r.view === "review" && S.exam[r.a] && S.exam[r.a].current && !S.exam[r.a].current.submitted) startTimer(r.a);
+  typeset(app);
+}
+function typeset(el){
+  if (window.renderMathInElement) { try { window.renderMathInElement(el, {delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},{left:"\\(",right:"\\)",display:false},{left:"\\[",right:"\\]",display:true}], throwOnError:false}); } catch(e){} }
+}
+function rerender(keepScroll){ const y = window.scrollY; render(); if (keepScroll) window.scrollTo(0, y); }
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.tagName === "FORM" || el.tagName === "TEXTAREA" || (el.tagName === "INPUT" && el.type !== "button")) return;
+  const act = el.dataset.act, d = el.dataset;
+  if (act === "lang") { LANG = d.v; S.lang = d.v; save(); rerender(true); return; }
+  if (act === "export") { openExport(); return; }
+  if (act.startsWith("q-")) { quizAct(act, d.k, d.v); rerender(true); return; }
+  if (act === "done" || act === "undone") { setDone(unitById(d.u), d.s, act === "done"); rerender(true); return; }
+  if (act === "done-go") { setDone(unitById(d.u), d.s, true); location.hash = d.go; window.scrollTo(0,0); return; }
+  if (act === "retest-one") { QS.retest = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[], list:[d.id]}; location.hash = "#/retest"; window.scrollTo(0,0); return; }
+  if (act === "cq-del") { (S.cq[d.u] || []).splice(+d.i, 1); save(); rerender(true); return; }
+  if (act === "cq-export") { const u = unitById(d.u); const list = S.cq[d.u] || [];
+    const txt = ["SCHOLIA-QUESTIONS v1", "course: " + plain(COURSE.title), `unit: ${u.id} · ${plain(u.title)}`, "lang: " + LANG, ""].concat(list.map((x, i) => `${i+1}. ${x.text}`)).join("\n");
+    copyText(txt).then(ok => { if (!ok) { const o = document.getElementById("cq-out"); if (o) { o.textContent = txt; o.hidden = false; } } }); return; }
+  if (act.startsWith("fc-")) { const u = unitById(d.u), f = fcState(u), n = (u.review.flashcards||[]).length;
+    if (act === "fc-flip") f.back = !f.back;
+    if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; }
+    if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; }
+    if (act === "fc-mark") { S.fc[u.id+":"+f.i] = d.v; save(); f.i = (f.i+1) % n; f.back = false; }
+    rerender(true); return; }
+  if (act === "hw-hint") { HWV[d.id].hints++; rerender(true); return; }
+  if (act === "hw-sol") { HWV[d.id].sol = true; rerender(true); return; }
+  if (act === "exam-start") { S.exam[d.k].current = {start: Date.now(), ans:{}, flag:{}, self:{}}; save(); window.scrollTo(0,0); render(); return; }
+  if (act === "ex-pick") { const q = QIDX[d.id].q, cur = S.exam[d.k].current, i = +d.v;
+    if (q.type === "multi") { const s = new Set(cur.ans[d.id] || []); s.has(i) ? s.delete(i) : s.add(i); cur.ans[d.id] = [...s]; }
+    else cur.ans[d.id] = q.type === "tf" ? (i === 0) : i;
+    save(); rerender(true); return; }
+  if (act === "ex-flag") { const cur = S.exam[d.k].current; cur.flag[d.id] = !cur.flag[d.id]; save(); rerender(true); return; }
+  if (act === "ex-jump") { const t2 = document.getElementById("q-" + d.id); if (t2) t2.scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  if (act === "exam-submit") { const r = DATA[d.k], cur = S.exam[d.k].current;
+    const left = (r.exam||[]).filter(q => cur.ans[q.id] == null || cur.ans[q.id] === "" || (Array.isArray(cur.ans[q.id]) && !cur.ans[q.id].length)).length;
+    if (left && !confirm(t("submitConfirm",{n:left}))) return;
+    submitExam(d.k); window.scrollTo(0,0); render(); return; }
+  if (act === "ex-self") { const q = QIDX[d.id].q, cur = S.exam[d.k].current; cur.self[d.id] = d.v === "1"; record(q, d.v === "1", 1, d.v === "1", "exam"); save(); rerender(true); return; }
+  if (act === "exam-close") { const r = DATA[d.k], ex = S.exam[d.k], cur = ex.current;
+    const score = (r.exam||[]).filter(q => q.type === "short" ? cur.self[q.id] === true : isRight(q, cur.ans[q.id])).length;
+    ex.attempts.push({score, total:(r.exam||[]).length, ts: Date.now()}); ex.current = null; save(); window.scrollTo(0,0); render(); return; }
+});
+document.addEventListener("change", e => {
+  const el = e.target; if (el.dataset.act === "obj") { if (el.checked) S.obj[el.dataset.k] = true; else delete S.obj[el.dataset.k]; save(); rerender(true); }
+});
+document.addEventListener("input", e => {
+  const el = e.target; const d = el.dataset;
+  if (d.act === "q-text") qs(d.k).text = el.value;
+  if (d.act === "ex-text") { S.exam[d.k].current.ans[d.id] = el.value; save(); }
+});
+document.addEventListener("submit", e => {
+  const f = e.target; if (f.dataset.act !== "cq-add") return; e.preventDefault();
+  const v = f.q.value.trim(); if (!v) return;
+  (S.cq[f.dataset.u] = S.cq[f.dataset.u] || []).push({text: v, ts: Date.now()}); save(); rerender(true);
+  const ta = document.getElementById("cq-input"); if (ta) ta.focus();
+});
+window.addEventListener("hashchange", () => { if (route().view === "retest" && QS.retest && QS.retest.finished) QS.retest = null; render(); window.scrollTo(0,0); });
+window.addEventListener("load", () => typeset(document.getElementById("app")));
+render();
+</script>
+</body>
+</html>

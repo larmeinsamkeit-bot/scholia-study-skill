@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scholia — Pre-study quiz</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBFAF6}
+a{color:#A8321C}a:hover{color:#7E2414}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBFAF6; color: #1C1B19; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.55">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; border-bottom: 1px solid #E4E0D6; background: #FFFFFF">
+<div style="display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap">
+<a href="Main.dc.html" style="font-family: Newsreader, Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.01em; color: #1C1B19; text-decoration: none">Scholia<span style="color: #A8321C">.</span></a>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #55524B; text-transform: uppercase; letter-spacing: 0.08em">Unit 5 · Stage 2 · Pre-study quiz</span>
+</div>
+<a href="Unit.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid #D6D1C4; background: #FFFFFF; color: #1C1B19; border-radius: 8px; font-size: 14px; text-decoration: none">← Back to reading</a>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0 48px; padding: 40px 32px 64px">
+
+<main style="flex: 999 1 560px; min-width: 0; max-width: 720px; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #55524B"><span>Question 3 of 8</span><span>2 right · 0 wrong</span></div>
+<div style="display: flex; gap: 4px" aria-hidden="true">
+<span style="flex: 1; height: 6px; border-radius: 3px; background: #1D5A8C"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #1D5A8C"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #A8321C"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4E0D6"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4E0D6"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4E0D6"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4E0D6"></span><span style="flex: 1; height: 6px; border-radius: 3px; background: #E4E0D6"></span>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #E4E0D6; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #A8321C">Single answer · medium</span>
+<h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 26px; line-height: 1.35">A fair die is rolled once. Let X be the number shown. What is E[X]?</h1>
+
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Choose one answer</legend>
+<sc-for list="{{opts}}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">
+<span style="{{o.keyStyle}}">{{o.key}}</span>
+<span style="flex: 1; text-align: left">{{o.text}}</span>
+<span style="{{o.markStyle}}">{{o.mark}}</span>
+</button>
+</sc-for>
+</fieldset>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; color: #55524B">How sure are you?</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{confs}}" as="c" hint-placeholder-count="3">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{checked}}" hint-placeholder-val="{{ false }}">
+<div style="{{fb.box}}" role="status">
+<span style="{{fb.titleStyle}}">{{fb.title}}</span>
+<p style="margin: 0; font-family: Newsreader, Georgia, serif; font-size: 18px; line-height: 1.6">E[X] = (1+2+3+4+5+6) × 1/6 = 21/6 = <strong style="font-weight: 600">3.5</strong>. An expected value is a weighted average, so it doesn't have to be a value X can actually take.</p>
+<sc-if value="{{fb.showWhy}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; color: #55524B"><strong style="font-weight: 600; color: #1C1B19">Why {{fb.pickedKey}} is tempting:</strong> {{fb.why}}</p>
+</sc-if>
+<sc-if value="{{fb.notebook}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 13px; color: #B35A00; font-family: 'IBM Plex Mono', monospace">↳ Added to your mistake notebook · re-test in 1 day</p>
+</sc-if>
+</div>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<button type="button" onClick="{{reset}}" style="min-height: 48px; padding: 0 18px; border-radius: 8px; border: 1px solid #D6D1C4; background: #FFFFFF; color: #1C1B19">Try another answer</button>
+<sc-if value="{{checked}}" hint-placeholder-val="{{ false }}">
+<button type="button" style="min-height: 48px; padding: 0 22px; border-radius: 8px; border: 0; background: #1C1B19; color: #FBFAF6; font-weight: 500">Next question →</button>
+</sc-if>
+<sc-if value="{{canCheck}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{check}}" style="min-height: 48px; padding: 0 22px; border-radius: 8px; border: 0; background: #A8321C; color: #FFFFFF; font-weight: 500">Check answer</button>
+</sc-if>
+</div>
+</section>
+</main>
+
+<aside aria-label="Margin notes" style="flex: 1 1 260px; max-width: 300px; display: flex; flex-direction: column; gap: 22px; padding-top: 52px; font-size: 14px; line-height: 1.5">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-left: 14px; border-left: 2px solid #A8321C">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #A8321C">Concept</span>
+<span>Expected value</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-left: 14px; border-left: 2px solid #D6D1C4">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #55524B">Source</span>
+<span>Textbook §3.3, Example 3.6 · Slides week 5, slide 14</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-left: 14px; border-left: 2px solid #D6D1C4">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #55524B">Why we ask how sure</span>
+<span>A right answer marked “guess” still goes to your notebook. Lucky guesses are the gaps that show up on exams.</span>
+</div>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+  constructor(p){ super(p); this.state = { picked: 0, conf: 2, checked: true }; }
+  renderVals() {
+    const self = this;
+    const S = this.state;
+    const OPTS = [
+      ['3', 'It’s the middle face, but the six values 1–6 have no single middle value.'],
+      ['3.5', null],
+      ['4', 'Rounding 3.5 up gives 4, but an expected value is never rounded to a possible outcome.'],
+      ['21', '21 is the sum of the faces; you still need to weight each by its probability 1/6.']
+    ];
+    const RIGHT = 1;
+    const opts = OPTS.map((o, i) => {
+      const isPicked = S.picked === i;
+      let border = '#E4E0D6', bg = '#FFFFFF', mark = '', markColor = '#1D5A8C';
+      if (S.checked) {
+        if (i === RIGHT) { border = '#1D5A8C'; bg = '#EEF4F9'; mark = 'Correct'; }
+        else if (isPicked) { border = '#B35A00'; bg = '#FBF0E3'; mark = 'Your answer'; markColor = '#B35A00'; }
+      } else if (isPicked) { border = '#1C1B19'; bg = '#F7F5F0'; }
+      return {
+        key: 'ABCD'[i], text: o[0], pressed: isPicked ? 'true' : 'false',
+        pick: () => self.setState({ picked: i, checked: false }),
+        style: 'display:flex;align-items:center;gap:14px;min-height:56px;padding:0 16px;border-radius:10px;font-size:17px;color:#1C1B19;background:' + bg + ';border:' + (isPicked || (S.checked && i === RIGHT) ? '2px' : '1px') + ' solid ' + border,
+        keyStyle: 'display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:\'IBM Plex Mono\',monospace;font-size:13px;border:1px solid #D6D1C4;color:#55524B',
+        mark, markStyle: 'font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:' + markColor
+      };
+    });
+    const confs = ['Guessing', 'Fairly sure', 'Certain'].map((l, i) => ({
+      label: l, pressed: S.conf === i ? 'true' : 'false',
+      pick: () => self.setState({ conf: i }),
+      style: 'min-height:44px;padding:0 16px;border-radius:999px;font-size:14px;' + (S.conf === i ? 'background:#1C1B19;color:#FBFAF6;border:1px solid #1C1B19' : 'background:#FFFFFF;color:#1C1B19;border:1px solid #D6D1C4')
+    }));
+    const right = S.picked === RIGHT;
+    const lucky = right && S.conf === 0;
+    const fb = {
+      title: right ? (lucky ? 'Right — but you were guessing' : 'Right') : 'Not quite',
+      titleStyle: 'font-family:\'IBM Plex Mono\',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:' + (right ? '#1D5A8C' : '#B35A00'),
+      box: 'display:flex;flex-direction:column;gap:10px;padding:18px 20px;border-radius:10px;background:' + (right ? '#EEF4F9' : '#FBF0E3'),
+      showWhy: !right && S.picked != null, pickedKey: S.picked != null ? 'ABCD'[S.picked] : '',
+      why: S.picked != null && OPTS[S.picked][1] ? OPTS[S.picked][1] : '',
+      notebook: !right || lucky
+    };
+    return {
+      opts, confs, fb, checked: S.checked, canCheck: !S.checked && S.picked != null,
+      check: () => self.setState({ checked: true }),
+      reset: () => self.setState({ checked: false, picked: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

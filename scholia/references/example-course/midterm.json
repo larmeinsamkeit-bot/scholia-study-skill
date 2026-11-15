@@ -1,0 +1,41 @@
+{
+  "title": "期中溫習",
+  "date": "2026-10-20",
+  "scope": ["u1", "u2"],
+  "overview": "兩個單元，一條主線：先學會在已知資訊下更新機率，再把結果變成可以計算平均的數字。",
+  "themes": [
+    { "title": "已知甚麼？", "body": "條件機率的分母永遠是已知事件。做題前先圈出「已知」。", "units": ["u1"] },
+    { "title": "由結果到數字", "body": "隨機變數讓我們計算平均 — 這是下半學期所有分佈的基礎。", "units": ["u2"] }
+  ],
+  "formulaSheet": "- $P(A\\mid B) = P(A\\cap B)/P(B)$\n- $P(A\\cap B) = P(A\\mid B)P(B)$\n- $\\sum p(x) = 1,\\ p(x) \\ge 0$\n- $E[X] = \\sum x\\,p(x)$",
+  "strategy": "過往的期中試約有四成分數來自條件機率。先畫樹狀圖，只需 30 秒，可以避免大部分 $P(A\\mid B)$ / $P(B\\mid A)$ 調轉的錯誤。",
+  "timeLimitMin": 15,
+  "exam": [
+    {
+      "id": "mid-1", "type": "single", "concept": "條件機率定義",
+      "stem": "擲兩粒公平骰，已知總和是 8，第一粒是 3 的機率是？",
+      "options": ["$1/6$", "$1/5$", "$5/36$", "$1/36$"],
+      "answer": 1,
+      "explanation": "總和為 8 的結果有 (2,6),(3,5),(4,4),(5,3),(6,2) 共 5 個，其中第一粒是 3 的只有 1 個，所以是 $1/5$。"
+    },
+    {
+      "id": "mid-2", "type": "tf", "concept": "P(A|B) 與 P(B|A)",
+      "stem": "若 $P(A) = P(B) > 0$，則 $P(A\\mid B) = P(B\\mid A)$。",
+      "answer": true,
+      "explanation": "兩者都等於 $P(A\\cap B)$ 除以相同的分母。"
+    },
+    {
+      "id": "mid-3", "type": "single", "concept": "期望值",
+      "stem": "$X$ 取 1 和 3 的機率各為 1/2。$E[X]$ 是？",
+      "options": ["$1$", "$2$", "$3$", "$4$"],
+      "answer": 1,
+      "explanation": "$E[X] = 1\\cdot\\frac12 + 3\\cdot\\frac12 = 2$。"
+    },
+    {
+      "id": "mid-4", "type": "short", "concept": "乘法法則",
+      "stem": "袋中 2 紅 3 藍，不放回抽兩個。求一紅一藍（任何次序）的機率，並寫出步驟。",
+      "answer": "$P(\\text{紅藍}) + P(\\text{藍紅}) = \\frac25\\cdot\\frac34 + \\frac35\\cdot\\frac24 = \\frac{6}{20}+\\frac{6}{20} = \\frac{3}{5}$。",
+      "explanation": "兩種次序要分開計算再相加；每一步都用乘法法則。"
+    }
+  ]
+}
