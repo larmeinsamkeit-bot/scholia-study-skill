@@ -91,3 +91,16 @@ errors, misreading the question type). 2–4 entries, same shape as stage 3.
 - `strategy`: built from past exams when available (question types, mark weighting, time).
 - `exam`: 15–25 questions for a midterm, 25–40 for a final, mixed difficulty, spread across the
   scope in proportion to lecture time. Don't reuse quiz questions verbatim; reuse concepts.
+
+## Checking your own work
+
+Before building, run through this list for each unit:
+
+- Every computed number re-derived with Python (or by hand for symbolic answers) — including the
+  numbers in an official answer key, which can be wrong.
+- Every section, question, difficulty and homework problem has a `source`.
+- `answer` index points at the correct option; no other option is also defensible.
+- `optionFeedback` lines up with the options (same order, `null` for the correct one).
+- Money written as `\\$` so it isn't read as math (the build script warns otherwise).
+- Every formula you took from slides matches the slide, not the flattened extracted text.
+- Anything you are unsure about is marked `confidence: "low"` with the reason.

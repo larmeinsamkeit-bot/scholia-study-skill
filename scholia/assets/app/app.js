@@ -1,269 +1,30 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scholia</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+TC:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-<style>
-:root{
-  --paper:#FBFAF6;--surface:#FFFFFF;--sunk:#F1EEE6;--ink:#1C1B19;--ink2:#55524B;--ink3:#77736A;
-  --rule:#E4E0D6;--rule2:#D6D1C4;--rubric:#A8321C;--rubric-ink:#7E2414;--rubric-soft:#F6E7E2;
-  --blue:#1D5A8C;--blue-soft:#EEF4F9;--blue-rule:#C7D8E8;--orange:#B35A00;--orange-soft:#FBF0E3;--orange-rule:#EBCDA8;
-  --on-dark:#FBFAF6;--dark:#1C1B19;
-  --serif:Newsreader,"Noto Serif TC","Noto Serif SC",Georgia,serif;
-  --sans:Inter,"Noto Sans TC","Noto Sans SC",system-ui,sans-serif;
-  --mono:"IBM Plex Mono","Noto Sans TC","Noto Sans SC",ui-monospace,monospace;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#161513;--surface:#1F1E1B;--sunk:#2A2825;--ink:#EDEAE3;--ink2:#B4AFA4;--ink3:#948F84;
-  --rule:#34322D;--rule2:#45423C;--rubric:#E58A70;--rubric-ink:#F2A891;--rubric-soft:#3A2420;
-  --blue:#86B8E3;--blue-soft:#18273A;--blue-rule:#2C4560;--orange:#EDA35C;--orange-soft:#33261A;--orange-rule:#5A4128;
-  --on-dark:#161513;--dark:#EDEAE3;color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#161513;--surface:#1F1E1B;--sunk:#2A2825;--ink:#EDEAE3;--ink2:#B4AFA4;--ink3:#948F84;
-  --rule:#34322D;--rule2:#45423C;--rubric:#E58A70;--rubric-ink:#F2A891;--rubric-soft:#3A2420;
-  --blue:#86B8E3;--blue-soft:#18273A;--blue-rule:#2C4560;--orange:#EDA35C;--orange-soft:#33261A;--orange-rule:#5A4128;
-  --on-dark:#161513;--dark:#EDEAE3;color-scheme:dark}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--paper);color:var(--ink)}
-body{font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:var(--rubric)}a:hover{color:var(--rubric-ink)}
-button,input,textarea,select{font:inherit;color:inherit}
-button{cursor:pointer}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;letter-spacing:-.01em}
-p{margin:0}
-code{font-family:var(--mono);font-size:.9em;background:var(--sunk);padding:1px 5px;border-radius:4px}
-.mono{font-family:var(--mono)}
-.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
-.label.r{color:var(--rubric)}.label.b{color:var(--blue)}.label.o{color:var(--orange)}
-.muted{color:var(--ink2)}
-.small{font-size:13.5px}
-.prose{font-family:var(--serif);font-size:18.5px;line-height:1.7}
-.prose p+p,.prose ul,.prose ol{margin-top:.7em}
-.prose ul,.prose ol{padding-left:1.3em}
-.md p+p,.md ul,.md ol,.md p+ul,.md p+ol{margin-top:.55em}
-.md ul,.md ol{padding-left:1.3em;margin:0}
-.md li+li{margin-top:.2em}
-.card{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid var(--rule2);background:var(--surface);color:var(--ink);font-size:14px;text-decoration:none;white-space:nowrap}
-.btn:hover{border-color:var(--ink3);color:var(--ink)}
-.btn.primary{background:var(--rubric);border-color:var(--rubric);color:#fff;font-weight:500}
-.btn.primary:hover{background:var(--rubric-ink);border-color:var(--rubric-ink);color:#fff}
-.btn.dark{background:var(--dark);border-color:var(--dark);color:var(--on-dark);font-weight:500}
-.btn.link{border:0;background:none;padding:0;min-height:40px;color:var(--rubric)}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--rule2);background:var(--surface);color:var(--ink);font-size:13.5px;text-decoration:none}
-.pill.on{background:var(--dark);border-color:var(--dark);color:var(--on-dark);font-weight:500}
-.pill.todo{border-style:dashed;color:var(--ink2);background:transparent}
-.pill .n{font-family:var(--mono);color:var(--rubric)}
-.pill.on .n{color:#F2B8A8}
-.tag{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:6px}
-.tag.o{background:var(--orange-soft);color:var(--orange)}.tag.b{background:var(--blue-soft);color:var(--blue)}.tag.r{background:var(--rubric-soft);color:var(--rubric)}
-.bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;display:block}
-.bar>i{display:block;height:100%;border-radius:3px}
-.dots{display:flex;gap:4px}.dots i{flex:1;height:6px;border-radius:3px;background:var(--rule)}
-.dots i.d{background:var(--blue)}.dots i.n{background:var(--rubric)}
-.margin-note{display:flex;flex-direction:column;gap:4px;padding-left:14px;border-left:2px solid var(--rule2);font-size:14px;line-height:1.5}
-.margin-note.r{border-left-color:var(--rubric)}
-/* layout */
-.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px;padding:14px 28px;border-bottom:1px solid var(--rule);background:var(--surface);position:sticky;top:0;z-index:5}
-.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0}
-.logo{font-family:var(--serif);font-size:27px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
-.logo span{color:var(--rubric)}
-.top-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.seg{display:inline-flex;padding:3px;border:1px solid var(--rule2);border-radius:999px;background:var(--paper)}
-.seg button{min-height:36px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--ink2);font-size:13px}
-.seg button[aria-pressed="true"]{background:var(--dark);color:var(--on-dark);font-weight:500}
-.shell{display:flex;flex-wrap:wrap;align-items:flex-start}
-.side{flex:1 1 220px;max-width:270px;padding:24px 16px 24px 24px;display:flex;flex-direction:column;gap:2px;font-size:14px}
-.side .label{padding:16px 12px 6px}
-.side a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px;padding:0 12px;border-radius:8px;color:var(--ink);text-decoration:none}
-.side a:hover{background:var(--sunk)}
-.side a.on{background:var(--rubric-soft);font-weight:600}
-.side a .mono{font-size:12px;color:var(--ink2)}
-.side a .num{font-family:var(--mono);font-size:12px;color:var(--rubric);width:22px;flex:none}
-.main{flex:999 1 560px;min-width:0;padding:28px 32px 64px;display:flex;flex-direction:column;gap:26px}
-.aside{flex:1 1 260px;max-width:330px;padding:28px 28px 48px 8px;display:flex;flex-direction:column;gap:20px}
-.aside.ruled{border-left:1px solid var(--rule);padding-left:24px}
-.read{display:flex;flex-wrap:wrap;justify-content:center;gap:0 48px;padding:36px 28px 64px}
-.read>.col{flex:999 1 560px;min-width:0;max-width:740px;display:flex;flex-direction:column;gap:26px}
-.read>.mar{flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:22px;padding-top:8px}
-.stagebar{display:flex;flex-wrap:wrap;gap:6px;padding:12px 28px;border-bottom:1px solid var(--rule);background:var(--paper)}
-.stagebar .sep{display:inline-flex;align-items:center;color:var(--ink3);padding:0 2px}
-.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.stage{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:10px;text-decoration:none;color:var(--ink2);min-height:118px;background:var(--surface);border:1px dashed var(--rule2)}
-.stage.done{background:var(--blue-soft);border:1px solid var(--blue-rule)}
-.stage.now{background:var(--rubric-soft);border:1px solid var(--rubric)}
-.stage .t{font-family:var(--serif);font-size:18px;line-height:1.25;color:var(--ink)}
-.unitcard{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--rule);text-decoration:none;color:var(--ink);min-height:128px}
-.unitcard:hover{border-color:var(--ink3)}
-.unitcard.cur{border:2px solid var(--rubric)}
-.unitcard .t{font-family:var(--serif);font-size:19px;line-height:1.3}
-/* quiz */
-.opt{display:flex;align-items:center;gap:14px;min-height:56px;padding:10px 16px;border-radius:10px;border:1px solid var(--rule);background:var(--surface);font-size:16.5px;text-align:left;width:100%}
-.opt:hover:not([disabled]){border-color:var(--ink3)}
-.opt .k{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;border-radius:50%;font-family:var(--mono);font-size:13px;border:1px solid var(--rule2);color:var(--ink2)}
-.opt .txt{flex:1}
-.opt .m{font-family:var(--mono);font-size:12px}
-.opt.sel{border:2px solid var(--ink);background:var(--sunk)}
-.opt.right{border:2px solid var(--blue);background:var(--blue-soft)}.opt.right .m{color:var(--blue)}
-.opt.wrong{border:2px solid var(--orange);background:var(--orange-soft)}.opt.wrong .m{color:var(--orange)}
-.opt[disabled]{cursor:default}
-.fb{display:flex;flex-direction:column;gap:10px;padding:18px 20px;border-radius:10px}
-.fb.ok{background:var(--blue-soft)}.fb.no{background:var(--orange-soft)}
-.prog{display:flex;gap:4px}.prog i{flex:1;height:6px;border-radius:3px;background:var(--rule)}
-.prog i.ok{background:var(--blue)}.prog i.no{background:var(--orange)}.prog i.cur{background:var(--rubric)}
-textarea,input[type=text]{width:100%;border:1px solid var(--rule2);border-radius:10px;background:var(--surface);padding:12px 14px;font-size:15px;line-height:1.5}
-textarea{min-height:96px;resize:vertical}
-details.diff{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:2px 22px}
-details.diff[open]{padding-bottom:20px}
-details.diff summary{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-family:var(--serif);font-size:19.5px;list-style:none}
-details.diff summary::-webkit-details-marker{display:none}
-details.diff summary::after{content:"+";font-family:var(--mono);color:var(--ink3);margin-left:auto}
-details.diff[open] summary::after{content:"−"}
-.example{padding:14px 16px;border-radius:10px;background:var(--sunk);font-size:15px}
-.flash{min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;border-radius:16px;border:1px solid var(--rule);background:var(--surface);font-family:var(--serif);font-size:23px;line-height:1.45;width:100%}
-.flash.back{background:var(--blue-soft);border-color:var(--blue-rule)}
-.qmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.qmap a{display:flex;align-items:center;justify-content:center;height:36px;border-radius:6px;border:1px solid var(--rule2);font-family:var(--mono);font-size:12px;color:var(--ink2);text-decoration:none}
-.qmap a.a{background:var(--blue);border-color:var(--blue);color:var(--on-dark)}
-.qmap a.f{background:var(--orange);border-color:var(--orange);color:var(--on-dark)}
-.dark-card{background:var(--dark);color:var(--on-dark);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px}
-.dark-card .muted{color:inherit;opacity:.8}
-.readiness{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) 48px;gap:12px 16px;align-items:center;font-size:14px}
-.bar.lg{height:10px;border-radius:5px}
-.empty{padding:28px;border:1px dashed var(--rule2);border-radius:14px;color:var(--ink2);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
-.langnote{padding:8px 28px;background:var(--orange-soft);color:var(--ink);font-size:13.5px;border-bottom:1px solid var(--orange-rule)}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--dark);color:var(--on-dark);padding:12px 18px;border-radius:10px;font-size:14px;z-index:20;box-shadow:0 6px 24px rgba(0,0,0,.18)}
-.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.between{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
-.stack{display:flex;flex-direction:column}
-.g4{gap:4px}.g8{gap:8px}.g10{gap:10px}.g12{gap:12px}.g14{gap:14px}.g16{gap:16px}.g20{gap:20px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:760px){
-  .top{padding:12px 16px;position:static}.main{padding:22px 16px 48px}.aside{padding:8px 16px 40px;max-width:none}.aside.ruled{border-left:0;padding-left:16px}
-  .side{max-width:none;padding:12px 16px 0}.read{padding:24px 16px 48px}.read>.mar{max-width:none}.stagebar{padding:10px 16px}
-  .readiness{grid-template-columns:1fr 1fr 40px}.prose{font-size:17.5px}h1.big{font-size:32px!important}
-}
-@media print{.top,.stagebar,.side,.aside,.btn{display:none!important}}
-</style>
-</head>
-<body>
-<div id="app"></div>
-<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-<script>
-"use strict";
-const DATA = /*__SCHOLIA_DATA__*/null;
-
-/* ---------- i18n ---------- */
-const UI = {
-  "zh-Hant": {
-    langName:"繁體中文", langLabel:"介面語言", dashboard:"主頁", notebook:"錯題簿", course:"課程", units:"單元",
-    midterm:"期中溫習", final:"期末溫習", export:"匯出進度", import:"匯入進度", continueUnit:"繼續第 {n} 單元",
-    unitN:"第 {n} 單元", stageN:"第 {n} 階段", before:"課前", inClass:"課堂", after:"課後", done:"已完成", next:"下一步",
-    doneOf:"已完成 {a}/{b} 個階段", greeting:"你好！第 {n} 單元正等你進入第 {s} 階段。", allDone:"你好！所有單元都已完成，可以開始溫習考試。",
-    pathFor:"第 {n} 單元學習路徑", allUnits:"全部單元", marginNotes:"Scholia · 頁邊批註",
-    weak:"薄弱知識點", weakSub:"你錯過不止一次的概念。", weakNone:"暫時未有。做完幾份測驗後，這裏會顯示你最常錯的概念。", misses:"錯 {n} 次",
-    due:"今日待重測", dueSub:"{n} 道舊錯題按 1·3·7·14 日間隔再次出現。", dueNone:"今日沒有待重測的題目。", startRetest:"開始 {n} 題重測",
-    examIn:"距離{name} {n} 日", examToday:"{name}就在今日", examScope:"考試範圍：{units}。", openReview:"打開{name} →",
-    fromClass:"課堂提問", fromClassSub:"第 {n} 單元有 {a} 個課堂提問已獲解答。",
-    s_prestudy:"預習資料", s_prequiz:"預習題", s_premistakes:"預習錯題與難點", s_classroom:"課堂提問記錄", s_review:"課後溫習", s_postmistakes:"課後錯題與難點", s_homework:"功課解答",
-    d_prestudy:"學習目標、導讀摘要、關鍵詞彙", d_prequiz:"{n} 道題 · 即時回饋", d_premistakes:"你的錯題逐一講解", d_classroom:"隨時記低上堂的疑問", d_review:"重點回顧、記憶卡、溫習測驗", d_postmistakes:"溫習錯題與深層難點", d_homework:"先給提示，再看完整步驟",
-    minutes:"約 {n} 分鐘", objectives:"讀完之後你可以", keyTerms:"關鍵詞彙", source:"出處", buildsOn:"建基於", watch:"留意", listen:"上堂留心聽", note:"批註",
-    markRead:"讀完了 · 開始預習題 →", markDone:"標記為完成", markedDone:"已完成 ✓", objChecked:"已勾選 {a}/{b} 個目標",
-    qOf:"第 {i} 題，共 {n} 題", rightWrong:"{a} 對 · {b} 錯", single:"單選", multi:"多選（可選多於一項）", tf:"是非題", short:"簡答題",
-    easy:"易", medium:"中", hard:"難", howSure:"你有幾肯定？", conf0:"估吓", conf1:"幾肯定", conf2:"好肯定",
-    check:"檢查答案", nextQ:"下一題 →", finish:"完成", tryAgain:"重新作答", right:"答對了", rightGuess:"答對了 — 不過你是估的", notQuite:"答錯了",
-    whyTempting:"為甚麼 {k} 咁吸引：", addedNb:"↳ 已加入錯題簿 · 1 日後重測", yourAnswer:"你的答案", correct:"正確答案", answer:"答案",
-    true:"正確", false:"錯誤", writeAnswer:"在這裏寫你的答案…", showModel:"看參考答案", gotIt:"我答對了", missedIt:"我答錯了", modelAnswer:"參考答案",
-    quizDone:"做完了！", quizScore:"{a}/{n} 題答對。", toMistakes:"看錯題與難點 →", redo:"再做一次",
-    mineTitle:"你的錯題，逐一講解", mineSub:"{w} 道答錯、{g} 道估中。每道題會再次出現，直至你連續答對兩次。", fromQuiz:"來自你的測驗",
-    noMistakes:"這一部分沒有錯題，做得好！", doQuizFirst:"先完成{quiz}，你的錯題就會出現在這裏。", goQuiz:"去做{quiz} →",
-    wrongSure:"答錯 · 你{conf}", luckyGuess:"答對 · 但你是估的", retestOn:"重測：{d} · 之後 3、7、14 日", similar:"再試一次",
-    anticipated:"根據教材預計的難點", hardTitle:"這個單元難在哪裏", hardSub:"一般同學容易卡住的地方 — 在你遇到之前先寫好。",
-    linked:"與你的錯題相關", whyTrips:"為甚麼容易錯：", theFix:"解決方法：", stuck:"仍然唔明？", stuckSub:"把它寫成課堂提問 — 帶去上堂問，或者匯出後交給 Claude 解答。", addToClass:"加入課堂提問",
-    cqTitle:"課堂提問記錄", cqSub:"上堂時隨時記低疑問。之後匯出，貼給 Claude 就會得到解答。", cqPlaceholder:"例如：為甚麼期望值可以不是 X 可取的值？", add:"加入",
-    cqNone:"暫時未有提問。", export_q:"匯出提問給 Claude", copied:"已複製，可以貼到 Claude。", copyFail:"未能自動複製 — 請手動選取下面的文字。",
-    delete:"刪除", listenFor:"上堂留心聽", answered:"Scholia 已解答",
-    recap:"重點回顧", keyPoints:"要記住的重點", flashcards:"記憶卡", flip:"翻轉", know:"我記得", again:"再溫一次", cardOf:"第 {i} 張，共 {n} 張", known:"記得 {k} 張",
-    connections:"與其他單元的關係", reviewQuiz:"溫習測驗",
-    hint:"提示 {i}", showHint:"顯示下一個提示", showSolution:"顯示完整解答", lockedSolution:"先看完所有提示，才可以看完整解答。", steps:"步驟", pitfalls:"常見錯誤", lowConf:"答案未完全確定 — 請向導師核實", noHw:"這個單元沒有上載功課。",
-    readiness:"各單元準備程度", readinessSub:"答對而且有信心的比例", themes:"主要主題", formulaSheet:"公式表", strategy:"應試策略", startWith:"建議先溫：{u}。",
-    mock:"模擬考試", mockInfo:"{n} 題 · {m} 分鐘", mockSub:"混合範圍內所有單元。交卷前不會顯示對錯 — 跟真正考試一樣。", start:"開始作答", lastAttempt:"上次：{a}/{n}", best:"最佳：{a}/{n}",
-    submit:"交卷", timeLeft:"剩餘時間", flag:"標記", flagged:"已標記", submitConfirm:"確定交卷？還有 {n} 題未作答。", result:"成績", scored:"得分 {a}/{n}（{p}%）", selfMark:"自評", review_:"檢討答案", newAttempt:"再考一次", backToReview:"返回溫習",
-    nbTitle:"錯題簿", nbSub:"所有答錯或估中的題目。答對兩次就會「掌握」。", nbDue:"今日要重測", nbLater:"之後重測", nbMastered:"已掌握", nbEmpty:"錯題簿是空的。", dueOn:"{d} 重測", retestTitle:"重測",
-    exportTitle:"匯出進度", exportSub:"下載備份檔（可在其他電腦匯入），或者複製學習摘要貼給 Claude，讓它針對你的弱項講解。", download:"下載備份檔", copySummary:"複製學習摘要給 Claude", close:"關閉", importDone:"已匯入進度。", importFail:"無法讀取這個檔案。",
-    today:"今日", tomorrow:"明日", inDays:"{n} 日後", theme:"主題", light:"淺色", dark:"深色", auto:"自動", localNote:"進度只儲存在這個瀏覽器。", min:"分鐘", contentOnly:"課程內容只有{langs}版本；切換語言只會改變介面。"
-  },
-  "zh-Hans": null,
-  "en": {
-    langName:"English", langLabel:"Interface language", dashboard:"Dashboard", notebook:"Mistake notebook", course:"Course", units:"Units",
-    midterm:"Midterm review", final:"Final review", export:"Export progress", import:"Import progress", continueUnit:"Continue Unit {n}",
-    unitN:"Unit {n}", stageN:"Stage {n}", before:"Before", inClass:"In class", after:"After", done:"Done", next:"Next",
-    doneOf:"{a} of {b} stages done", greeting:"Hello! Unit {n} is waiting at stage {s}.", allDone:"Hello! Every unit is done — time to review for exams.",
-    pathFor:"The path for Unit {n}", allUnits:"All units", marginNotes:"Scholia · margin notes",
-    weak:"Weak spots", weakSub:"Concepts you've missed more than once.", weakNone:"Nothing yet. After a few quizzes, the concepts you miss most will show here.", misses:"{n} misses",
-    due:"Due for re-test today", dueSub:"{n} old mistakes are back, spaced 1 · 3 · 7 · 14 days apart.", dueNone:"Nothing to re-test today.", startRetest:"Start {n}-question re-test",
-    examIn:"{name} in {n} days", examToday:"{name} is today", examScope:"Covers {units}.", openReview:"Open {name} →",
-    fromClass:"From class", fromClassSub:"{a} classroom questions are answered in Unit {n}.",
-    s_prestudy:"Pre-study materials", s_prequiz:"Pre-study quiz", s_premistakes:"Mistakes & difficulties", s_classroom:"Classroom questions", s_review:"After-class review", s_postmistakes:"Mistakes & difficulties", s_homework:"Homework solutions",
-    d_prestudy:"Objectives, guided summary, key terms", d_prequiz:"{n} questions · instant feedback", d_premistakes:"Your errors, explained", d_classroom:"Log questions as they come", d_review:"Recap, flashcards, review quiz", d_postmistakes:"Review-quiz errors, deeper fixes", d_homework:"Hints first, then full steps",
-    minutes:"about {n} min", objectives:"After this you can", keyTerms:"Key terms", source:"Source", buildsOn:"Builds on", watch:"Watch for", listen:"Listen for in class", note:"Note",
-    markRead:"Mark read · start the pre-study quiz →", markDone:"Mark as done", markedDone:"Done ✓", objChecked:"{a} of {b} objectives checked",
-    qOf:"Question {i} of {n}", rightWrong:"{a} right · {b} wrong", single:"Single answer", multi:"Select all that apply", tf:"True or false", short:"Short answer",
-    easy:"easy", medium:"medium", hard:"hard", howSure:"How sure are you?", conf0:"Guessing", conf1:"Fairly sure", conf2:"Certain",
-    check:"Check answer", nextQ:"Next question →", finish:"Finish", tryAgain:"Try again", right:"Right", rightGuess:"Right — but you were guessing", notQuite:"Not quite",
-    whyTempting:"Why {k} is tempting:", addedNb:"↳ Added to your mistake notebook · re-test in 1 day", yourAnswer:"You said", correct:"Answer", answer:"Answer",
-    true:"True", false:"False", writeAnswer:"Write your answer here…", showModel:"Show model answer", gotIt:"I got it", missedIt:"I missed it", modelAnswer:"Model answer",
-    quizDone:"Finished!", quizScore:"{a} of {n} right.", toMistakes:"See mistakes & difficulties →", redo:"Do it again",
-    mineTitle:"Your mistakes, explained", mineSub:"{w} wrong and {g} lucky guesses. Each comes back until you get it right twice.", fromQuiz:"From your quiz",
-    noMistakes:"No mistakes here — nice work!", doQuizFirst:"Finish the {quiz} and your mistakes will appear here.", goQuiz:"Go to the {quiz} →",
-    wrongSure:"Wrong · you were {conf}", luckyGuess:"Right · but guessing", retestOn:"Re-test: {d} · then 3, 7, 14 days", similar:"Try it again",
-    anticipated:"Anticipated from the materials", hardTitle:"Where this unit gets hard", hardSub:"Spots where students usually stumble, written before you meet them.",
-    linked:"linked to your mistakes", whyTrips:"Why it trips people:", theFix:"The fix:", stuck:"Still stuck?", stuckSub:"Write it down as a classroom question — ask in lecture, or export it and paste it to Claude.", addToClass:"Add to classroom questions",
-    cqTitle:"Classroom questions", cqSub:"Jot questions down during lecture. Export them later and paste to Claude for answers.", cqPlaceholder:"e.g. Why can an expected value be a value X never takes?", add:"Add",
-    cqNone:"No questions yet.", export_q:"Export questions for Claude", copied:"Copied — paste it to Claude.", copyFail:"Couldn't copy automatically — select the text below.",
-    delete:"Delete", listenFor:"Listen for in class", answered:"Answered by Scholia",
-    recap:"Recap", keyPoints:"Key points", flashcards:"Flashcards", flip:"Flip", know:"I know it", again:"Again", cardOf:"Card {i} of {n}", known:"{k} known",
-    connections:"How this connects", reviewQuiz:"Review quiz",
-    hint:"Hint {i}", showHint:"Show next hint", showSolution:"Show full solution", lockedSolution:"Work through every hint first; then the full solution unlocks.", steps:"Steps", pitfalls:"Common pitfalls", lowConf:"Not fully certain — check with your instructor", noHw:"No homework uploaded for this unit.",
-    readiness:"Readiness by unit", readinessSub:"share of answers right and sure", themes:"The big themes", formulaSheet:"Formula sheet", strategy:"Exam strategy", startWith:"Start with {u}.",
-    mock:"Mock exam", mockInfo:"{n} questions · {m} minutes", mockSub:"Mixed across the scope. No feedback until you submit — like the real thing.", start:"Start", lastAttempt:"Last: {a}/{n}", best:"Best: {a}/{n}",
-    submit:"Submit", timeLeft:"Time left", flag:"Flag", flagged:"Flagged", submitConfirm:"Submit now? {n} questions are unanswered.", result:"Result", scored:"Scored {a}/{n} ({p}%)", selfMark:"Self-mark", review_:"Review answers", newAttempt:"New attempt", backToReview:"Back to review",
-    nbTitle:"Mistake notebook", nbSub:"Every wrong answer and lucky guess. Get one right twice and it's mastered.", nbDue:"Due today", nbLater:"Coming up", nbMastered:"Mastered", nbEmpty:"Your notebook is empty.", dueOn:"re-test {d}", retestTitle:"Re-test",
-    exportTitle:"Export progress", exportSub:"Download a backup (import it on another computer), or copy a study summary to paste to Claude so it can target your weak spots.", download:"Download backup", copySummary:"Copy summary for Claude", close:"Close", importDone:"Progress imported.", importFail:"Couldn't read that file.",
-    today:"today", tomorrow:"tomorrow", inDays:"in {n} days", theme:"Theme", light:"Light", dark:"Dark", auto:"Auto", localNote:"Progress is saved in this browser only.", min:"min", contentOnly:"Course content is only available in {langs}; switching changes the interface only."
-  }
-};
-// Simplified Chinese: derive from Traditional with a small character map (UI strings only).
-(function(){
-  const T2S = {"體":"体","單":"单","課":"课","題":"题","習":"习","頁":"页","錯":"错","識":"识","測":"测","詞":"词","彙":"汇","階":"阶","段":"段","進":"进","繼":"继","續":"续","導":"导","記":"记","復":"复","溫":"温","學":"学","這":"这","個":"个","為":"为","會":"会","說":"说","時":"时","問":"问","對":"对","後":"后","們":"们","裏":"里","麼":"么","於":"于","與":"与","應":"应","試":"试","準":"准","備":"备","項":"项","選":"选","論":"论","範":"范","圍":"围","離":"离","開":"开","間":"间","隔":"隔","現":"现","讀":"读","標":"标","勾":"勾","據":"据","計":"计","難":"难","點":"点","決":"决","法":"法","帶":"带","貼":"贴","給":"给","據":"据","會":"会","處":"处","語":"语","言":"言","匯":"汇","出":"出","入":"入","頁":"页","邊":"边","註":"注","批":"批","斷":"断","績":"绩","評":"评","剩":"剩","餘":"余","確":"确","定":"定","還":"还","張":"张","翻":"翻","轉":"转","關":"关","係":"系","顯":"显","示":"示","專":"专","業":"业","將":"将","儲":"储","存":"存","覽":"览","器":"器","載":"载","檔":"档","複":"复","製":"制","摘":"摘","針":"针","講":"讲","解":"解","淺":"浅","深":"深","動":"动","鐘":"钟","約":"约","聽":"听","寫":"写","議":"议","掌":"掌","握":"握","簿":"本","嗎":"吗","啲":"些","咁":"这么","喺":"在","冇":"没有","唔":"不","嘅":"的","吓":"一下","幾":"几","肯":"肯","估":"猜","當":"当","並":"并","從":"从","們":"们","賽":"赛","極":"极","經":"经","驗":"验","過":"过","樣":"样","無":"无","層":"层","號":"号","筆":"笔","練":"练","級":"级","數":"数","據":"据","價":"价","態":"态","機":"机","率":"率","統":"统","條":"条","變":"变","積":"积","術":"术","語":"语","資":"资","料":"料","即":"即","時":"时","饋":"馈","低":"下","堂":"堂","嚟":"来","畀":"给","睇":"看","係":"是","佢":"它","揀":"选","徑":"径","暫":"暂","舊":"旧","沒":"没","獲":"获","預":"预","錄":"录","鍵":"键","隨":"随","顧":"顾","憶":"忆","驟":"骤","簡":"简","檢":"检","誤":"误","參":"参","連":"连","兩":"两","來":"来","請":"请","刪":"删","見":"见","師":"师","實":"实","擬":"拟","內":"内","討":"讨","電":"电","腦":"脑","讓":"让","閉":"闭","瀏":"浏","換":"换","僅":"仅","與":"与"};
-  const conv = s => s.replace(/介面/g,"界面").replace(/匯出/g,"导出").replace(/匯入/g,"导入").replace(/估吓/g,"猜一下").replace(/幾肯定/g,"比较肯定").replace(/好肯定/g,"非常肯定").replace(/咁吸引/g,"这么吸引").replace(/仍然唔明/g,"仍然不明白").replace(/記低上堂的疑問/g,"记下上课的疑问").replace(/上堂/g,"上课").replace(/估中/g,"猜中").replace(/估的/g,"猜的").replace(/功課/g,"作业").replace(/溫習/g,"复习").replace(/./g, c => T2S[c] || c);
-  const zs = {}; const zt = UI["zh-Hant"];
-  for (const k in zt) zs[k] = conv(zt[k]);
-  zs.langName = "简体中文"; zs.langLabel = "界面语言"; zs.notebook = "错题本"; zs.s_homework = "作业解答"; zs.nbTitle = "错题本";
-  UI["zh-Hans"] = zs;
-})();
-const LANGS = ["zh-Hant","zh-Hans","en"];
 const CONTENT_LANGS = (DATA && DATA.course && (DATA.course.contentLangs || [DATA.course.lang || "zh-Hant"])) || ["zh-Hant"];
 
 /* ---------- storage ---------- */
 const COURSE = DATA && DATA.course ? DATA.course : {title:"Scholia",lang:"zh-Hant"};
 const KEY = "scholia:" + (typeof COURSE.title === "string" ? COURSE.title : JSON.stringify(COURSE.title));
 const DAY = 86400000;
-const INTERVALS = [1,3,7,14];
+const MASTER_DAYS = 21;   // an item counts as mastered once its review interval reaches three weeks
+/* SM-2-style spaced repetition. q is recall quality 0–5 (≥ 3 = remembered). */
+function sched(item, q){
+  item.ef = item.ef || 2.5; item.reps = item.reps || 0; item.ivl = item.ivl || 0;
+  if (q < 3) { item.reps = 0; item.ivl = 1; }
+  else { item.reps++; item.ivl = item.reps === 1 ? 1 : item.reps === 2 ? 3 : Math.round(item.ivl * item.ef); }
+  item.ef = Math.max(1.3, item.ef + 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
+  item.due = startOfDay(Date.now()) + item.ivl * DAY;
+  return item;
+}
+/* wrong → 1; right but guessing → 3; fairly sure → 4; certain → 5 */
+const quality = (ok, conf) => !ok ? 1 : conf === 0 ? 3 : conf === 1 ? 4 : 5;
+/* Bring progress saved by older versions up to date. */
+function migrate(s){
+  for (const id in s.nb) { const e = s.nb[id]; if (e.ivl == null) { e.reps = e.streak || 0; e.ivl = [1, 1, 3, 7][Math.min(e.reps, 3)]; e.ef = 2.5; delete e.streak; } }
+  for (const k in s.fc) { const v = s.fc[k]; if (typeof v === "string") s.fc[k] = sched({}, v === "know" ? 4 : 2); }
+  return s;
+}
 function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null}; }
 function loadState(){ try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && s.v === 1 ? Object.assign(blank(), s) : blank(); } catch(e){ return blank(); } }
-let S = loadState();
+let S = migrate(loadState());
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 
 /* ---------- helpers ---------- */
@@ -365,11 +126,11 @@ function record(q, ok, conf, choice, mode){
   const lucky = ok && conf === 0;
   let e = S.nb[q.id];
   if (mode === "retest" && e) {
-    if (ok && conf > 0) { e.streak++; if (e.streak >= 2) e.mastered = Date.now(); e.due = startOfDay(Date.now()) + INTERVALS[Math.min(e.streak, 3)] * DAY; }
-    else { e.streak = 0; e.misses++; e.due = startOfDay(Date.now()) + DAY; delete e.mastered; }
+    sched(e, quality(ok, conf)); if (!ok) e.misses++;
+    if (e.ivl >= MASTER_DAYS) e.mastered = Date.now(); else delete e.mastered;
   } else if (!ok || lucky) {
-    if (!e) e = S.nb[q.id] = {unit: info.unit, stage: info.stage, added: Date.now(), misses: 0, streak: 0};
-    e.misses++; e.streak = 0; e.wasRight = ok; e.lastChoice = choice; e.lastConf = conf; e.due = startOfDay(Date.now()) + DAY; delete e.mastered;
+    if (!e) e = S.nb[q.id] = {unit: info.unit, stage: info.stage, added: Date.now(), misses: 0, ef: 2.5};
+    e.misses++; e.reps = 0; e.ivl = 1; e.ef = Math.max(1.3, (e.ef || 2.5) - 0.2); e.wasRight = ok; e.lastChoice = choice; e.lastConf = conf; e.due = startOfDay(Date.now()) + DAY; delete e.mastered;
   }
   save();
   return !ok || lucky;
@@ -463,6 +224,24 @@ function viewHome(){
   ${marginHome()}
   </div>`;
 }
+function dueCards(){
+  const now = Date.now();
+  return Object.keys(S.fc).filter(k => {
+    const it = S.fc[k], [uid, i] = k.split(":"), u = unitById(uid);
+    return it && typeof it === "object" && it.due <= now && u && ((u.review || {}).flashcards || [])[+i];
+  });
+}
+function todayPanel(due){
+  const cards = dueCards(), cur = currentUnit(), ns = cur && nextStage(cur);
+  const rows = [];
+  if (due.length) rows.push(`<a class="today-row" href="#/retest"><span>${esc(t("todayMistakes",{n:due.length}))}</span><span aria-hidden="true">→</span></a>`);
+  if (cards.length) rows.push(`<a class="today-row" href="#/cards"><span>${esc(t("todayCards",{n:cards.length}))}</span><span aria-hidden="true">→</span></a>`);
+  if (ns) rows.push(`<a class="today-row" href="#/u/${esc(cur.id)}/${ns}"><span>${esc(t("todayNext",{u:t("unitN",{n:unitNum(cur.id)}), s:t("s_"+ns)}))}</span><span aria-hidden="true">→</span></a>`);
+  return `<div class="card stack g10" style="padding:16px">
+      <h3 style="font-size:19px">${esc(t("todayTitle"))}</h3>
+      ${rows.length ? `<div class="stack g4">${rows.join("")}</div>` : `<p class="small muted">${esc(t("todayNone"))}</p>`}
+    </div>`;
+}
 function marginHome(){
   const weak = weakSpots();
   const due = dueList();
@@ -484,11 +263,7 @@ function marginHome(){
       <p class="small muted">${esc(weak.length ? t("weakSub") : t("weakNone"))}</p>
       ${weak.map(([c, n]) => `<div class="stack g4"><span class="between small"><span>${esc(c)}</span><span class="mono" style="font-size:12px;color:var(--orange)">${esc(t("misses",{n}))}</span></span><span class="bar"><i style="width:${Math.round(100*n/maxMiss)}%;background:var(--orange)"></i></span></div>`).join("")}
     </div>
-    <div class="card stack g10" style="padding:16px">
-      <h3 style="font-size:19px">${esc(t("due"))}</h3>
-      <p class="small muted">${esc(due.length ? t("dueSub",{n:due.length}) : t("dueNone"))}</p>
-      ${due.length ? `<a class="btn primary" href="#/retest">${esc(t("startRetest",{n:Math.min(due.length,10)}))}</a>` : ""}
-    </div>
+    ${todayPanel(due)}
     ${exams}
     ${ans ? `<div class="stack g4"><h3 style="font-size:19px">${esc(t("fromClass"))}</h3><p class="small muted">${esc(t("fromClassSub",{n:unitNum(ans[0].id),a:ans[1]}))}</p><a class="small" href="#/u/${esc(ans[0].id)}/classroom">${esc(t("s_classroom"))} →</a></div>` : ""}
     <p class="small muted" style="margin-top:8px">${esc(t("localNote"))}</p>
@@ -571,7 +346,7 @@ function quizBlock(key, questions, mode, ctx){
     const right = st.results.filter(r => r === "ok").length;
     const wrongs = st.results.length - right;
     return `<section class="card stack g16" style="padding:28px">
-      <span class="label r">${esc(mode === "retest" ? t("retestTitle") : t("s_"+(ctx.stage==="review"?"review":"prequiz")))}</span>
+      <span class="label r">${esc(mode === "retest" ? t("retestTitle") : mode === "drill" ? t("drillTitle") : t("s_"+(ctx.stage==="review"?"review":"prequiz")))}</span>
       <h1 style="font-size:34px">${esc(t("quizDone"))}</h1>
       <p class="prose">${esc(t("quizScore",{a:right,n:st.results.length}))}</p>
       <div class="prog">${st.results.map(r => `<i class="${r}"></i>`).join("")}</div>
@@ -631,7 +406,7 @@ function quizBlock(key, questions, mode, ctx){
     </section>`;
 }
 function quizQuestions(key){
-  if (key === "retest") return (QS.retest && QS.retest.list || []).map(id => QIDX[id].q);
+  if (key === "retest" || key === "drill") return ((QS[key] && QS[key].list) || []).filter(id => QIDX[id]).map(id => QIDX[id].q);
   const [uid, field] = key.split(":"); const u = unitById(uid); return u ? (u[field] || []) : [];
 }
 function quizAct(act, key, v){
@@ -650,7 +425,7 @@ function quizAct(act, key, v){
   } else if (act === "q-next") {
     if (st.i >= questions.length - 1) {
       st.finished = true;
-      if (key !== "retest") { const [uid, field] = key.split(":"); const u = unitById(uid); if (field === "prequiz") setDone(u, "prequiz", true); }
+      if (key.includes(":")) { const [uid, field] = key.split(":"); const u = unitById(uid); if (field === "prequiz") setDone(u, "prequiz", true); }
     } else Object.assign(st, {i: st.i+1, sel:null, conf:null, checked:false, revealed:false, text:"", ok:null});
   } else if (act === "q-redo") {
     const list = st.list; QS[key] = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[], list};
@@ -741,7 +516,7 @@ function vReview(u){
   const r = u.review || {};
   const cards = r.flashcards || [];
   const f = fcState(u); if (f.i >= cards.length) f.i = 0;
-  const known = cards.filter((_, i) => S.fc[u.id+":"+i] === "know").length;
+  const known = cards.filter((_, i) => { const it = S.fc[u.id+":"+i]; return it && it.reps > 0; }).length;
   const card = cards[f.i];
   const quizKey = u.id + ":postquiz";
   return `<div class="read"><article class="col">
@@ -802,6 +577,24 @@ function viewRetest(){
   return topBar(t("retestTitle")) + `<div class="read"><main class="col">${quizBlock("retest", questions, "retest", {})}</main><aside class="mar">${quizMargin("retest", questions)}</aside></div>`;
 }
 
+/* ----- due flashcards across units ----- */
+const CS = {list: null, i: 0, back: false};
+function viewCards(){
+  if (!CS.list) { CS.list = dueCards().slice(0, 30); CS.i = 0; CS.back = false; }
+  if (CS.i >= CS.list.length) {
+    const n = CS.list.length;
+    return topBar(t("cardsTitle")) + `<div class="read"><main class="col"><div class="empty">${esc(n ? t("cardsDone",{n}) : t("cardsNone"))}<a class="btn" href="#/">${esc(t("dashboard"))}</a></div></main></div>`;
+  }
+  const key = CS.list[CS.i], [uid, i] = key.split(":"), u = unitById(uid), card = u.review.flashcards[+i];
+  return topBar(t("cardsTitle")) + `<div class="read"><main class="col stack g14">
+    <div class="between"><span class="label r">${esc(t("unitN",{n:unitNum(uid)}))} · ${esc(plain(u.title))}</span><span class="mono small muted">${esc(t("cardOf",{i:CS.i+1,n:CS.list.length}))}</span></div>
+    <div class="prog" aria-hidden="true">${CS.list.map((_, j) => `<i class="${j < CS.i ? "ok" : j === CS.i ? "cur" : ""}"></i>`).join("")}</div>
+    <button type="button" class="flash ${CS.back?"back":""}" data-act="cs-flip" aria-label="${esc(t("flip"))}"><span class="md">${md(CS.back ? card.back : card.front)}</span></button>
+    <div class="between"><button type="button" class="btn" data-act="cs-flip">${esc(t("flip"))}</button>
+    <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="cs-mark" data-v="2">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="cs-mark" data-v="4">${esc(t("know"))}</button></div></div>
+  </main></div>`;
+}
+
 /* ----- midterm / final ----- */
 function viewReview(kind){
   const r = DATA[kind]; if (!r) { location.hash = "#/"; return ""; }
@@ -831,17 +624,39 @@ function viewReview(kind){
         ${r.formulaSheet ? `<section class="card stack g12"><h2 style="font-size:24px">${esc(t("formulaSheet"))}</h2><div class="md" style="font-size:16px">${md(r.formulaSheet)}</div></section>` : ""}
       </div>
       <aside class="stack g16" style="flex:1 1 300px;max-width:400px">
-        ${n ? `<section class="dark-card"><span class="label" style="color:#F2B8A8">${esc(t("mock"))}</span><h2 style="font-size:28px;line-height:1.15">${esc(t("mockInfo",{n, m:mins}))}</h2>
+        ${n ? `<section class="dark-card"><span class="label dk">${esc(t("mock"))}</span><h2 style="font-size:28px;line-height:1.15">${esc(t("mockInfo",{n, m:mins}))}</h2>
           <p class="small muted">${esc(t("mockSub"))}</p>
           ${last ? `<div class="between mono small muted"><span>${esc(t("lastAttempt",{a:last.score,n:last.total}))}</span><span>${esc(t("best",{a:best.score,n:best.total}))}</span></div>` : ""}
           <button type="button" class="btn primary" style="min-height:52px" data-act="exam-start" data-k="${kind}">${esc(t("start"))}</button></section>` : ""}
+        <section class="card stack g10" style="padding:18px"><h3 style="font-size:19px">${esc(t("drillTitle"))}</h3><p class="small muted">${esc(t("drillSub"))}</p>
+          <button type="button" class="btn" data-act="drill" data-k="${kind}" data-v="random">${esc(t("drillRandom"))}</button>
+          ${drillPool(kind, true).length ? `<button type="button" class="btn" data-act="drill" data-k="${kind}" data-v="weak">${esc(t("drillWeak",{n:Math.min(10, drillPool(kind, true).length)}))}</button>` : ""}</section>
         ${weak.length ? `<section class="stack g10"><h3 style="font-size:19px">${esc(t("weak"))}</h3>${weak.map(([c, m]) => `<span class="between small"><span>${esc(c)}</span><span class="mono" style="font-size:12px;color:var(--orange)">${esc(t("misses",{n:m}))}</span></span>`).join("")}</section>` : ""}
         ${r.strategy ? `<section class="margin-note r stack g8"><span class="label r">Scholia · ${esc(t("strategy"))}</span><div class="md">${md(r.strategy)}</div></section>` : ""}
       </aside>
     </div></div></div>`;
 }
+function shuffle(a){ a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function examOrder(r, cur){
+  const all = r.exam || [], byId = Object.fromEntries(all.map(q => [q.id, q]));
+  return cur && cur.order ? cur.order.map(id => byId[id]).filter(Boolean) : all;
+}
+function drillPool(kind, weakOnly){
+  const scope = DATA[kind].scope || [];
+  let pool = scope.map(unitById).filter(Boolean).flatMap(u => [...(u.prequiz||[]), ...(u.postquiz||[])]);
+  if (weakOnly) {
+    const missed = new Set(Object.keys(S.nb).filter(id => QIDX[id] && scope.includes(QIDX[id].unit)).map(id => plain(QIDX[id].q.concept)));
+    pool = pool.filter(q => missed.has(plain(q.concept)));
+  }
+  return pool;
+}
+function viewDrill(){
+  const questions = quizQuestions("drill");
+  if (!questions.length) return topBar(t("drillTitle")) + `<div class="read"><main class="col"><div class="empty">${esc(t("drillNone"))}<a class="btn" href="#/">${esc(t("dashboard"))}</a></div></main></div>`;
+  return topBar(t("drillTitle")) + `<div class="read"><main class="col">${quizBlock("drill", questions, "drill", {})}</main><aside class="mar">${quizMargin("drill", questions)}</aside></div>`;
+}
 function viewExam(kind){
-  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = r.exam || [];
+  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = examOrder(r, cur);
   const name = tx(r.title) || t(kind);
   if (cur.submitted) return examResult(kind);
   const answered = qsList.filter(q => cur.ans[q.id] != null && !(Array.isArray(cur.ans[q.id]) && !cur.ans[q.id].length)).length;
@@ -861,24 +676,34 @@ function viewExam(kind){
     <main class="stack g16" style="flex:999 1 560px;min-width:0">${body}
       <div class="row" style="justify-content:flex-end"><button type="button" class="btn primary" style="min-height:52px" data-act="exam-submit" data-k="${kind}">${esc(t("submit"))}</button></div></main>
     <aside class="dark-card" style="flex:1 1 280px;max-width:340px;position:sticky;top:84px">
-      <span class="label" style="color:#F2B8A8">${esc(t("timeLeft"))}</span>
+      <span class="label dk">${esc(t("timeLeft"))}</span>
       <span id="timer" class="mono" style="font-size:40px;line-height:1">--:--</span>
       <span class="mono small muted">${answered}/${qsList.length}</span>
       <nav class="qmap" aria-label="questions">${map}</nav>
       <button type="button" class="btn primary" data-act="exam-submit" data-k="${kind}">${esc(t("submit"))}</button>
     </aside></div>`;
 }
+function conceptTable(list, judge){
+  const m = {};
+  for (const q of list) { const c = plain(q.concept) || "—"; const r = judge(q); m[c] = m[c] || {ok: 0, n: 0}; m[c].n++; if (r === true) m[c].ok++; }
+  const rows = Object.entries(m).sort((a, b) => a[1].ok / a[1].n - b[1].ok / b[1].n);
+  return `<section class="card stack g12"><h2 style="font-size:22px">${esc(t("byConcept"))}</h2><div class="readiness">${rows.map(([c, v]) => {
+    const p = Math.round(100 * v.ok / v.n), low = p < 65;
+    return `<span>${esc(c)}</span><span class="bar lg"><i style="width:${p}%;background:${low ? "var(--orange)" : "var(--blue)"}"></i></span><span class="mono" style="text-align:right;${low ? "color:var(--orange)" : ""}">${v.ok}/${v.n}</span>`;
+  }).join("")}</div></section>`;
+}
 function examResult(kind){
-  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = r.exam || [];
+  const r = DATA[kind], ex = S.exam[kind], cur = ex.current, qsList = examOrder(r, cur);
   const name = tx(r.title) || t(kind);
   const total = qsList.length;
   const score = qsList.filter(q => q.type === "short" ? cur.self[q.id] === true : isRight(q, cur.ans[q.id])).length;
   const pendingShort = qsList.filter(q => q.type === "short" && cur.self[q.id] == null).length;
   return topBar(name + " · " + t("result")) + `<div class="read"><main class="col">
-    <section class="dark-card"><span class="label" style="color:#F2B8A8">${esc(t("result"))}</span>
+    <section class="dark-card"><span class="label dk">${esc(t("result"))}</span>
       <h1 style="font-size:40px">${esc(t("scored",{a:score,n:total,p:Math.round(100*score/Math.max(1,total))}))}</h1>
       <div class="row"><button type="button" class="btn primary" data-act="exam-close" data-k="${kind}" ${pendingShort?"disabled":""}>${esc(t("backToReview"))}</button></div>
       ${pendingShort ? `<p class="small muted">${esc(t("selfMark"))}: ${pendingShort}</p>` : ""}</section>
+    ${conceptTable(qsList, q => q.type === "short" ? cur.self[q.id] : isRight(q, cur.ans[q.id]))}
     ${qsList.map((q, i) => {
       const a = cur.ans[q.id];
       const ok = q.type === "short" ? cur.self[q.id] : isRight(q, a);
@@ -902,7 +727,11 @@ function startTimer(kind){
 }
 function submitExam(kind){
   const r = DATA[kind], cur = S.exam[kind].current; cur.submitted = Date.now(); clearInterval(examTimer);
-  for (const q of r.exam || []) if (q.type !== "short") { const ok = isRight(q, cur.ans[q.id]); record(q, ok, 1, cur.ans[q.id], "exam"); }
+  for (const q of r.exam || []) {
+    const a = cur.ans[q.id];
+    if (q.type === "short" || a == null || (Array.isArray(a) && !a.length)) continue;   // unanswered isn't a mistake
+    record(q, isRight(q, a), 1, a, "exam");
+  }
   save();
 }
 
@@ -916,12 +745,37 @@ function progressSummary(){
   for (const k of REVIEWS) { const a = (S.exam[k]||{}).attempts || []; if (a.length) lines.push("", `${k} mock exams: ` + a.map(x => `${x.score}/${x.total}`).join(", ")); }
   return lines.join("\n");
 }
+/* Progress code: gzip + base64 text, so progress can be sent to another device through any chat app. */
+function b64(bytes){ let s = ""; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); }
+function unb64(str){ const s = atob(str); const out = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i); return out; }
+async function progressCode(){
+  const json = new TextEncoder().encode(JSON.stringify({scholia: 1, state: S}));
+  if (window.CompressionStream) {
+    const gz = await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer();
+    return "SCHZ1:" + b64(new Uint8Array(gz));
+  }
+  return "SCHJ1:" + b64(json);
+}
+async function readProgressCode(code){
+  code = code.replace(/\s+/g, "");
+  let bytes;
+  if (code.startsWith("SCHZ1:")) bytes = new Uint8Array(await new Response(new Blob([unb64(code.slice(6))]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+  else if (code.startsWith("SCHJ1:")) bytes = unb64(code.slice(6));
+  else throw new Error("not a Scholia code");
+  const j = JSON.parse(new TextDecoder().decode(bytes));
+  if (!j.state || j.state.v !== 1) throw new Error("bad state");
+  return j.state;
+}
 function openExport(){
   const d = document.createElement("dialog");
   d.style.cssText = "border:1px solid var(--rule);border-radius:14px;padding:24px;max-width:520px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)";
   d.innerHTML = `<div class="stack g14"><h2 style="font-size:24px">${esc(t("exportTitle"))}</h2><p class="small muted">${esc(t("exportSub"))}</p>
     <div class="stack g8"><button type="button" class="btn primary" data-x="dl">${esc(t("download"))}</button><button type="button" class="btn" data-x="sum">${esc(t("copySummary"))}</button>
     <label class="btn" style="cursor:pointer">${esc(t("import"))}<input type="file" accept="application/json,.json" data-x="imp" class="sr"></label></div>
+    <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("codeTitle"))}</h3><p class="small muted">${esc(t("codeSub"))}</p>
+    <button type="button" class="btn" data-x="code">${esc(t("codeCopy"))}</button>
+    <label class="sr" for="code-in">${esc(t("codePaste"))}</label><textarea id="code-in" data-x="codein" placeholder="SCHZ1:…" style="min-height:72px;font-family:var(--mono);font-size:12px"></textarea>
+    <button type="button" class="btn" data-x="apply">${esc(t("codeApply"))}</button></div>
     <pre data-x="out" hidden style="white-space:pre-wrap;max-height:200px;overflow:auto;padding:12px;border-radius:10px;background:var(--sunk);font-size:12px"></pre>
     <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-x="close">${esc(t("close"))}</button></div></div>`;
   document.body.appendChild(d);
@@ -929,11 +783,16 @@ function openExport(){
     const x = e.target.closest("[data-x]"); if (!x) { if (e.target === d) d.close(); return; }
     if (x.dataset.x === "close") d.close();
     if (x.dataset.x === "dl") { const blob = new Blob([JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1)], {type:"application/json"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "scholia-progress-" + new Date().toISOString().slice(0,10) + ".json"; document.body.appendChild(a); a.click(); a.remove(); }
+    if (x.dataset.x === "code") { const c = await progressCode(); if (!(await copyText(c))) { const o = d.querySelector('[data-x="out"]'); o.textContent = c; o.hidden = false; } }
+    if (x.dataset.x === "apply") {
+      try { S = migrate(Object.assign(blank(), await readProgressCode(d.querySelector('[data-x="codein"]').value))); save(); toast(t("importDone")); d.close(); render(); }
+      catch(err){ toast(t("codeFail")); }
+    }
     if (x.dataset.x === "sum") { const s = progressSummary(); if (!(await copyText(s))) { const o = d.querySelector('[data-x="out"]'); o.textContent = s; o.hidden = false; } }
   });
   d.querySelector('[data-x="imp"]').addEventListener("change", async e => {
     const f = e.target.files[0]; if (!f) return;
-    try { const j = JSON.parse(await f.text()); if (!j.state || j.state.v !== 1) throw 0; S = Object.assign(blank(), j.state); save(); toast(t("importDone")); d.close(); render(); }
+    try { const j = JSON.parse(await f.text()); if (!j.state || j.state.v !== 1) throw 0; S = migrate(Object.assign(blank(), j.state)); save(); toast(t("importDone")); d.close(); render(); }
     catch(err){ toast(t("importFail")); }
   });
   d.addEventListener("close", () => d.remove());
@@ -950,6 +809,8 @@ function render(){
   if (r.view === "u" && unitById(r.a)) html = viewUnit(unitById(r.a), r.b || "prestudy");
   else if (r.view === "notebook") html = viewNotebook();
   else if (r.view === "retest") html = viewRetest();
+  else if (r.view === "cards") html = viewCards();
+  else if (r.view === "drill") html = viewDrill();
   else if (r.view === "review" && DATA[r.a]) html = viewReview(r.a);
   else html = viewHome();
   app.innerHTML = html;
@@ -974,15 +835,18 @@ document.addEventListener("click", e => {
   if (act === "cq-export") { const u = unitById(d.u); const list = S.cq[d.u] || [];
     const txt = ["SCHOLIA-QUESTIONS v1", "course: " + plain(COURSE.title), `unit: ${u.id} · ${plain(u.title)}`, "lang: " + LANG, ""].concat(list.map((x, i) => `${i+1}. ${x.text}`)).join("\n");
     copyText(txt).then(ok => { if (!ok) { const o = document.getElementById("cq-out"); if (o) { o.textContent = txt; o.hidden = false; } } }); return; }
+  if (act === "cs-flip") { CS.back = !CS.back; rerender(true); return; }
+  if (act === "cs-mark") { const k = CS.list[CS.i]; S.fc[k] = sched(S.fc[k] || {}, +d.v); save(); CS.i++; CS.back = false; rerender(true); return; }
   if (act.startsWith("fc-")) { const u = unitById(d.u), f = fcState(u), n = (u.review.flashcards||[]).length;
     if (act === "fc-flip") f.back = !f.back;
     if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; }
     if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; }
-    if (act === "fc-mark") { S.fc[u.id+":"+f.i] = d.v; save(); f.i = (f.i+1) % n; f.back = false; }
+    if (act === "fc-mark") { const k = u.id+":"+f.i; S.fc[k] = sched(S.fc[k] || {}, d.v === "know" ? 4 : 2); save(); f.i = (f.i+1) % n; f.back = false; }
     rerender(true); return; }
   if (act === "hw-hint") { HWV[d.id].hints++; rerender(true); return; }
   if (act === "hw-sol") { HWV[d.id].sol = true; rerender(true); return; }
-  if (act === "exam-start") { S.exam[d.k].current = {start: Date.now(), ans:{}, flag:{}, self:{}}; save(); window.scrollTo(0,0); render(); return; }
+  if (act === "drill") { const pool = drillPool(d.k, d.v === "weak"); QS.drill = {i:0, sel:null, conf:null, checked:false, revealed:false, results:[], list: shuffle(pool.map(q => q.id)).slice(0, 10)}; location.hash = "#/drill"; window.scrollTo(0,0); return; }
+  if (act === "exam-start") { S.exam[d.k].current = {start: Date.now(), ans:{}, flag:{}, self:{}, order: shuffle((DATA[d.k].exam || []).map(q => q.id))}; save(); window.scrollTo(0,0); render(); return; }
   if (act === "ex-pick") { const q = QIDX[d.id].q, cur = S.exam[d.k].current, i = +d.v;
     if (q.type === "multi") { const s = new Set(cur.ans[d.id] || []); s.has(i) ? s.delete(i) : s.add(i); cur.ans[d.id] = [...s]; }
     else cur.ans[d.id] = q.type === "tf" ? (i === 0) : i;
@@ -1012,9 +876,6 @@ document.addEventListener("submit", e => {
   (S.cq[f.dataset.u] = S.cq[f.dataset.u] || []).push({text: v, ts: Date.now()}); save(); rerender(true);
   const ta = document.getElementById("cq-input"); if (ta) ta.focus();
 });
-window.addEventListener("hashchange", () => { if (route().view === "retest" && QS.retest && QS.retest.finished) QS.retest = null; render(); window.scrollTo(0,0); });
+window.addEventListener("hashchange", () => { if (route().view === "retest" && QS.retest && QS.retest.finished) QS.retest = null; if (route().view === "cards") CS.list = null; render(); window.scrollTo(0,0); });
 window.addEventListener("load", () => typeset(document.getElementById("app")));
 render();
-</script>
-</body>
-</html>

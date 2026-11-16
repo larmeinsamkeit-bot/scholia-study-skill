@@ -37,6 +37,16 @@ generate data for them.
 
 Read every file the user provided. Use the `pdf`, `docx` and `pptx` skills to extract text when those
 formats appear, and look at images directly (photos of handwritten notes or whiteboards are common).
+
+Text extraction loses things that matter, so check before you rely on it:
+- **Equations in slides** are often stored as Office Math. Plain text extraction drops superscripts and
+  brackets (`R(q)=70q−q^2` comes out as `Rq=70q−q2`). Rebuild them from the slide structure, or look at
+  the rendered slide, before quoting a formula.
+- **Scanned PDFs and photos** have no text layer. Read the page images yourself, transcribe
+  equations carefully, and mark anything you could not read as `[illegible]` rather than guessing.
+- **Answer keys can be wrong.** Instructor-posted solutions sometimes have typos or mismatched numbers.
+  When the key disagrees with your own working, show the correct working, note the discrepancy in
+  `pitfalls`, and set `confidence: "low"` if the question itself is ambiguous.
 Sort each file into a role: syllabus/schedule, textbook/reading, slides, notes, homework/problem sets,
 past exams, answer keys. Keep a short list mapping each file to a short source label (e.g.
 `Slides W3`, `Textbook ch.4 p.88`) — you'll cite these in the content, which lets the student go back
@@ -85,7 +95,9 @@ Read `references/content-guide.md` before writing content — it has the quality
 to handle homework). The short version:
 
 - **Ground everything in the materials.** Use the course's own notation, terminology and examples.
-  Cite sources with a `source` field. Where you add something the materials don't contain (a clearer
+  Give every prestudy section, quiz question, difficulty and homework problem a `source` field —
+  even with a single source file, name the part (`HW3 Q2`, `Notes §2`, `Slides W5 p.14`); for
+  content you wrote yourself, cite what it is based on. Where you add something the materials don't contain (a clearer
   analogy, a missing derivation step), that's welcome, but don't contradict the course.
 - **Pre-study is a preview, review is consolidation.** Pre-study questions test whether the student
   read and can recognise the ideas; post-class questions test whether they can *use* them.
@@ -94,6 +106,11 @@ to handle homework). The short version:
   student in office hours, with a worked micro-example.
 - **Every question has an explanation** that says why the right answer is right *and* why the
   tempting wrong answer is wrong. This is what makes the mistake notebook useful.
+- **Verify every number.** For each question or homework step that involves a calculation, recompute
+  it with a short Python check (plain arithmetic, or `fractions` for exact values) before writing it
+  into the data. Check that the marked answer index really is the correct option and that no
+  distractor is accidentally also correct. A wrong key teaches the wrong thing and erodes trust in
+  the whole site.
 
 For a large course, write one JSON file per unit rather than one huge file (see step 4); generating
 unit by unit also keeps quality even across the course.

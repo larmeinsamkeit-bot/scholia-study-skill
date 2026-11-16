@@ -9,13 +9,16 @@ A course folder holds course.json (the "course" object, optionally "midterm"/"fi
 units/*.json (one Unit each, sorted by filename) and optionally midterm.json / final.json.
 """
 import argparse
+import base64
 import json
 import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-TEMPLATE = HERE.parent / "assets" / "scholia-template.html"
+ASSETS = HERE.parent / "assets"
+APP = ASSETS / "app"
+KATEX = ASSETS / "vendor" / "katex"
 PLACEHOLDER = "/*__SCHOLIA_DATA__*/null"
 LANGS = {"zh-Hant", "zh-Hans", "en"}
 QTYPES = {"single", "multi", "tf", "short"}
@@ -109,6 +112,13 @@ def check_question(c, q, where, ids):
         fb = q.get("optionFeedback")
         if fb is not None and (not isinstance(fb, list) or len(fb) != n):
             c.err(w, "'optionFeedback' must be a list the same length as 'options'")
+        flat = [json.dumps(o, ensure_ascii=False, sort_keys=True) for o in opts]
+        if len(set(flat)) != len(flat):
+            c.err(w, "two options are identical")
+        correct = ans if isinstance(ans, list) else [ans]
+        if isinstance(fb, list) and len(fb) == n and all(isinstance(i, int) for i in correct):
+            if any(fb[i] for i in correct if 0 <= i < n):
+                c.warn(w, "optionFeedback explains the correct option as if it were wrong (use null there)")
     elif t == "tf":
         if not isinstance(ans, bool):
             c.err(w, "'answer' must be true or false")
@@ -269,10 +279,40 @@ def validate(data):
     return c
 
 
+def katex_css():
+    """KaTeX stylesheet with every font inlined as a woff2 data URI, so math renders offline."""
+    css = (KATEX / "katex.min.css").read_text(encoding="utf-8")
+
+    def font(m):
+        name = m.group(1)
+        data = base64.b64encode((KATEX / "fonts" / f"{name}.woff2").read_bytes()).decode()
+        return f'src:url(data:font/woff2;base64,{data}) format("woff2")'
+
+    return re.sub(r'src:url\(fonts/(KaTeX_[A-Za-z0-9_-]+)\.woff2\) format\("woff2"\)[^;}]*', font, css)
+
+
+def assemble_template():
+    """Join the app shell, stylesheet, translations, app code and KaTeX into one HTML template."""
+    shell = (APP / "index.html").read_text(encoding="utf-8")
+    parts = {
+        "/*__KATEX_CSS__*/": katex_css(),
+        "/*__STYLE__*/": (APP / "styles.css").read_text(encoding="utf-8"),
+        "/*__KATEX_JS__*/": (KATEX / "katex.min.js").read_text(encoding="utf-8") + "\n"
+                            + (KATEX / "auto-render.min.js").read_text(encoding="utf-8"),
+        "/*__I18N__*/": (APP / "i18n.js").read_text(encoding="utf-8"),
+        "/*__APP__*/": (APP / "app.js").read_text(encoding="utf-8"),
+    }
+    for marker, text in parts.items():
+        if marker not in shell:
+            sys.exit(f"ERROR: {marker} missing from assets/app/index.html")
+        shell = shell.replace(marker, text.replace("</script", "<\\/script"), 1)
+    return shell
+
+
 def build(data, out):
-    tpl = TEMPLATE.read_text(encoding="utf-8")
+    tpl = assemble_template()
     if PLACEHOLDER not in tpl:
-        sys.exit("ERROR: template placeholder not found — is assets/scholia-template.html intact?")
+        sys.exit("ERROR: data placeholder missing from assets/app/index.html")
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     payload = payload.replace("</", "<\\/").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     html = tpl.replace(PLACEHOLDER, payload, 1)

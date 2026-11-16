@@ -1,0 +1,57 @@
+{
+  "skill_name": "scholia",
+  "evals": [
+    {
+      "id": 1,
+      "name": "single-week-zh-hant",
+      "prompt": "用 Scholia 幫我把呢份第一週筆記整成溫習網站。內容用繁體中文就得。",
+      "files": ["evals/files/micro-econ-week1/lecture-notes.md"],
+      "expected_output": "A course folder with one unit covering opportunity cost, PPF and comparative advantage, built to a single HTML file with no validation errors. Homework answers are hints-first because HW1 is not graded yet.",
+      "grader_args": "--lang zh-Hant --units 1",
+      "expectations": [
+        "build_scholia.py --check reports 0 errors",
+        "build_scholia.py reports no unescaped-money warnings (the notes contain $120, $50, $40, $35)",
+        "course.lang is zh-Hant and contentLangs is absent or [\"zh-Hant\"]",
+        "the unit has 6-10 prequiz and 6-10 postquiz questions, 8-15 flashcards and 2-4 difficulties in each difficulty stage",
+        "every question has a concept, and each unit uses at most 8 distinct concepts",
+        "both homework problems are included with revealMode \"hints-first\"",
+        "homework 1 answer names Country B (opportunity cost of a truck: A = 2 cars, B = 1 car)",
+        "homework 2 answer treats the $50 ticket as sunk and chooses the dinner (40 > 35)",
+        "sections, questions or difficulties carry a source citing the notes or Mankiw ch. 2",
+        "a built HTML file was delivered"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "wrong-answer-key",
+      "prompt": "Use Scholia to make a homework-solutions page from this STAT 110 homework and its answer key. English only.",
+      "files": ["evals/files/stats-hw/homework-and-key.md"],
+      "expected_output": "A one-unit course whose homework section re-derives every answer. The key has two errors: Problem 2 adds 0.2 + 1.0 + 0.9 to 2.2 (it is 2.1), and Problem 3 forgets to square E[X] (Var(X) = 4.9 − 2.1² = 0.49, not 2.7). The skill must catch both and flag them instead of copying the key.",
+      "grader_args": "--lang en --units 1",
+      "expectations": [
+        "build_scholia.py --check reports 0 errors",
+        "all four homework problems are present",
+        "problem 1 answer is 3/8 and problem 4 is about 0.269 (18/67)",
+        "problem 2 answer is 2.1 and says the key (2.2) has an arithmetic slip",
+        "problem 3 answer is Var(X) = 0.49 and says the key (2.7) is wrong because E[X] was not squared",
+        "the transcript shows the numbers were re-checked (for example with Python)",
+        "content is English only: course.lang is en"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "bilingual-content",
+      "prompt": "Build a Scholia study site from these notes. I'm an exchange student in Hong Kong — please write the content in both Traditional Chinese and English.",
+      "files": ["evals/files/micro-econ-week1/lecture-notes.md"],
+      "expected_output": "Content in zh-Hant and en (contentLangs [\"zh-Hant\", \"en\"] or [\"en\", \"zh-Hant\"] with lang matching the first), every text field bilingual, and HK usage in the Chinese text.",
+      "grader_args": "--units 1 --langs zh-Hant,en",
+      "expectations": [
+        "build_scholia.py --check reports 0 errors and 0 missing-translation warnings",
+        "contentLangs contains both zh-Hant and en, and its first entry equals course.lang",
+        "the Chinese text uses Traditional characters with HK terms (e.g. 機率 not 概率, 功課 not 作业)",
+        "English technical terms appear in brackets after the Chinese term the first time (e.g. 機會成本 (opportunity cost))",
+        "the assistant mentioned that a second language roughly doubles generation cost before or while generating"
+      ]
+    }
+  ]
+}

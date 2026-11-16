@@ -2,6 +2,10 @@
 
 **Turn your course materials into an interactive study site — one Claude skill, one HTML file.**
 
+[繁體中文說明](README.zh-Hant.md) · [Live demo](https://larmeinsamkeit-bot.github.io/scholia-study-skill/) · [Download the skill](../../releases/latest)
+
+![Scholia dashboard](docs/screenshots/dashboard.png)
+
 *Scholia* (Greek: the notes scholars wrote in the margins of a text) is a [Claude](https://claude.ai)
 skill. Give Claude your syllabus, slides, notes, homework and past exams; it reads them, builds a
 course map and generates a single self-contained web page that walks you through the whole learning
@@ -13,16 +17,24 @@ loop for every unit:
 
 Plus:
 
-- **Mistake notebook with spaced re-tests** — wrong answers come back after 1, 3, 7 and 14 days until you get them right twice
+- **Mistake notebook with spaced repetition** — wrong answers and flashcards are rescheduled with SM-2; an item counts as mastered once its interval passes three weeks
+- **Today's review** — one list of due re-tests and flashcards on the home page
+- **Practice sets** — 10 random questions from the review scope, or only from your weak concepts; mock exams are shuffled and scored per concept
 - **Confidence ratings** — a right answer marked "guessing" still goes into the notebook
 - **Source citations** on every section, question and difficulty
 - **Classroom questions → Claude** — log questions in lecture, export them, paste them back to Claude for answers
 - **Weak-spot tracking** that feeds the midterm and final reviews
 - **繁體中文 / 简体中文 / English** interface; course content in the language(s) you choose
-- Works offline in any browser, light and dark mode, phone-friendly; progress is saved in your browser
+- **Works fully offline** — math (KaTeX) and fonts are embedded in the file; light and dark mode; phone-friendly
+- **Progress stays with you** — saved in your browser; move it to another device with a short progress code
 
-**Try it without installing anything:** download [`build/scholia-example.html`](build/scholia-example.html)
-and open it in your browser — a small two-unit sample course.
+**Try it without installing anything:** open the [live demo](https://larmeinsamkeit-bot.github.io/scholia-study-skill/),
+or download [`build/scholia-example.html`](build/scholia-example.html) and open it in your browser — a small
+two-unit sample course.
+
+| Pre-study quiz | Midterm review (dark mode) | Phone |
+|---|---|---|
+| ![Quiz](docs/screenshots/quiz.png) | ![Review](docs/screenshots/final-review.png) | ![Phone](docs/screenshots/mobile.png) |
 
 ## Install the skill
 
@@ -49,12 +61,29 @@ python3 scholia/scripts/build_scholia.py scholia/references/example-course -o my
 Course data format: [`scholia/references/data-schema.md`](scholia/references/data-schema.md).
 Content quality guide: [`scholia/references/content-guide.md`](scholia/references/content-guide.md).
 
+## Development
+
+```bash
+python3 -m unittest discover -s tests -v   # validation, build, headless-Chrome and packaging tests
+python3 tools/package_skill.py             # rebuild dist/scholia.skill
+python3 evals/grade_course.py COURSE_DIR   # check a generated course against the content guide
+```
+
+`evals/evals.json` holds test prompts (with small sample materials in `evals/files/`) for checking the
+skill end to end: run a prompt with the skill, then grade the course folder it produced.
+
+The app lives in `scholia/assets/app/` (`index.html`, `styles.css`, `i18n.js`, `app.js`); the build
+script inlines them together with KaTeX from `scholia/assets/vendor/`. GitHub Actions runs the tests on
+every push.
+
 ## Repository layout
 
 ```
 scholia/                 the skill (SKILL.md, app template, build script, references, example course)
 dist/scholia.skill       the packaged skill, ready to install
 build/scholia-example.html   the example course, built
+docs/                    GitHub Pages demo (index.html = the example course) and screenshots
+tests/, tools/, evals/   tests, packaging script, skill evals
 design/                  the original Claude Design canvas (5 artboards) the app was built from
 ```
 

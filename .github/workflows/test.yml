@@ -1,0 +1,28 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate example course
+        run: python3 scholia/scripts/build_scholia.py scholia/references/example-course --check
+      - name: Unit and browser tests
+        # ubuntu-latest ships Google Chrome, so the headless browser tests run too
+        run: python3 -m unittest discover -s tests -v
+      - name: Package skill
+        run: python3 tools/package_skill.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scholia.skill
+          path: dist/scholia.skill
