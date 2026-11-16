@@ -1,0 +1,12 @@
+{
+  "name": "scholia-study",
+  "description": "Scholia: a study-site generator skill for students",
+  "owner": { "name": "larmeinsamkeit-bot", "url": "https://github.com/larmeinsamkeit-bot" },
+  "plugins": [
+    {
+      "name": "scholia",
+      "source": "./",
+      "description": "Turn course materials into an interactive offline study site"
+    }
+  ]
+}

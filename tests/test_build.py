@@ -87,13 +87,35 @@ class ValidationTests(unittest.TestCase):
         self.assertTrue(any("contentLangs" in e for e in errors), errors)
 
 
+class ImageAndSummaryTests(unittest.TestCase):
+    def test_example_figure_is_embedded(self):
+        d = example_data()
+        errors, _, n = bs.embed_images(d, EXAMPLE)
+        self.assertEqual(errors, [])
+        self.assertGreaterEqual(n, 1)
+        self.assertIn("data:image/svg+xml;base64,", json.dumps(d))
+
+    def test_missing_image_is_an_error(self):
+        d = example_data()
+        d["units"][0]["summary"] = "![x](figures/nope.png)"
+        errors, _, _ = bs.embed_images(d, EXAMPLE)
+        self.assertTrue(any("not found" in e for e in errors), errors)
+
+    def test_summary_lists_units_and_concepts(self):
+        out = bs.summary(example_data())
+        self.assertIn("u1", out)
+        self.assertIn("concepts:", out)
+
+
 class BuildTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
         cls.out = cls.tmp / "site.html"
         cls.data = example_data()
-        bs.build(copy.deepcopy(cls.data), cls.out)
+        data = copy.deepcopy(cls.data)
+        bs.embed_images(data, EXAMPLE)
+        bs.build(data, cls.out)
         cls.html = cls.out.read_text(encoding="utf-8")
 
     @classmethod
@@ -152,7 +174,9 @@ class BrowserTests(unittest.TestCase):
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
         cls.out = cls.tmp / "site.html"
-        bs.build(example_data(), cls.out)
+        data = example_data()
+        bs.embed_images(data, EXAMPLE)
+        bs.build(data, cls.out)
 
     @classmethod
     def tearDownClass(cls):
@@ -167,6 +191,15 @@ class BrowserTests(unittest.TestCase):
         dom = self.dump(self.out, "#/u/u1/prestudy")
         self.assertIn('class="katex"', dom)
         self.assertNotIn('class="katex-error"', dom)
+
+    def test_search_and_study_sheet_render(self):
+        self.assertIn('id="search-in"', self.dump(self.out, "#/search"))
+        sheet = self.dump(self.out, "#/sheet")
+        self.assertIn("sheet-unit", sheet)
+        self.assertIn('class="katex"', sheet)
+
+    def test_figure_renders(self):
+        self.assertIn('<img src="data:image/svg+xml;base64,', self.dump(self.out, "#/u/u1/prestudy"))
 
     def test_final_review_and_notebook_render(self):
         self.assertIn("dark-card", self.dump(self.out, "#/review/midterm"))
@@ -200,6 +233,21 @@ class GraderTests(unittest.TestCase):
         d = example_data()
         d["units"][0]["prequiz"] = d["units"][0]["prequiz"][:2]
         self.assertIn("u1: prequiz has 6-10", self.failed(d))
+
+
+class PluginTests(unittest.TestCase):
+    """The repository is also a Claude Code plugin marketplace (.claude-plugin/)."""
+
+    def test_manifests_point_at_the_skill(self):
+        plugin = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        market = json.loads((ROOT / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8"))
+        entry = market["plugins"][0]
+        self.assertEqual(entry["name"], plugin["name"])
+        self.assertEqual(entry["source"], "./")
+        for path in plugin["skills"]:
+            self.assertTrue(path.startswith("./") and ".." not in path, path)
+            self.assertTrue((ROOT / path / "SKILL.md").is_file(), path)
+        self.assertIn("name", market["owner"])
 
 
 class PackageTests(unittest.TestCase):

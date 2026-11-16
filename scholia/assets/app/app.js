@@ -22,7 +22,7 @@ function migrate(s){
   for (const k in s.fc) { const v = s.fc[k]; if (typeof v === "string") s.fc[k] = sched({}, v === "know" ? 4 : 2); }
   return s;
 }
-function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null}; }
+function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null, backup:null}; }
 function loadState(){ try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && s.v === 1 ? Object.assign(blank(), s) : blank(); } catch(e){ return blank(); } }
 let S = migrate(loadState());
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
@@ -37,8 +37,9 @@ function tx(v){
   if (typeof v === "object") { if (v[LANG]) return v[LANG]; if (LANG === "zh-Hans" && v["zh-Hant"]) return v["zh-Hant"]; if (LANG === "zh-Hant" && v["zh-Hans"]) return v["zh-Hans"]; if (v[COURSE.lang]) return v[COURSE.lang]; const k = Object.keys(v)[0]; return k ? v[k] : ""; }
   return String(v);
 }
+const IMG_MD = /!\[([^\]]*)\]\(((?:data:image\/[a-z+.-]+;base64,[A-Za-z0-9+/=]+)|https:\/\/[^)\s"]+)\)/g;
 function inline(s){
-  return s.replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g,"$1<em>$2</em>");
+  return s.replace(IMG_MD, (_, alt, src) => `<span class="fig"><img src="${src}" alt="${alt}" loading="lazy">${alt ? `<span class="cap">${alt}</span>` : ""}</span>`).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g,"$1<em>$2</em>");
 }
 function md(v){
   let s = tx(v); if (!s) return "";
@@ -59,7 +60,7 @@ function md(v){
   return out.join("").replace(/\u0000(\d+)\u0000/g, (_, n) => esc(math[+n])).replace(/\u0001/g, "<span>$</span>");
 }
 function mdi(v){ return md(v).replace(/^<p>|<\/p>$/g, ""); }
-const plain = v => tx(v).replace(/[*`$]/g, "");
+const plain = v => tx(v).replace(IMG_MD, "$1").replace(/[*`$]/g, "");
 function fmtDay(ts){
   const d = Math.round((startOfDay(ts) - startOfDay(Date.now())) / DAY);
   if (d <= 0) return t("today"); if (d === 1) return t("tomorrow"); return t("inDays",{n:d});
@@ -179,7 +180,9 @@ function sideNav(activeUnit, activeView){
   return `<nav class="side" aria-label="${esc(t("course"))}">
     <span class="label">${esc(t("course"))}</span>
     <a href="#/" class="${activeView==="home"?"on":""}">${esc(t("dashboard"))}</a>
+    <a href="#/search" class="${activeView==="search"?"on":""}">${esc(t("search"))}</a>
     <a href="#/notebook" class="${activeView==="notebook"?"on":""}">${esc(t("notebook"))} <span class="mono" style="color:var(--orange)">${nbCount||""}</span></a>
+    <a href="#/sheet" class="${activeView==="sheet"?"on":""}">${esc(t("sheet"))}</a>
     ${REVIEWS.map(k => `<a href="#/review/${k}" class="${activeView===k?"on":""}">${esc(tx(DATA[k].title) || t(k))} <span class="mono">${esc(fmtDate(DATA[k].date))}</span></a>`).join("")}
     <span class="label">${esc(t("units"))}</span>
     ${UNITS.map((u, i) => `<a href="#/u/${esc(u.id)}/${nextStage(u) || "review"}" class="${activeUnit===u.id?"on":""}" style="justify-content:flex-start"><span class="num">${i+1}</span>${esc(plain(u.title))}</a>`).join("")}
@@ -242,6 +245,25 @@ function todayPanel(due){
       ${rows.length ? `<div class="stack g4">${rows.join("")}</div>` : `<p class="small muted">${esc(t("todayNone"))}</p>`}
     </div>`;
 }
+function hasProgress(){ return Object.keys(S.att).length + Object.keys(S.done).length + Object.keys(S.fc).length > 0; }
+function backupPanel(){
+  if (!hasProgress()) return "";
+  const days = S.backup ? Math.floor((startOfDay(Date.now()) - startOfDay(S.backup)) / DAY) : null;
+  if (days != null && days < 7) return "";
+  return `<div class="card stack g8" style="padding:16px;border-color:var(--orange-rule)">
+      <h3 style="font-size:19px">${esc(t("backupTitle"))}</h3>
+      <p class="small">${esc(days == null ? t("backupNever") : t("backupAgo",{n:days}))}</p>
+      <p class="small muted">${esc(t("backupSub"))}</p>
+      <button type="button" class="btn" data-act="backup">${esc(t("backupNow"))}</button></div>`;
+}
+function downloadFile(name, text, type){
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], {type})); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function downloadBackup(){
+  S.backup = Date.now(); save();
+  downloadFile("scholia-progress-" + new Date().toISOString().slice(0,10) + ".json", JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1), "application/json");
+}
 function marginHome(){
   const weak = weakSpots();
   const due = dueList();
@@ -264,6 +286,7 @@ function marginHome(){
       ${weak.map(([c, n]) => `<div class="stack g4"><span class="between small"><span>${esc(c)}</span><span class="mono" style="font-size:12px;color:var(--orange)">${esc(t("misses",{n}))}</span></span><span class="bar"><i style="width:${Math.round(100*n/maxMiss)}%;background:var(--orange)"></i></span></div>`).join("")}
     </div>
     ${todayPanel(due)}
+    ${backupPanel()}
     ${exams}
     ${ans ? `<div class="stack g4"><h3 style="font-size:19px">${esc(t("fromClass"))}</h3><p class="small muted">${esc(t("fromClassSub",{n:unitNum(ans[0].id),a:ans[1]}))}</p><a class="small" href="#/u/${esc(ans[0].id)}/classroom">${esc(t("s_classroom"))} →</a></div>` : ""}
     <p class="small muted" style="margin-top:8px">${esc(t("localNote"))}</p>
@@ -736,6 +759,104 @@ function submitExam(kind){
 }
 
 /* ---------- export / import ---------- */
+/* ----- search ----- */
+let SEARCH_Q = "";
+function searchIndex(){
+  if (searchIndex.lang === LANG) return searchIndex.items;
+  const items = [];
+  const flat = v => plain(v).replace(/\\(?:d?frac)\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
+    .replace(/\\(left|right|,|;|!|quad)/g, "").replace(/\\cdot/g, "·").replace(/\\times/g, "×").replace(/\\le(q)?/g, "≤").replace(/\\ge(q)?/g, "≥").replace(/\\neq/g, "≠")
+    .replace(/\\(alpha|beta|gamma|delta|Delta|epsilon|varepsilon|theta|lambda|mu|pi|sigma|Sigma|partial)\b/g, (_, g) => ({alpha:"α",beta:"β",gamma:"γ",delta:"δ",Delta:"Δ",epsilon:"ε",varepsilon:"ε",theta:"θ",lambda:"λ",mu:"μ",pi:"π",sigma:"σ",Sigma:"Σ",partial:"∂"})[g])
+    .replace(/\\(mid|cap|cup|sum|prod|infty|to|rightarrow|Rightarrow|approx|sqrt|in|subset|pm|ldots|cdots|bar|hat)\b/g, (_, g) => ({mid:"|",cap:"∩",cup:"∪",sum:"Σ",prod:"Π",infty:"∞",to:"→",rightarrow:"→",Rightarrow:"⇒",approx:"≈",sqrt:"√",in:"∈",subset:"⊂",pm:"±",ldots:"…",cdots:"⋯",bar:"",hat:""})[g])
+    .replace(/\\([a-zA-Z]+)/g, "$1").replace(/[{}]/g, "");
+  const add = (u, kind, title, body, href) => { const ti = flat(title), bo = flat(body); items.push({u, kind, title: ti, body: bo, hay: (ti + "\n" + bo).toLowerCase(), href}); };
+  UNITS.forEach(u => {
+    const p = u.prestudy || {}, r = u.review || {}, base = "#/u/" + u.id + "/";
+    (p.sections || []).forEach(x => add(u, "s_prestudy", x.heading, x.body, base + "prestudy"));
+    (p.keyTerms || []).forEach(x => add(u, "keyTerms", x.term, x.definition, base + "prestudy"));
+    (u.prequiz || []).forEach(q => add(u, "s_prequiz", q.stem, q.explanation, base + "prequiz"));
+    (u.difficulties || []).forEach(x => add(u, "s_premistakes", x.title, [x.explanation, x.example].map(tx).join("\n"), base + "premistakes"));
+    (r.keyPoints || []).forEach(x => add(u, "keyPoints", x, "", base + "review"));
+    (r.flashcards || []).forEach(x => add(u, "flashcards", x.front, x.back, base + "review"));
+    (u.postquiz || []).forEach(q => add(u, "reviewQuiz", q.stem, q.explanation, base + "review"));
+    (u.postDifficulties || []).forEach(x => add(u, "s_postmistakes", x.title, [x.explanation, x.example].map(tx).join("\n"), base + "postmistakes"));
+    (u.homework || []).forEach(h => add(u, "s_homework", h.title || h.id, h.problem, base + "homework"));
+  });
+  REVIEWS.forEach(k => { const r = DATA[k];
+    (r.themes || []).forEach(x => add(null, "themes", x.title, x.body, "#/review/" + k));
+    if (r.formulaSheet) add(null, "formulaSheet", t("formulaSheet"), r.formulaSheet, "#/review/" + k); });
+  searchIndex.lang = LANG; searchIndex.items = items; return items;
+}
+function hilite(text, terms){
+  let h = esc(text);
+  for (const w of terms) { const e = esc(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); h = h.replace(new RegExp(e, "gi"), m => "<mark>" + m + "</mark>"); }
+  return h;
+}
+function snippet(text, term){
+  const i = text.toLowerCase().indexOf(term); if (i < 0) return text.slice(0, 140) + (text.length > 140 ? "…" : "");
+  const a = Math.max(0, i - 50); return (a ? "…" : "") + text.slice(a, a + 160) + (a + 160 < text.length ? "…" : "");
+}
+function searchResults(){
+  const terms = SEARCH_Q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!terms.length) return "";
+  const hits = searchIndex().filter(x => terms.every(w => x.hay.includes(w)));
+  if (!hits.length) return `<div class="empty">${esc(t("searchNone",{q:SEARCH_Q}))}</div>`;
+  return `<p class="mono small muted">${esc(t("searchCount",{n:hits.length}))}</p>` + hits.slice(0, 60).map(x => `<a class="card stack g4 hit" href="${esc(x.href)}">
+    <span class="label r">${esc(x.u ? t("unitN",{n:unitNum(x.u.id)}) + " · " : "")}${esc(t(x.kind))}</span>
+    <span style="font-family:var(--serif);font-size:18px">${hilite(x.title.slice(0, 160), terms)}</span>
+    ${x.body ? `<span class="small muted">${hilite(snippet(x.body, terms[0]), terms)}</span>` : ""}</a>`).join("");
+}
+function viewSearch(){
+  return topBar(t("search")) + `<div class="shell">${sideNav(null,"search")}<main class="main" style="max-width:860px">
+    <h1 class="big" style="font-size:40px">${esc(t("search"))}</h1>
+    <label class="sr" for="search-in">${esc(t("search"))}</label>
+    <input id="search-in" type="search" value="${esc(SEARCH_Q)}" placeholder="${esc(t("searchPh"))}" autocomplete="off" style="font-size:18px;min-height:52px">
+    <div id="search-res" class="stack g10" aria-live="polite">${searchResults()}</div>
+  </main></div>`;
+}
+
+/* ----- study sheet (printable) ----- */
+function viewSheet(){
+  const units = UNITS.map((u, i) => { const r = u.review || {}, p = u.prestudy || {};
+    return `<section class="stack g10 sheet-unit"><h2 style="font-size:26px"><span style="color:var(--rubric)">${i+1}</span> ${mdi(u.title)}</h2>
+      ${(r.keyPoints||[]).length ? `<ol class="md" style="margin:0;padding-left:1.3em">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol>` : ""}
+      ${(p.keyTerms||[]).length ? `<dl class="sheet-terms">${p.keyTerms.map(k => `<div><dt>${mdi(k.term)}</dt><dd>${mdi(k.definition)}</dd></div>`).join("")}</dl>` : ""}
+      ${(r.flashcards||[]).length ? `<details class="sheet-cards"><summary class="small">${esc(t("flashcards"))} (${r.flashcards.length})</summary><dl class="sheet-terms">${r.flashcards.map(f => `<div><dt>${mdi(f.front)}</dt><dd>${mdi(f.back)}</dd></div>`).join("")}</dl></details>` : ""}
+    </section>`; }).join("");
+  const sheets = REVIEWS.filter(k => DATA[k].formulaSheet).map(k => `<section class="card stack g10 sheet-unit"><h2 style="font-size:24px">${esc(tx(DATA[k].title) || t(k))} · ${esc(t("formulaSheet"))}</h2><div class="md">${md(DATA[k].formulaSheet)}</div></section>`).join("");
+  return topBar(t("sheet")) + `<div class="shell">${sideNav(null,"sheet")}<main class="main sheet" style="max-width:900px">
+    <header class="stack g8"><span class="label r">${esc(plain(COURSE.title))}</span><h1 class="big" style="font-size:40px">${esc(t("sheet"))}</h1>
+    <p class="muted">${esc(t("sheetSub"))}</p><div class="noprint"><button type="button" class="btn primary" data-act="print">${esc(t("print"))}</button></div></header>
+    ${sheets}${units}</main></div>`;
+}
+
+/* ----- calendar (.ics) ----- */
+function isoDay(ts){ const d = new Date(ts); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+function icsFile(){
+  const icsEsc = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  const enc = new TextEncoder();
+  const fold = line => { const out = []; let cur = "", n = 0;   // RFC 5545: at most 75 octets per line
+    for (const ch of line) { const b = enc.encode(ch).length; if (n + b > 73) { out.push(cur); cur = " "; n = 1; } cur += ch; n += b; }
+    out.push(cur); return out.join("\r\n"); };
+  let h = 0; for (const c of plain(COURSE.title)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Scholia//Study site//EN", "CALSCALE:GREGORIAN", "X-WR-CALNAME:" + icsEsc("Scholia · " + plain(COURSE.title))];
+  const ev = (id, iso, summary, desc) => {
+    const next = new Date(iso + "T00:00:00"); next.setDate(next.getDate() + 1);
+    lines.push("BEGIN:VEVENT", `UID:${id}-${iso}-${h.toString(36)}@scholia`, "DTSTAMP:" + stamp, "DTSTART;VALUE=DATE:" + iso.replace(/-/g, ""),
+      "DTEND;VALUE=DATE:" + isoDay(next).replace(/-/g, ""), "SUMMARY:" + icsEsc(summary));
+    if (desc) lines.push("DESCRIPTION:" + icsEsc(desc));
+    lines.push("END:VEVENT");
+  };
+  UNITS.forEach((u, i) => { if (/^\d{4}-\d\d-\d\d$/.test(u.date || "")) ev("unit-" + u.id, u.date, t("icsLecture",{u:t("unitN",{n:i+1}), t:plain(u.title)}), plain(u.summary)); });
+  REVIEWS.forEach(k => { const r = DATA[k]; if (/^\d{4}-\d\d-\d\d$/.test(r.date || "")) ev("exam-" + k, r.date, t(k === "midterm" ? "icsMidterm" : "icsFinal") + " · " + plain(COURSE.title), tx(r.title) || t(k)); });
+  const byDay = {};
+  Object.keys(S.nb).filter(id => QIDX[id] && !S.nb[id].mastered).forEach(id => { const d = isoDay(Math.max(S.nb[id].due || 0, Date.now())); byDay[d] = (byDay[d] || 0) + 1; });
+  Object.keys(byDay).sort().slice(0, 60).forEach(d => ev("retest", d, t("icsRetest",{n:byDay[d]}), plain(COURSE.title)));
+  lines.push("END:VCALENDAR");
+  return lines.map(fold).join("\r\n") + "\r\n";
+}
+
 function progressSummary(){
   const lines = ["SCHOLIA-PROGRESS v1", "course: " + plain(COURSE.title), "lang: " + LANG, ""];
   UNITS.forEach((u, i) => { const p = readiness(u); lines.push(`Unit ${i+1} [${u.id}] ${plain(u.title)} — stages ${doneCount(u)}/${stagesOf(u).length}` + (p != null ? `, readiness ${p}%` : "")); });
@@ -772,6 +893,8 @@ function openExport(){
   d.innerHTML = `<div class="stack g14"><h2 style="font-size:24px">${esc(t("exportTitle"))}</h2><p class="small muted">${esc(t("exportSub"))}</p>
     <div class="stack g8"><button type="button" class="btn primary" data-x="dl">${esc(t("download"))}</button><button type="button" class="btn" data-x="sum">${esc(t("copySummary"))}</button>
     <label class="btn" style="cursor:pointer">${esc(t("import"))}<input type="file" accept="application/json,.json" data-x="imp" class="sr"></label></div>
+    <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("ics"))}</h3><p class="small muted">${esc(t("icsSub"))}</p>
+    <button type="button" class="btn" data-x="ics">${esc(t("ics"))}</button></div>
     <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("codeTitle"))}</h3><p class="small muted">${esc(t("codeSub"))}</p>
     <button type="button" class="btn" data-x="code">${esc(t("codeCopy"))}</button>
     <label class="sr" for="code-in">${esc(t("codePaste"))}</label><textarea id="code-in" data-x="codein" placeholder="SCHZ1:…" style="min-height:72px;font-family:var(--mono);font-size:12px"></textarea>
@@ -782,8 +905,9 @@ function openExport(){
   d.addEventListener("click", async e => {
     const x = e.target.closest("[data-x]"); if (!x) { if (e.target === d) d.close(); return; }
     if (x.dataset.x === "close") d.close();
-    if (x.dataset.x === "dl") { const blob = new Blob([JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1)], {type:"application/json"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "scholia-progress-" + new Date().toISOString().slice(0,10) + ".json"; document.body.appendChild(a); a.click(); a.remove(); }
-    if (x.dataset.x === "code") { const c = await progressCode(); if (!(await copyText(c))) { const o = d.querySelector('[data-x="out"]'); o.textContent = c; o.hidden = false; } }
+    if (x.dataset.x === "dl") { downloadBackup(); render(); }
+    if (x.dataset.x === "ics") { downloadFile("scholia-" + new Date().toISOString().slice(0,10) + ".ics", icsFile(), "text/calendar"); toast(t("icsDone")); }
+    if (x.dataset.x === "code") { const c = await progressCode(); S.backup = Date.now(); save(); if (!(await copyText(c))) { const o = d.querySelector('[data-x="out"]'); o.textContent = c; o.hidden = false; } }
     if (x.dataset.x === "apply") {
       try { S = migrate(Object.assign(blank(), await readProgressCode(d.querySelector('[data-x="codein"]').value))); save(); toast(t("importDone")); d.close(); render(); }
       catch(err){ toast(t("codeFail")); }
@@ -811,11 +935,14 @@ function render(){
   else if (r.view === "retest") html = viewRetest();
   else if (r.view === "cards") html = viewCards();
   else if (r.view === "drill") html = viewDrill();
+  else if (r.view === "search") { if (r.a) { try { SEARCH_Q = decodeURIComponent(r.a); } catch(e){} } html = viewSearch(); }
+  else if (r.view === "sheet") html = viewSheet();
   else if (r.view === "review" && DATA[r.a]) html = viewReview(r.a);
   else html = viewHome();
   app.innerHTML = html;
   if (r.view === "review" && S.exam[r.a] && S.exam[r.a].current && !S.exam[r.a].current.submitted) startTimer(r.a);
   typeset(app);
+  if (r.view === "search") { const inp = document.getElementById("search-in"); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
 }
 function typeset(el){
   if (window.renderMathInElement) { try { window.renderMathInElement(el, {delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},{left:"\\(",right:"\\)",display:false},{left:"\\[",right:"\\]",display:true}], throwOnError:false}); } catch(e){} }
@@ -827,6 +954,8 @@ document.addEventListener("click", e => {
   const act = el.dataset.act, d = el.dataset;
   if (act === "lang") { LANG = d.v; S.lang = d.v; save(); rerender(true); return; }
   if (act === "export") { openExport(); return; }
+  if (act === "backup") { downloadBackup(); rerender(true); return; }
+  if (act === "print") { window.print(); return; }
   if (act.startsWith("q-")) { quizAct(act, d.k, d.v); rerender(true); return; }
   if (act === "done" || act === "undone") { setDone(unitById(d.u), d.s, act === "done"); rerender(true); return; }
   if (act === "done-go") { setDone(unitById(d.u), d.s, true); location.hash = d.go; window.scrollTo(0,0); return; }
@@ -867,6 +996,7 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("input", e => {
   const el = e.target; const d = el.dataset;
+  if (el.id === "search-in") { SEARCH_Q = el.value; const res = document.getElementById("search-res"); if (res) { res.innerHTML = searchResults(); } return; }
   if (d.act === "q-text") qs(d.k).text = el.value;
   if (d.act === "ex-text") { S.exam[d.k].current.ans[d.id] = el.value; save(); }
 });
@@ -878,4 +1008,5 @@ document.addEventListener("submit", e => {
 });
 window.addEventListener("hashchange", () => { if (route().view === "retest" && QS.retest && QS.retest.finished) QS.retest = null; if (route().view === "cards") CS.list = null; render(); window.scrollTo(0,0); });
 window.addEventListener("load", () => typeset(document.getElementById("app")));
+window.addEventListener("beforeprint", () => document.querySelectorAll("details.sheet-cards").forEach(d => d.open = true));
 render();

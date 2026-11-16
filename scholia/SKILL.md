@@ -115,6 +115,19 @@ to handle homework). The short version:
 For a large course, write one JSON file per unit rather than one huge file (see step 4); generating
 unit by unit also keeps quality even across the course.
 
+**Figures.** Many subjects are taught through diagrams (supply and demand, cost curves, circuits,
+tree diagrams). Where a picture carries the idea, include it: any text field accepts
+`![caption](figures/name.png)`, with the path relative to the course folder, and the build script
+embeds the file so the site stays a single offline file. Ways to get one:
+- **Slides (.pptx):** the images are in the zip under `ppt/media/`; pick the one the slide uses.
+- **PDF pages:** render the page (`pdftoppm -r 150 -png`, or PyMuPDF `page.get_pixmap(dpi=150)`) and
+  crop to the diagram.
+- **Simple diagrams you can redraw** (a curve, a tree, a timeline): write a small SVG by hand. Use dark
+  strokes on a transparent background; the app shows figures on a white card in both themes.
+
+Keep each image under about 300 KB (PNG for diagrams, JPEG for photos), and write the caption so the
+figure still makes sense to someone using a screen reader.
+
 ### 4. Write the data and build
 
 The data format is in `references/data-schema.md`; `references/example-course/` is a small complete
@@ -145,7 +158,10 @@ that math renders and quizzes grade correctly. Then give the user the file and a
    their classroom questions answered.
 
 Mention that saved progress lives in that one browser; the **Export progress** button lets them back
-it up or move it to another device.
+it up, move it to another device with a progress code, or add lecture, exam and re-test dates to their
+calendar. The site reminds them to download a backup every week, because Safari may clear data for
+sites that haven't been opened for a while. **Search** finds any concept across the course, and
+**Study sheet** collects every unit's key points and formulas into one printable page.
 
 ## Follow-up conversations
 
@@ -158,8 +174,17 @@ file. Progress survives because the course title and ids are unchanged.
 student keeps missing, explain those directly, and consider adding targeted `postDifficulties` or extra
 `postquiz` questions for those concepts before rebuilding.
 
-**New materials.** Add or extend units, keep existing ids, rebuild. If a new unit falls inside the
-midterm scope, update `midterm.scope`.
+**New materials (adding units later).** Don't regenerate the course — write only what is new, so
+it costs a fraction of the tokens and the student's progress is untouched:
+1. Run `build_scholia.py <course-folder> --summary`. It prints every unit's id, date, title,
+   question-id pattern and concept labels without you re-reading every file.
+2. Write each new unit as its own `units/uNN.json` (next free id; the file name sets the order).
+   Reuse the exact concept labels from the summary wherever the new unit builds on an old idea, so
+   weak-spot tracking links them.
+3. If the new units fall inside a review, append their ids to `midterm.scope` / `final.scope` and add
+   a few exam questions for them; leave the existing questions alone.
+4. Rebuild and send the new file. Ids and the course title are unchanged, so the student's saved
+   progress carries over.
 
 ## Academic integrity
 
@@ -176,5 +201,5 @@ instructor.
 - `references/data-schema.md` — every field, with types and required/optional.
 - `references/example-course/` — a small two-unit course in folder form.
 - `scripts/build_scholia.py` — validates data and compiles the HTML.
-- `assets/scholia-template.html` — the app itself. You don't normally edit it; all content goes in the
-  data.
+- `assets/app/` — the app itself (`index.html`, `styles.css`, `i18n.js`, `app.js`), inlined with
+  KaTeX from `assets/vendor/` at build time. You don't normally edit it; all content goes in the data.

@@ -4,7 +4,7 @@
 
 [English](README.md) · [線上示範](https://larmeinsamkeit-bot.github.io/scholia-study-skill/) · [下載 skill](../../releases/latest)
 
-![Scholia 主頁](docs/screenshots/dashboard.png)
+![Scholia 示範](docs/screenshots/demo.gif)
 
 *Scholia*（希臘文，意思是學者寫在書頁邊的批註）是一個 [Claude](https://claude.ai) skill。
 把課程大綱、投影片、筆記、功課和過往試卷交給 Claude，它會讀完材料、整理出課程地圖，
@@ -24,6 +24,8 @@
 - **課堂提問 → Claude**：上堂時記低問題，匯出後貼回給 Claude 解答
 - **薄弱知識點追蹤**：直接反映在期中和期末溫習
 - **介面語言**：繁體中文、简体中文、English；課程內容用你揀選的語言撰寫
+- **全站搜尋**、可列印的**重點總覽**，以及**圖表**（投影片裏的圖會內嵌在檔案裏）
+- **匯出日曆 (.ics)**：上堂日、考試日和錯題重測日；每星期提醒你**備份進度**
 - **完全離線**：數學公式（KaTeX）和字型都內嵌在檔案裏；支援淺色、深色模式和手機
 - **進度跟住你走**：進度儲存在瀏覽器；用一段進度碼就可以轉移到另一部裝置
 
@@ -33,8 +35,22 @@
 | 預習題 | 期中溫習（深色模式） | 手機 |
 |---|---|---|
 | ![預習題](docs/screenshots/quiz.png) | ![期中溫習](docs/screenshots/final-review.png) | ![手機](docs/screenshots/mobile.png) |
+| **搜尋** | **重點總覽** | |
+| ![搜尋](docs/screenshots/search.png) | ![重點總覽](docs/screenshots/sheet.png) | |
 
 ## 安裝 skill
+
+**Claude Code**（兩句指令）：
+
+```bash
+claude plugin marketplace add larmeinsamkeit-bot/scholia-study-skill
+```
+
+```bash
+claude plugin install scholia@scholia-study
+```
+
+**Claude.ai／Claude 桌面應用程式，或者手動安裝：**
 
 1. 由[最新版本](../../releases/latest)下載 **`scholia.skill`**（或者在 [`dist/`](dist/) 資料夾下載）。
 2. 安裝：

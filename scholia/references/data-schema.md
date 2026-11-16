@@ -6,6 +6,12 @@ Every text field accepts light Markdown: `**bold**`, `*italic*`, `` `code` ``, `
 `1. ` numbered lists, blank-line paragraphs, and LaTeX math in `$...$` (inline) or `$$...$$`
 (display). In JSON, backslashes must be doubled: write `"$\\frac{a}{b}$"`.
 
+**Images:** `![caption](figures/supply-demand.png)` anywhere in a text field (usually a prestudy
+section body, a recap, a difficulty example or a question stem). The path is relative to the course
+folder (or to `course.json`'s folder). Allowed types: PNG, JPEG, GIF, WebP, SVG. The build script
+embeds each file as a data URI so the site stays one offline file; it errors on a missing file and
+warns above 600 KB. The caption doubles as the image's alt text.
+
 **Money amounts must escape the dollar sign**: write `"\\$30,000"` (JSON) so it shows as $30,000.
 An unescaped `$` starts a formula, and two prices in one string ("from $100 to $80") would be read
 as one formula. `HK$`, `US$` and other letter-prefixed amounts are safest escaped too

@@ -4,7 +4,7 @@
 
 [繁體中文說明](README.zh-Hant.md) · [Live demo](https://larmeinsamkeit-bot.github.io/scholia-study-skill/) · [Download the skill](../../releases/latest)
 
-![Scholia dashboard](docs/screenshots/dashboard.png)
+![Scholia demo](docs/screenshots/demo.gif)
 
 *Scholia* (Greek: the notes scholars wrote in the margins of a text) is a [Claude](https://claude.ai)
 skill. Give Claude your syllabus, slides, notes, homework and past exams; it reads them, builds a
@@ -25,6 +25,8 @@ Plus:
 - **Classroom questions → Claude** — log questions in lecture, export them, paste them back to Claude for answers
 - **Weak-spot tracking** that feeds the midterm and final reviews
 - **繁體中文 / 简体中文 / English** interface; course content in the language(s) you choose
+- **Search** across every unit, a printable **study sheet**, and **figures** (diagrams from your slides, embedded in the file)
+- **Calendar export (.ics)** of lecture, exam and re-test days, and a weekly **backup reminder**
 - **Works fully offline** — math (KaTeX) and fonts are embedded in the file; light and dark mode; phone-friendly
 - **Progress stays with you** — saved in your browser; move it to another device with a short progress code
 
@@ -35,8 +37,22 @@ two-unit sample course.
 | Pre-study quiz | Midterm review (dark mode) | Phone |
 |---|---|---|
 | ![Quiz](docs/screenshots/quiz.png) | ![Review](docs/screenshots/final-review.png) | ![Phone](docs/screenshots/mobile.png) |
+| **Search** | **Study sheet** | |
+| ![Search](docs/screenshots/search.png) | ![Study sheet](docs/screenshots/sheet.png) | |
 
 ## Install the skill
+
+**Claude Code** (one command each):
+
+```bash
+claude plugin marketplace add larmeinsamkeit-bot/scholia-study-skill
+```
+
+```bash
+claude plugin install scholia@scholia-study
+```
+
+**Claude.ai / Claude desktop app, or manual install:**
 
 1. Download **`scholia.skill`** from the [latest release](../../releases/latest) (or from [`dist/`](dist/)).
 2. Install it:

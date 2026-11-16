@@ -5,7 +5,9 @@
       "id": 1,
       "name": "single-week-zh-hant",
       "prompt": "用 Scholia 幫我把呢份第一週筆記整成溫習網站。內容用繁體中文就得。",
-      "files": ["evals/files/micro-econ-week1/lecture-notes.md"],
+      "files": [
+        "evals/files/micro-econ-week1/lecture-notes.md"
+      ],
       "expected_output": "A course folder with one unit covering opportunity cost, PPF and comparative advantage, built to a single HTML file with no validation errors. Homework answers are hints-first because HW1 is not graded yet.",
       "grader_args": "--lang zh-Hant --units 1",
       "expectations": [
@@ -25,7 +27,9 @@
       "id": 2,
       "name": "wrong-answer-key",
       "prompt": "Use Scholia to make a homework-solutions page from this STAT 110 homework and its answer key. English only.",
-      "files": ["evals/files/stats-hw/homework-and-key.md"],
+      "files": [
+        "evals/files/stats-hw/homework-and-key.md"
+      ],
       "expected_output": "A one-unit course whose homework section re-derives every answer. The key has two errors: Problem 2 adds 0.2 + 1.0 + 0.9 to 2.2 (it is 2.1), and Problem 3 forgets to square E[X] (Var(X) = 4.9 − 2.1² = 0.49, not 2.7). The skill must catch both and flag them instead of copying the key.",
       "grader_args": "--lang en --units 1",
       "expectations": [
@@ -42,7 +46,9 @@
       "id": 3,
       "name": "bilingual-content",
       "prompt": "Build a Scholia study site from these notes. I'm an exchange student in Hong Kong — please write the content in both Traditional Chinese and English.",
-      "files": ["evals/files/micro-econ-week1/lecture-notes.md"],
+      "files": [
+        "evals/files/micro-econ-week1/lecture-notes.md"
+      ],
       "expected_output": "Content in zh-Hant and en (contentLangs [\"zh-Hant\", \"en\"] or [\"en\", \"zh-Hant\"] with lang matching the first), every text field bilingual, and HK usage in the Chinese text.",
       "grader_args": "--units 1 --langs zh-Hant,en",
       "expectations": [
@@ -51,6 +57,46 @@
         "the Chinese text uses Traditional characters with HK terms (e.g. 機率 not 概率, 功課 not 作业)",
         "English technical terms appear in brackets after the Chinese term the first time (e.g. 機會成本 (opportunity cost))",
         "the assistant mentioned that a second language roughly doubles generation cost before or while generating"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "two-units-and-midterm",
+      "prompt": "Use Scholia to build me a study site from weeks 1 and 2 of ECON 101 plus last year's midterm. Include a midterm review. English only.",
+      "files": [
+        "evals/files/micro-econ-week1/lecture-notes.md",
+        "evals/files/micro-econ-week2/lecture-notes.md",
+        "evals/files/micro-econ-week2/past-midterm-2025.md"
+      ],
+      "expected_output": "Two units and a midterm review whose scope is both units, with a 15–25 question mock exam, a formula sheet and an exam strategy drawn from the past paper.",
+      "grader_args": "--lang en --units 2",
+      "expectations": [
+        "build_scholia.py --check reports 0 errors",
+        "midterm.scope is [\"u1\", \"u2\"] and midterm.exam has 15-25 questions spread across both units",
+        "the strategy mentions the past paper's format (50 minutes, 40% multiple choice / 60% problems) and the examiner's note (show opportunity-cost working, use the midpoint method)",
+        "the formula sheet includes the midpoint elasticity formula",
+        "any past-paper problem used is answered correctly: Q4 Country Y (laptop costs 1 phone vs 2), Q5 P = 12 and Q = 32, Q6 |E| = 1.5 (elastic)",
+        "the exam does not just copy the past paper verbatim; concepts are reused with new numbers",
+        "the supply-and-demand diagram described in the week 2 notes appears as a figure (an SVG or image)"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "add-unit-to-existing-course",
+      "prompt": "我已經有一個 Scholia 網站，課程資料夾喺 evals/files/existing-course。呢份係第二週嘅筆記，幫我加入去個網站。",
+      "files": [
+        "evals/files/existing-course/",
+        "evals/files/micro-econ-week2/lecture-notes.md"
+      ],
+      "expected_output": "Only a new units/u02.json is written; u01.json is left byte-for-byte unchanged; concept labels from week 1 (機會成本) are reused where week 2 builds on them; the site rebuilds with both units.",
+      "grader_args": "--lang zh-Hant --units 2",
+      "expectations": [
+        "units/u01.json is byte-for-byte identical to the fixture",
+        "a new units/u02.json exists with id u2 and date 2026-09-14",
+        "the run used build_scholia.py --summary (or otherwise avoided rewriting week 1)",
+        "at least one week 2 question or difficulty reuses the exact week 1 concept label 機會成本",
+        "the build reports 0 errors and the site has 2 units",
+        "elasticity example is right: |E| = 1 for $4→$6 and 120→80 with the midpoint method"
       ]
     }
   ]

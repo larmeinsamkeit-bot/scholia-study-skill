@@ -1,0 +1,12 @@
+{
+  "name": "scholia",
+  "displayName": "Scholia",
+  "version": "1.2.0",
+  "description": "Turn course materials into an interactive offline study site: pre-study, quizzes, mistake notebook with spaced repetition, homework help, and midterm/final review.",
+  "author": { "name": "larmeinsamkeit-bot", "url": "https://github.com/larmeinsamkeit-bot" },
+  "homepage": "https://larmeinsamkeit-bot.github.io/scholia-study-skill/",
+  "repository": "https://github.com/larmeinsamkeit-bot/scholia-study-skill",
+  "license": "MIT",
+  "keywords": ["study", "education", "flashcards", "spaced-repetition", "exam-prep"],
+  "skills": ["./scholia"]
+}

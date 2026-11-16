@@ -309,6 +309,74 @@ def assemble_template():
     return shell
 
 
+IMG_REF = re.compile(r"!\[([^\]\n]*)\]\(([^)\s]+)\)")
+IMG_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif",
+             ".webp": "image/webp", ".svg": "image/svg+xml"}
+
+
+def embed_images(data, base):
+    """Replace ![alt](relative/path.png) in any text with a data: URI, so the site stays one file.
+
+    Returns (errors, warnings, count). Paths are relative to the course folder (or to course.json's folder).
+    """
+    errors, warnings, count, cache = [], [], [0], {}
+
+    def sub(m):
+        alt, ref = m.group(1), m.group(2)
+        if ref.startswith(("data:", "https://")):
+            return m.group(0)
+        f = (base / ref).resolve()
+        mime = IMG_TYPES.get(f.suffix.lower())
+        if not mime:
+            errors.append(f"image {ref}: use one of {', '.join(sorted(IMG_TYPES))}")
+            return m.group(0)
+        if not f.is_file():
+            errors.append(f"image {ref}: file not found (paths are relative to {base})")
+            return m.group(0)
+        if f not in cache:
+            raw = f.read_bytes()
+            if len(raw) > 600_000:
+                warnings.append(f"image {ref} is {len(raw)//1024} KB; shrink it (the site gets slow above a few MB)")
+            cache[f] = f"data:{mime};base64," + base64.b64encode(raw).decode()
+        count[0] += 1
+        return f"![{alt}]({cache[f]})"
+
+    def walk(v):
+        if isinstance(v, str):
+            return IMG_REF.sub(sub, v) if "![" in v else v
+        if isinstance(v, list):
+            return [walk(x) for x in v]
+        if isinstance(v, dict):
+            return {k: walk(x) for k, x in v.items()}
+        return v
+
+    new = walk(data)
+    data.clear()
+    data.update(new)
+    return errors, warnings, count[0]
+
+
+def summary(data):
+    """A compact map of an existing course: what to reuse when adding units without re-reading every file."""
+    lang = data["course"].get("lang", "zh-Hant")
+
+    def s(v):
+        return v if isinstance(v, str) else (v or {}).get(lang) or next(iter((v or {"": ""}).values()))
+    lines = [f"course: {s(data['course']['title'])}  lang={lang}  contentLangs={data['course'].get('contentLangs') or [lang]}"]
+    for u in data.get("units") or []:
+        qs = (u.get("prequiz") or []) + (u.get("postquiz") or [])
+        concepts = sorted({s(q.get("concept")) for q in qs if q.get("concept")})
+        hw = [h.get("id") for h in u.get("homework") or []]
+        lines.append(f"{u['id']:>5}  {u.get('date', ''):10}  {s(u.get('title'))}")
+        lines.append(f"       {len(qs)} questions (ids {qs[0]['id'] if qs else '-'} …)  homework: {', '.join(hw) or '-'}")
+        lines.append(f"       concepts: {' | '.join(concepts)}")
+    for k in ("midterm", "final"):
+        if data.get(k):
+            r = data[k]
+            lines.append(f"{k}: scope={r.get('scope')} exam={len(r.get('exam') or [])} questions date={r.get('date', '-')}")
+    return "\n".join(lines)
+
+
 def build(data, out):
     tpl = assemble_template()
     if PLACEHOLDER not in tpl:
@@ -333,16 +401,26 @@ def main():
     ap.add_argument("src", help="course.json or a course folder")
     ap.add_argument("-o", "--out", help="output .html path")
     ap.add_argument("--check", action="store_true", help="validate only")
+    ap.add_argument("--summary", action="store_true",
+                    help="print unit ids, concepts and question ids (use before adding units)")
     a = ap.parse_args()
     data = load(a.src)
+    if a.summary:
+        print(summary(data))
+        return
+    src = Path(a.src)
+    img_err, img_warn, nimg = embed_images(data, src if src.is_dir() else src.parent)
     c = validate(data)
+    c.errors += img_err
+    c.warnings += img_warn
     for w in c.warnings:
         print("warning", w)
     for e in c.errors:
         print("ERROR  ", e)
     units = data.get("units") or []
     nq = sum(len(u.get("prequiz") or []) + len(u.get("postquiz") or []) for u in units)
-    print(f"{len(units)} units · {nq} unit questions · {len(c.errors)} errors · {len(c.warnings)} warnings")
+    print(f"{len(units)} units · {nq} unit questions{f' · {nimg} images' if nimg else ''}"
+          f" · {len(c.errors)} errors · {len(c.warnings)} warnings")
     if c.errors:
         sys.exit(1)
     if a.check:

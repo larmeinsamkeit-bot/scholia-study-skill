@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#1C1B19">
+  <g stroke="#55524B" stroke-width="1.5" fill="none">
+    <path d="M40 100 L170 50"/><path d="M40 100 L170 150"/>
+    <path d="M190 50 L320 25"/><path d="M190 50 L320 75"/>
+    <path d="M190 150 L320 125"/><path d="M190 150 L320 175"/>
+  </g>
+  <circle cx="40" cy="100" r="5" fill="#A8321C"/>
+  <text x="180" y="54" text-anchor="middle">B</text><text x="180" y="154" text-anchor="middle">Bᶜ</text>
+  <text x="95" y="66" fill="#1D5A8C">P(B)</text><text x="95" y="146" fill="#1D5A8C">P(Bᶜ)</text>
+  <text x="230" y="28" fill="#1D5A8C">P(A|B)</text><text x="226" y="118" fill="#1D5A8C">P(A|Bᶜ)</text>
+  <text x="330" y="29">A ∩ B</text><text x="330" y="79">Aᶜ ∩ B</text>
+  <text x="330" y="129">A ∩ Bᶜ</text><text x="330" y="179">Aᶜ ∩ Bᶜ</text>
+</svg>
