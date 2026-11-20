@@ -162,6 +162,8 @@ it up, move it to another device with a progress code, or add lecture, exam and 
 calendar. The site reminds them to download a backup every week, because Safari may clear data for
 sites that haven't been opened for a while. **Search** finds any concept across the course, and
 **Study sheet** collects every unit's key points and formulas into one printable page.
+After a wrong answer, **Ask Claude** copies a ready-made follow-up prompt for them to paste back to you;
+flashcards can be typed instead of flipped, read aloud, and exported to Anki.
 
 ## Follow-up conversations
 
@@ -169,6 +171,12 @@ sites that haven't been opened for a while. **Search** finds any concept across 
 `SCHOLIA-QUESTIONS`). Answer each question carefully using the course materials, then add the answers
 to that unit's `classroom.answers` list (`{ "q": …, "a": …, "source": … }`), rebuild, and send the new
 file. Progress survives because the course title and ids are unchanged.
+
+**A question brought back** (`SCHOLIA-ASK` block, from the Ask Claude button). It holds the question,
+the student's answer, the correct answer and the site's explanation. Don't repeat that explanation:
+find the specific step where their reasoning went wrong, explain it another way (a smaller example, a
+picture, the instructor's own wording from the materials), then give one similar practice question
+and wait for their attempt before showing its answer.
 
 **Progress brought back** (`SCHOLIA-PROGRESS` block, or the exported JSON). Look at which concepts the
 student keeps missing, explain those directly, and consider adding targeted `postDifficulties` or extra
@@ -181,9 +189,11 @@ it costs a fraction of the tokens and the student's progress is untouched:
 2. Write each new unit as its own `units/uNN.json` (next free id; the file name sets the order).
    Reuse the exact concept labels from the summary wherever the new unit builds on an old idea, so
    weak-spot tracking links them.
-3. If the new units fall inside a review, append their ids to `midterm.scope` / `final.scope` and add
+3. Update `course.subtitle` (and anything else in `course.json` that names the weeks covered) so it
+   matches the new range; leave every other existing field alone.
+4. If the new units fall inside a review, append their ids to `midterm.scope` / `final.scope` and add
    a few exam questions for them; leave the existing questions alone.
-4. Rebuild and send the new file. Ids and the course title are unchanged, so the student's saved
+5. Rebuild and send the new file. Ids and the course title are unchanged, so the student's saved
    progress carries over.
 
 ## Academic integrity

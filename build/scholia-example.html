@@ -190,7 +190,7 @@ a.hit{color:var(--ink);text-decoration:none}a.hit:hover{border-color:var(--rubri
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 <script>
 "use strict";
-const DATA = {"course":{"title":"機率與統計 I（範例）","subtitle":"STAT 201 · 2026 秋季學期","lang":"zh-Hant","instructor":"李教授"},"units":[{"id":"u1","title":{"zh-Hant":"條件機率","en":"Conditional probability"},"summary":"得知新資訊之後，機率要怎樣更新。","date":"2026-09-22","prestudy":{"minutes":25,"objectives":["用自己的話解釋 $P(A \\mid B)$ 的意思","用定義 $P(A \\mid B) = P(A \\cap B)/P(B)$ 計算條件機率","分辨 $P(A \\mid B)$ 與 $P(B \\mid A)$"],"sections":[{"heading":"縮小了的樣本空間","body":"條件機率 (conditional probability) 回答一個問題：**已知 B 發生了**，A 發生的機率是多少？\n\n直覺上，知道 B 發生，等於把樣本空間縮小到 B 之內，然後問 A 佔了 B 的幾多。\n\n例如擲一粒骰，已知點數是偶數 (B = {2, 4, 6})，點數是 6 的機率就由 1/6 變成 1/3。","source":"教科書 §2.4"},{"heading":"定義","body":"當 $P(B) > 0$：\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$\n\n分子是「A 和 B 同時發生」，分母是「B 發生」。把它移項，就得到乘法法則：$P(A \\cap B) = P(A \\mid B)\\,P(B)$。\n\n用樹狀圖 (tree diagram) 表示：第一層分 B 與 Bᶜ，第二層每條枝都是一個條件機率；沿路相乘就得到交集的機率。\n\n![樹狀圖：每條枝上的機率都是條件機率](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMjAwIiBmb250LWZhbWlseT0iSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFDMUIxOSI+CiAgPGcgc3Ryb2tlPSIjNTU1MjRCIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSI+CiAgICA8cGF0aCBkPSJNNDAgMTAwIEwxNzAgNTAiLz48cGF0aCBkPSJNNDAgMTAwIEwxNzAgMTUwIi8+CiAgICA8cGF0aCBkPSJNMTkwIDUwIEwzMjAgMjUiLz48cGF0aCBkPSJNMTkwIDUwIEwzMjAgNzUiLz4KICAgIDxwYXRoIGQ9Ik0xOTAgMTUwIEwzMjAgMTI1Ii8+PHBhdGggZD0iTTE5MCAxNTAgTDMyMCAxNzUiLz4KICA8L2c+CiAgPGNpcmNsZSBjeD0iNDAiIGN5PSIxMDAiIHI9IjUiIGZpbGw9IiNBODMyMUMiLz4KICA8dGV4dCB4PSIxODAiIHk9IjU0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CPC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iMTU0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5C4bacPC90ZXh0PgogIDx0ZXh0IHg9Ijk1IiB5PSI2NiIgZmlsbD0iIzFENUE4QyI+UChCKTwvdGV4dD48dGV4dCB4PSI5NSIgeT0iMTQ2IiBmaWxsPSIjMUQ1QThDIj5QKELhtpwpPC90ZXh0PgogIDx0ZXh0IHg9IjIzMCIgeT0iMjgiIGZpbGw9IiMxRDVBOEMiPlAoQXxCKTwvdGV4dD48dGV4dCB4PSIyMjYiIHk9IjExOCIgZmlsbD0iIzFENUE4QyI+UChBfELhtpwpPC90ZXh0PgogIDx0ZXh0IHg9IjMzMCIgeT0iMjkiPkEg4oipIEI8L3RleHQ+PHRleHQgeD0iMzMwIiB5PSI3OSI+QeG2nCDiiKkgQjwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjEyOSI+QSDiiKkgQuG2nDwvdGV4dD48dGV4dCB4PSIzMzAiIHk9IjE3OSI+QeG2nCDiiKkgQuG2nDwvdGV4dD4KPC9zdmc+Cg==)","source":"投影片 W3 p.4–7"}],"keyTerms":[{"term":"條件機率","definition":"已知 B 發生下 A 的機率，記作 $P(A \\mid B)$。"},{"term":"乘法法則","definition":"$P(A \\cap B) = P(A \\mid B)P(B)$。"},{"term":"交集","definition":"$A \\cap B$：A 和 B 同時發生。"}],"notes":[{"kind":"source","text":"教科書 §2.4，pp. 58–64 · 投影片 W3 p.2–12"},{"kind":"builds-on","text":"樣本空間與事件 — 條件機率只是在一個較小的樣本空間裏計數。"},{"kind":"watch","text":"直線 `|` 左邊是你想知道的事件，右邊是已知條件。次序不可以調轉。"}]},"prequiz":[{"id":"u1-pre-1","type":"single","difficulty":1,"concept":"條件機率定義","stem":"擲一粒公平骰子。已知點數是偶數，點數是 6 的機率是多少？","options":["$1/6$","$1/3$","$1/2$","$2/3$"],"answer":1,"explanation":"已知是偶數，樣本空間縮小為 {2, 4, 6}，其中只有 6 一個結果，所以是 $1/3$。\n\n選 $1/6$ 是忘記了條件已經把樣本空間縮小。","optionFeedback":["這是沒有任何條件時的機率 — 你忽略了「已知是偶數」。",null,"1/2 是「點數是偶數」本身的機率，不是條件機率。","2/3 是偶數中不是 6 的比例。"],"source":"投影片 W3 p.5"},{"id":"u1-pre-2","type":"tf","difficulty":1,"concept":"P(A|B) 與 P(B|A)","stem":"對任何事件 A、B，$P(A \\mid B) = P(B \\mid A)$。","answer":false,"explanation":"一般不相等。$P(A \\mid B) = P(A\\cap B)/P(B)$，$P(B \\mid A) = P(A\\cap B)/P(A)$，分母不同。只有 $P(A) = P(B)$ 時兩者才會相等。"},{"id":"u1-pre-3","type":"single","difficulty":2,"concept":"條件機率定義","stem":"已知 $P(A \\cap B) = 0.2$，$P(B) = 0.5$。$P(A \\mid B)$ 是多少？","options":["$0.1$","$0.4$","$0.7$","$2.5$"],"answer":1,"explanation":"$P(A\\mid B) = 0.2 / 0.5 = 0.4$。\n\n$0.1$ 是把兩者相乘；$2.5$ 是分子分母調轉 — 機率不可能大於 1。","optionFeedback":["你把兩個數相乘了 — 定義是相除。",null,"0.7 是相加的結果，沒有意義。","分子分母調轉了；任何機率都不會大於 1。"]},{"id":"u1-pre-4","type":"single","difficulty":2,"concept":"乘法法則","stem":"袋中有 3 個紅球、2 個藍球，不放回地抽兩個。兩個都是紅球的機率是多少？","options":["$9/25$","$3/10$","$3/5$","$6/25$"],"answer":1,"explanation":"$P(\\text{第一個紅}) = 3/5$，$P(\\text{第二個紅} \\mid \\text{第一個紅}) = 2/4$。相乘：$3/5 \\times 1/2 = 3/10$。\n\n$9/25$ 是「放回」的答案。","optionFeedback":["這是放回抽樣的答案 — 不放回時第二次只剩 4 個球。",null,"3/5 只是第一個是紅球的機率。","6/25 把分母用錯了。"]},{"id":"u1-pre-5","type":"short","difficulty":2,"concept":"P(A|B) 與 P(B|A)","stem":"用一句話解釋：為甚麼「已知患病，測試呈陽性的機率」和「已知測試呈陽性，真的患病的機率」不一樣？","answer":"兩者的條件（已知的部分）不同：前者在所有患者中計算，後者在所有陽性結果中計算；當疾病罕見時，陽性結果大多來自健康的人，所以後者可以遠低於前者。","explanation":"關鍵是分母：一個是患病的人，一個是測試陽性的人。這正是貝氏定理要處理的問題。"}],"difficulties":[{"title":"把 P(A|B) 與 P(B|A) 調轉","concept":"P(A|B) 與 P(B|A)","why":"兩個式子看起來只差次序，日常語言（「如果…就…」）也常常把兩個方向混為一談。","explanation":"每次先問：**哪件事是已知的？** 已知的放在直線右邊，它決定分母。","example":"已知下雨 (B)，你帶傘 (A) 的機率可能是 0.9；但已知你帶傘，當日下雨的機率可能只有 0.3 — 因為你在陰天也會帶傘。"},{"title":"忘記樣本空間已經縮小","concept":"條件機率定義","why":"習慣了用「全部結果」做分母。","explanation":"條件機率的分母永遠是條件事件 B，不是整個樣本空間。","example":"擲兩粒骰，已知總和是 8，第一粒是 3 的機率：總和 8 的結果有 5 個，其中 (3,5) 一個，所以是 1/5，不是 1/6。"}],"classroom":{"listenFor":["老師怎樣由條件機率引出「獨立」的定義","樹狀圖 (tree diagram) 在甚麼情況下最有用"],"answers":[{"q":"條件機率的分母可以是 0 嗎？","a":"不可以。定義要求 $P(B) > 0$；如果 B 不可能發生，「已知 B 發生」本身就沒有意義。","source":"教科書 §2.4 註 2"}]},"review":{"recap":"條件機率就是在**縮小了的樣本空間**裏計算機率。\n\n- 定義：$P(A\\mid B) = P(A\\cap B)/P(B)$\n- 乘法法則：$P(A\\cap B) = P(A\\mid B)P(B)$，常用來計算「先後發生」的事件\n- 方向很重要：$P(A\\mid B)$ 與 $P(B\\mid A)$ 一般不相等","keyPoints":["條件機率的分母是已知事件 B 的機率。","不放回抽樣時，每一步的機率都要按已抽出的結果更新。","樹狀圖的每一條枝都是一個條件機率，沿路相乘就得到交集的機率。","$P(A\\mid B)$ 與 $P(B\\mid A)$ 的分母不同，所以一般不相等。"],"flashcards":[{"front":"$P(A\\mid B)$ 的定義是？","back":"$P(A\\cap B)/P(B)$，其中 $P(B) > 0$"},{"front":"乘法法則","back":"$P(A\\cap B) = P(A\\mid B)\\,P(B)$"},{"front":"直線 `|` 右邊代表甚麼？","back":"已知發生了的事件（條件）— 它決定分母。"},{"front":"不放回抽兩個紅球（3 紅 2 藍）的機率？","back":"$\\frac{3}{5}\\cdot\\frac{2}{4} = \\frac{3}{10}$"}],"connections":"下一個單元會用條件機率定義**獨立**：如果 $P(A\\mid B) = P(A)$，知道 B 對 A 毫無影響。"},"postquiz":[{"id":"u1-post-1","type":"single","difficulty":2,"concept":"乘法法則","stem":"一班有 60% 女生。女生中 30% 戴眼鏡。隨機選一位同學，她是戴眼鏡的女生的機率是？","options":["$0.18$","$0.30$","$0.50$","$0.90$"],"answer":0,"explanation":"$P(\\text{女} \\cap \\text{眼鏡}) = P(\\text{眼鏡}\\mid\\text{女})P(\\text{女}) = 0.3 \\times 0.6 = 0.18$。","optionFeedback":[null,"0.30 是條件機率 $P(\\text{眼鏡}\\mid\\text{女})$，不是交集。","沒有根據。","把兩個機率相加了。"]},{"id":"u1-post-2","type":"multi","difficulty":3,"concept":"P(A|B) 與 P(B|A)","stem":"設 $P(A)=0.5$，$P(B)=0.25$，$P(A\\cap B)=0.1$。以下哪些正確？（可選多於一項）","options":["$P(A\\mid B) = 0.4$","$P(B\\mid A) = 0.2$","$P(A\\mid B) = P(B\\mid A)$","$P(A\\cup B) = 0.65$"],"answer":[0,1,3],"explanation":"$P(A\\mid B) = 0.1/0.25 = 0.4$；$P(B\\mid A) = 0.1/0.5 = 0.2$，兩者不等；$P(A\\cup B) = 0.5 + 0.25 - 0.1 = 0.65$。"},{"id":"u1-post-3","type":"tf","difficulty":2,"concept":"條件機率定義","stem":"$P(A \\mid B)$ 一定小於或等於 $P(A)$。","answer":false,"explanation":"不一定。已知條件可以令機率上升，例如擲骰已知是偶數，得到 6 的機率由 1/6 升到 1/3。"}],"postDifficulties":[{"title":"交集與條件機率混淆","concept":"乘法法則","why":"題目中「女生中有 30% 戴眼鏡」很容易被讀成「30% 是戴眼鏡的女生」。","explanation":"「…之中」「已知…」「在…的人裏面」都是條件機率的訊號；「既是…又是…」才是交集。","example":"「女生中 30% 戴眼鏡」→ $P(\\text{眼鏡}\\mid\\text{女}) = 0.3$；「30% 的同學是戴眼鏡的女生」→ $P(\\text{女}\\cap\\text{眼鏡}) = 0.3$。"}],"homework":[{"id":"hw3-2","title":"功課 3 · 第 2 題","source":"功課 3","problem":"一個盒有 4 張好的晶片和 1 張壞的。不放回地逐張測試，直到找到壞晶片為止。求剛好要測試 3 張的機率。","hints":["「剛好 3 張」代表頭兩張都是好的，第三張是壞的。","用乘法法則，每一步都按剩下的晶片數更新機率。"],"steps":["第一張是好的：$P = 4/5$。","已知第一張好，第二張也是好的：$P = 3/4$。","已知頭兩張好，第三張是壞的：剩下 3 張中有 1 張壞，$P = 1/3$。","相乘：$\\frac{4}{5}\\cdot\\frac{3}{4}\\cdot\\frac{1}{3} = \\frac{1}{5}$。"],"answer":"$1/5$ — 其實壞晶片出現在任何一個位置的機率都是 $1/5$。","pitfalls":["忘記「剛好」：只計算第三張是壞的，沒有要求頭兩張是好的。","用了放回抽樣的機率 $1/5$ 三次。"],"concept":"乘法法則","revealMode":"hints-first"}]},{"id":"u2","title":{"zh-Hant":"離散型隨機變數","en":"Discrete random variables"},"summary":"把實驗結果變成可以相加、平均和畫圖的數字。","date":"2026-10-06","prestudy":{"minutes":25,"objectives":["說明甚麼是隨機變數 (random variable)，以及甚麼令它是離散的","寫出機率質量函數 (PMF) 並檢查總和是否等於 1","由 PMF 計算期望值 $E[X]$"],"sections":[{"heading":"由結果到數字","body":"**隨機變數**是一條規則，把樣本空間中每一個結果對應到一個數字。擲兩粒骰，結果是一對數字如 (2, 5)，但我們往往只關心總和 7 — 這個總和就是隨機變數 $X$。\n\n如果 $X$ 的可能值可以逐個列出（例如 2, 3, …, 12），它就是**離散的**，即使列表是無限長也可以。","source":"教科書 §3.1"},{"heading":"機率質量函數與期望值","body":"PMF 給出每一個值的機率：$p(x) = P(X = x)$。每個 PMF 都要通過兩個檢查：沒有負數，而且總和剛好是 1。\n\n期望值 (expected value) 是以機率加權的平均：\n\n$$E[X] = \\sum_x x\\,p(x)$$","source":"教科書 §3.2–3.3"}],"keyTerms":[{"term":"隨機變數","definition":"由結果到實數的函數。"},{"term":"PMF","definition":"$p(x) = P(X = x)$，對每個可能值 $x$。"},{"term":"期望值","definition":"機率加權平均 $\\sum x\\,p(x)$。"}],"notes":[{"kind":"source","text":"教科書 §3.1–3.3，pp. 94–110 · 投影片 W5"},{"kind":"watch","text":"大楷 $X$ 是隨機變數，細楷 $x$ 是它可能取的某一個值。"}]},"prequiz":[{"id":"u2-pre-1","type":"single","difficulty":2,"concept":"期望值","stem":"擲一粒公平骰子，$X$ 是擲出的點數。$E[X]$ 是多少？","options":["$3$","$3.5$","$4$","$21$"],"answer":1,"explanation":"$E[X] = (1+2+3+4+5+6)\\times\\frac16 = 3.5$。期望值是加權平均，不需要是 $X$ 真的可以取到的值。","optionFeedback":["3 看似是「中間」，但 1–6 沒有單一的中間值。",null,"把 3.5 四捨五入成 4 — 期望值不會被四捨五入。","21 是點數總和，還要乘以每個值的機率 1/6。"]},{"id":"u2-pre-2","type":"single","difficulty":1,"concept":"PMF 的條件","stem":"以下哪一個可以是 $\\{1, 2, 3\\}$ 上的 PMF？","options":["$(0.5, 0.4, 0.2)$","$(0.2, 0.3, 0.5)$","$(0.6, -0.1, 0.5)$","$(1, 1, 1)$"],"answer":1,"explanation":"只有 $(0.2, 0.3, 0.5)$ 全部非負而且總和是 1。$(0.5, 0.4, 0.2)$ 總和是 1.1。","optionFeedback":["總和是 1.1 — 先把它們加起來。",null,"有負數，機率不可以是負的。","總和是 3。"]},{"id":"u2-pre-3","type":"tf","difficulty":1,"concept":"離散與連續","stem":"「明天收到的電郵數目」是離散型隨機變數。","answer":true,"explanation":"它的值 0, 1, 2, … 可以逐個列出，即使沒有上限，也是離散的。"}],"difficulties":[{"title":"大楷 X 與細楷 x","concept":"PMF 的條件","why":"兩個字母出現在同一條式 $P(X = x)$ 裏，手寫時又很相似。","explanation":"把 $X$ 讀成「那個隨機的量」，把 $x$ 讀成「它可能等於的某一個數」。$P(X = 4)$ 問的是：這個變數結果是 4 的機率有幾大？","example":"$X$ = 兩粒骰的總和\n\n$P(X = 4) = P\\{(1,3),(2,2),(3,1)\\} = 3/36$"},{"title":"為甚麼 E[X] 不需要是可能取到的值","concept":"期望值","explanation":"期望值是長遠平均。擲很多次骰，平均點數會接近 3.5，雖然每一次都不可能擲出 3.5。"}],"classroom":{"listenFor":["為甚麼期望值可以是 X 永遠取不到的值"]},"review":{"recap":"隨機變數把結果變成數字；離散型的可以逐個列出可能值。\n\n- PMF：$p(x) = P(X=x)$，非負而且總和為 1\n- 期望值：$E[X] = \\sum x\\,p(x)$，是加權平均","keyPoints":["隨機變數是函數，不是「隨機的數」。","PMF 要非負而且總和為 1。","期望值是長遠平均，可以不是可能值。"],"flashcards":[{"front":"PMF 必須滿足的兩個條件？","back":"$p(x) \\ge 0$，而且 $\\sum p(x) = 1$"},{"front":"$E[X]$ 的公式","back":"$\\sum_x x\\,p(x)$"}]},"postquiz":[{"id":"u2-post-1","type":"single","difficulty":2,"concept":"期望值","stem":"$X$ 取 0、1、2 的機率分別是 0.5、0.3、0.2。$E[X]$ 是？","options":["$0.7$","$1$","$0.3$","$1.5$"],"answer":0,"explanation":"$E[X] = 0(0.5) + 1(0.3) + 2(0.2) = 0.7$。"},{"id":"u2-post-2","type":"short","difficulty":2,"concept":"期望值","stem":"一個遊戲：擲骰得 6 贏 \\$10，否則輸 \\$1。用期望值判斷應不應該玩。","answer":"$E = 10\\cdot\\frac16 + (-1)\\cdot\\frac56 = \\frac{5}{6} > 0$，長遠平均每局贏約 \\$0.83，所以（只看期望值的話）應該玩。","explanation":"把每個結果的得失乘以它的機率再相加；正數代表長遠有利。"}],"postDifficulties":[{"title":"忘記把輸錢記成負數","concept":"期望值","explanation":"期望值計的是「得到」的數值，輸錢就是負的得到。","example":"贏 \\$10（機率 1/6）、輸 \\$1（機率 5/6）：$E = 10/6 - 5/6 = 5/6$，不是 $10/6 + 5/6$。"}]}],"midterm":{"title":"期中溫習","date":"2026-10-20","scope":["u1","u2"],"overview":"兩個單元，一條主線：先學會在已知資訊下更新機率，再把結果變成可以計算平均的數字。","themes":[{"title":"已知甚麼？","body":"條件機率的分母永遠是已知事件。做題前先圈出「已知」。","units":["u1"]},{"title":"由結果到數字","body":"隨機變數讓我們計算平均 — 這是下半學期所有分佈的基礎。","units":["u2"]}],"formulaSheet":"- $P(A\\mid B) = P(A\\cap B)/P(B)$\n- $P(A\\cap B) = P(A\\mid B)P(B)$\n- $\\sum p(x) = 1,\\ p(x) \\ge 0$\n- $E[X] = \\sum x\\,p(x)$","strategy":"過往的期中試約有四成分數來自條件機率。先畫樹狀圖，只需 30 秒，可以避免大部分 $P(A\\mid B)$ / $P(B\\mid A)$ 調轉的錯誤。","timeLimitMin":15,"exam":[{"id":"mid-1","type":"single","concept":"條件機率定義","stem":"擲兩粒公平骰，已知總和是 8，第一粒是 3 的機率是？","options":["$1/6$","$1/5$","$5/36$","$1/36$"],"answer":1,"explanation":"總和為 8 的結果有 (2,6),(3,5),(4,4),(5,3),(6,2) 共 5 個，其中第一粒是 3 的只有 1 個，所以是 $1/5$。"},{"id":"mid-2","type":"tf","concept":"P(A|B) 與 P(B|A)","stem":"若 $P(A) = P(B) > 0$，則 $P(A\\mid B) = P(B\\mid A)$。","answer":true,"explanation":"兩者都等於 $P(A\\cap B)$ 除以相同的分母。"},{"id":"mid-3","type":"single","concept":"期望值","stem":"$X$ 取 1 和 3 的機率各為 1/2。$E[X]$ 是？","options":["$1$","$2$","$3$","$4$"],"answer":1,"explanation":"$E[X] = 1\\cdot\\frac12 + 3\\cdot\\frac12 = 2$。"},{"id":"mid-4","type":"short","concept":"乘法法則","stem":"袋中 2 紅 3 藍，不放回抽兩個。求一紅一藍（任何次序）的機率，並寫出步驟。","answer":"$P(\\text{紅藍}) + P(\\text{藍紅}) = \\frac25\\cdot\\frac34 + \\frac35\\cdot\\frac24 = \\frac{6}{20}+\\frac{6}{20} = \\frac{3}{5}$。","explanation":"兩種次序要分開計算再相加；每一步都用乘法法則。"}]}};
+const DATA = {"course":{"title":"機率與統計 I（範例）","subtitle":"STAT 201 · 2026 秋季學期","lang":"zh-Hant","instructor":"李教授"},"units":[{"id":"u1","title":{"zh-Hant":"條件機率","en":"Conditional probability"},"summary":"得知新資訊之後，機率要怎樣更新。","date":"2026-09-22","prestudy":{"minutes":25,"objectives":["用自己的話解釋 $P(A \\mid B)$ 的意思","用定義 $P(A \\mid B) = P(A \\cap B)/P(B)$ 計算條件機率","分辨 $P(A \\mid B)$ 與 $P(B \\mid A)$"],"sections":[{"heading":"縮小了的樣本空間","body":"條件機率 (conditional probability) 回答一個問題：**已知 B 發生了**，A 發生的機率是多少？\n\n直覺上，知道 B 發生，等於把樣本空間縮小到 B 之內，然後問 A 佔了 B 的幾多。\n\n例如擲一粒骰，已知點數是偶數 (B = {2, 4, 6})，點數是 6 的機率就由 1/6 變成 1/3。","source":"教科書 §2.4"},{"heading":"定義","body":"當 $P(B) > 0$：\n\n$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$\n\n分子是「A 和 B 同時發生」，分母是「B 發生」。把它移項，就得到乘法法則：$P(A \\cap B) = P(A \\mid B)\\,P(B)$。\n\n用樹狀圖 (tree diagram) 表示：第一層分 B 與 Bᶜ，第二層每條枝都是一個條件機率；沿路相乘就得到交集的機率。\n\n![樹狀圖：每條枝上的機率都是條件機率](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMjAwIiBmb250LWZhbWlseT0iSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFDMUIxOSI+CiAgPGcgc3Ryb2tlPSIjNTU1MjRCIiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSI+CiAgICA8cGF0aCBkPSJNNDAgMTAwIEwxNzAgNTAiLz48cGF0aCBkPSJNNDAgMTAwIEwxNzAgMTUwIi8+CiAgICA8cGF0aCBkPSJNMTkwIDUwIEwzMjAgMjUiLz48cGF0aCBkPSJNMTkwIDUwIEwzMjAgNzUiLz4KICAgIDxwYXRoIGQ9Ik0xOTAgMTUwIEwzMjAgMTI1Ii8+PHBhdGggZD0iTTE5MCAxNTAgTDMyMCAxNzUiLz4KICA8L2c+CiAgPGNpcmNsZSBjeD0iNDAiIGN5PSIxMDAiIHI9IjUiIGZpbGw9IiNBODMyMUMiLz4KICA8dGV4dCB4PSIxODAiIHk9IjU0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CPC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iMTU0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5C4bacPC90ZXh0PgogIDx0ZXh0IHg9Ijk1IiB5PSI2NiIgZmlsbD0iIzFENUE4QyI+UChCKTwvdGV4dD48dGV4dCB4PSI5NSIgeT0iMTQ2IiBmaWxsPSIjMUQ1QThDIj5QKELhtpwpPC90ZXh0PgogIDx0ZXh0IHg9IjIzMCIgeT0iMjgiIGZpbGw9IiMxRDVBOEMiPlAoQXxCKTwvdGV4dD48dGV4dCB4PSIyMjYiIHk9IjExOCIgZmlsbD0iIzFENUE4QyI+UChBfELhtpwpPC90ZXh0PgogIDx0ZXh0IHg9IjMzMCIgeT0iMjkiPkEg4oipIEI8L3RleHQ+PHRleHQgeD0iMzMwIiB5PSI3OSI+QeG2nCDiiKkgQjwvdGV4dD4KICA8dGV4dCB4PSIzMzAiIHk9IjEyOSI+QSDiiKkgQuG2nDwvdGV4dD48dGV4dCB4PSIzMzAiIHk9IjE3OSI+QeG2nCDiiKkgQuG2nDwvdGV4dD4KPC9zdmc+Cg==)","source":"投影片 W3 p.4–7"}],"keyTerms":[{"term":"條件機率","definition":"已知 B 發生下 A 的機率，記作 $P(A \\mid B)$。"},{"term":"乘法法則","definition":"$P(A \\cap B) = P(A \\mid B)P(B)$。"},{"term":"交集","definition":"$A \\cap B$：A 和 B 同時發生。"}],"notes":[{"kind":"source","text":"教科書 §2.4，pp. 58–64 · 投影片 W3 p.2–12"},{"kind":"builds-on","text":"樣本空間與事件 — 條件機率只是在一個較小的樣本空間裏計數。"},{"kind":"watch","text":"直線 `|` 左邊是你想知道的事件，右邊是已知條件。次序不可以調轉。"}]},"prequiz":[{"id":"u1-pre-1","type":"single","difficulty":1,"concept":"條件機率定義","stem":"擲一粒公平骰子。已知點數是偶數，點數是 6 的機率是多少？","options":["$1/6$","$1/3$","$1/2$","$2/3$"],"answer":1,"explanation":"已知是偶數，樣本空間縮小為 {2, 4, 6}，其中只有 6 一個結果，所以是 $1/3$。\n\n選 $1/6$ 是忘記了條件已經把樣本空間縮小。","optionFeedback":["這是沒有任何條件時的機率 — 你忽略了「已知是偶數」。",null,"1/2 是「點數是偶數」本身的機率，不是條件機率。","2/3 是偶數中不是 6 的比例。"],"source":"投影片 W3 p.5"},{"id":"u1-pre-2","type":"tf","difficulty":1,"concept":"P(A|B) 與 P(B|A)","stem":"對任何事件 A、B，$P(A \\mid B) = P(B \\mid A)$。","answer":false,"explanation":"一般不相等。$P(A \\mid B) = P(A\\cap B)/P(B)$，$P(B \\mid A) = P(A\\cap B)/P(A)$，分母不同。只有 $P(A) = P(B)$ 時兩者才會相等。"},{"id":"u1-pre-3","type":"single","difficulty":2,"concept":"條件機率定義","stem":"已知 $P(A \\cap B) = 0.2$，$P(B) = 0.5$。$P(A \\mid B)$ 是多少？","options":["$0.1$","$0.4$","$0.7$","$2.5$"],"answer":1,"explanation":"$P(A\\mid B) = 0.2 / 0.5 = 0.4$。\n\n$0.1$ 是把兩者相乘；$2.5$ 是分子分母調轉 — 機率不可能大於 1。","optionFeedback":["你把兩個數相乘了 — 定義是相除。",null,"0.7 是相加的結果，沒有意義。","分子分母調轉了；任何機率都不會大於 1。"]},{"id":"u1-pre-4","type":"single","difficulty":2,"concept":"乘法法則","stem":"袋中有 3 個紅球、2 個藍球，不放回地抽兩個。兩個都是紅球的機率是多少？","options":["$9/25$","$3/10$","$3/5$","$6/25$"],"answer":1,"explanation":"$P(\\text{第一個紅}) = 3/5$，$P(\\text{第二個紅} \\mid \\text{第一個紅}) = 2/4$。相乘：$3/5 \\times 1/2 = 3/10$。\n\n$9/25$ 是「放回」的答案。","optionFeedback":["這是放回抽樣的答案 — 不放回時第二次只剩 4 個球。",null,"3/5 只是第一個是紅球的機率。","6/25 把分母用錯了。"]},{"id":"u1-pre-5","type":"short","difficulty":2,"concept":"P(A|B) 與 P(B|A)","stem":"用一句話解釋：為甚麼「已知患病，測試呈陽性的機率」和「已知測試呈陽性，真的患病的機率」不一樣？","answer":"兩者的條件（已知的部分）不同：前者在所有患者中計算，後者在所有陽性結果中計算；當疾病罕見時，陽性結果大多來自健康的人，所以後者可以遠低於前者。","explanation":"關鍵是分母：一個是患病的人，一個是測試陽性的人。這正是貝氏定理要處理的問題。"}],"difficulties":[{"title":"把 P(A|B) 與 P(B|A) 調轉","concept":"P(A|B) 與 P(B|A)","why":"兩個式子看起來只差次序，日常語言（「如果…就…」）也常常把兩個方向混為一談。","explanation":"每次先問：**哪件事是已知的？** 已知的放在直線右邊，它決定分母。","example":"已知下雨 (B)，你帶傘 (A) 的機率可能是 0.9；但已知你帶傘，當日下雨的機率可能只有 0.3 — 因為你在陰天也會帶傘。"},{"title":"忘記樣本空間已經縮小","concept":"條件機率定義","why":"習慣了用「全部結果」做分母。","explanation":"條件機率的分母永遠是條件事件 B，不是整個樣本空間。","example":"擲兩粒骰，已知總和是 8，第一粒是 3 的機率：總和 8 的結果有 5 個，其中 (3,5) 一個，所以是 1/5，不是 1/6。"}],"classroom":{"listenFor":["老師怎樣由條件機率引出「獨立」的定義","樹狀圖 (tree diagram) 在甚麼情況下最有用"],"answers":[{"q":"條件機率的分母可以是 0 嗎？","a":"不可以。定義要求 $P(B) > 0$；如果 B 不可能發生，「已知 B 發生」本身就沒有意義。","source":"教科書 §2.4 註 2"}]},"review":{"recap":"條件機率就是在**縮小了的樣本空間**裏計算機率。\n\n- 定義：$P(A\\mid B) = P(A\\cap B)/P(B)$\n- 乘法法則：$P(A\\cap B) = P(A\\mid B)P(B)$，常用來計算「先後發生」的事件\n- 方向很重要：$P(A\\mid B)$ 與 $P(B\\mid A)$ 一般不相等","keyPoints":["條件機率的分母是已知事件 B 的機率。","不放回抽樣時，每一步的機率都要按已抽出的結果更新。","樹狀圖的每一條枝都是一個條件機率，沿路相乘就得到交集的機率。","$P(A\\mid B)$ 與 $P(B\\mid A)$ 的分母不同，所以一般不相等。"],"flashcards":[{"front":"$P(A\\mid B)$ 的定義是？","back":"$P(A\\cap B)/P(B)$，其中 $P(B) > 0$"},{"front":"乘法法則","back":"$P(A\\cap B) = P(A\\mid B)\\,P(B)$"},{"front":"直線 `|` 右邊代表甚麼？","back":"已知發生了的事件（條件）— 它決定分母。"},{"front":"不放回抽兩個紅球（3 紅 2 藍）的機率？","back":"$\\frac{3}{5}\\cdot\\frac{2}{4} = \\frac{3}{10}$"},{"front":"條件機率 $P(A \\mid B)$ 的定義是 {{c1::$\\dfrac{P(A \\cap B)}{P(B)}$}}，前提是 {{c2::$P(B) > 0$::分母的條件}}。"},{"front":"乘法法則：$P(A \\cap B)$ 等於 {{c1::$P(A \\mid B)\\,P(B)$}}","back":"由條件機率的定義兩邊乘以 $P(B)$ 得出。"}],"connections":"下一個單元會用條件機率定義**獨立**：如果 $P(A\\mid B) = P(A)$，知道 B 對 A 毫無影響。"},"postquiz":[{"id":"u1-post-1","type":"single","difficulty":2,"concept":"乘法法則","stem":"一班有 60% 女生。女生中 30% 戴眼鏡。隨機選一位同學，她是戴眼鏡的女生的機率是？","options":["$0.18$","$0.30$","$0.50$","$0.90$"],"answer":0,"explanation":"$P(\\text{女} \\cap \\text{眼鏡}) = P(\\text{眼鏡}\\mid\\text{女})P(\\text{女}) = 0.3 \\times 0.6 = 0.18$。","optionFeedback":[null,"0.30 是條件機率 $P(\\text{眼鏡}\\mid\\text{女})$，不是交集。","沒有根據。","把兩個機率相加了。"]},{"id":"u1-post-2","type":"multi","difficulty":3,"concept":"P(A|B) 與 P(B|A)","stem":"設 $P(A)=0.5$，$P(B)=0.25$，$P(A\\cap B)=0.1$。以下哪些正確？（可選多於一項）","options":["$P(A\\mid B) = 0.4$","$P(B\\mid A) = 0.2$","$P(A\\mid B) = P(B\\mid A)$","$P(A\\cup B) = 0.65$"],"answer":[0,1,3],"explanation":"$P(A\\mid B) = 0.1/0.25 = 0.4$；$P(B\\mid A) = 0.1/0.5 = 0.2$，兩者不等；$P(A\\cup B) = 0.5 + 0.25 - 0.1 = 0.65$。"},{"id":"u1-post-3","type":"tf","difficulty":2,"concept":"條件機率定義","stem":"$P(A \\mid B)$ 一定小於或等於 $P(A)$。","answer":false,"explanation":"不一定。已知條件可以令機率上升，例如擲骰已知是偶數，得到 6 的機率由 1/6 升到 1/3。"}],"postDifficulties":[{"title":"交集與條件機率混淆","concept":"乘法法則","why":"題目中「女生中有 30% 戴眼鏡」很容易被讀成「30% 是戴眼鏡的女生」。","explanation":"「…之中」「已知…」「在…的人裏面」都是條件機率的訊號；「既是…又是…」才是交集。","example":"「女生中 30% 戴眼鏡」→ $P(\\text{眼鏡}\\mid\\text{女}) = 0.3$；「30% 的同學是戴眼鏡的女生」→ $P(\\text{女}\\cap\\text{眼鏡}) = 0.3$。"}],"homework":[{"id":"hw3-2","title":"功課 3 · 第 2 題","source":"功課 3","problem":"一個盒有 4 張好的晶片和 1 張壞的。不放回地逐張測試，直到找到壞晶片為止。求剛好要測試 3 張的機率。","hints":["「剛好 3 張」代表頭兩張都是好的，第三張是壞的。","用乘法法則，每一步都按剩下的晶片數更新機率。"],"steps":["第一張是好的：$P = 4/5$。","已知第一張好，第二張也是好的：$P = 3/4$。","已知頭兩張好，第三張是壞的：剩下 3 張中有 1 張壞，$P = 1/3$。","相乘：$\\frac{4}{5}\\cdot\\frac{3}{4}\\cdot\\frac{1}{3} = \\frac{1}{5}$。"],"answer":"$1/5$ — 其實壞晶片出現在任何一個位置的機率都是 $1/5$。","pitfalls":["忘記「剛好」：只計算第三張是壞的，沒有要求頭兩張是好的。","用了放回抽樣的機率 $1/5$ 三次。"],"concept":"乘法法則","revealMode":"hints-first"}]},{"id":"u2","title":{"zh-Hant":"離散型隨機變數","en":"Discrete random variables"},"summary":"把實驗結果變成可以相加、平均和畫圖的數字。","date":"2026-10-06","prestudy":{"minutes":25,"objectives":["說明甚麼是隨機變數 (random variable)，以及甚麼令它是離散的","寫出機率質量函數 (PMF) 並檢查總和是否等於 1","由 PMF 計算期望值 $E[X]$"],"sections":[{"heading":"由結果到數字","body":"**隨機變數**是一條規則，把樣本空間中每一個結果對應到一個數字。擲兩粒骰，結果是一對數字如 (2, 5)，但我們往往只關心總和 7 — 這個總和就是隨機變數 $X$。\n\n如果 $X$ 的可能值可以逐個列出（例如 2, 3, …, 12），它就是**離散的**，即使列表是無限長也可以。","source":"教科書 §3.1"},{"heading":"機率質量函數與期望值","body":"PMF 給出每一個值的機率：$p(x) = P(X = x)$。每個 PMF 都要通過兩個檢查：沒有負數，而且總和剛好是 1。\n\n期望值 (expected value) 是以機率加權的平均：\n\n$$E[X] = \\sum_x x\\,p(x)$$","source":"教科書 §3.2–3.3"}],"keyTerms":[{"term":"隨機變數","definition":"由結果到實數的函數。"},{"term":"PMF","definition":"$p(x) = P(X = x)$，對每個可能值 $x$。"},{"term":"期望值","definition":"機率加權平均 $\\sum x\\,p(x)$。"}],"notes":[{"kind":"source","text":"教科書 §3.1–3.3，pp. 94–110 · 投影片 W5"},{"kind":"watch","text":"大楷 $X$ 是隨機變數，細楷 $x$ 是它可能取的某一個值。"}]},"prequiz":[{"id":"u2-pre-1","type":"single","difficulty":2,"concept":"期望值","stem":"擲一粒公平骰子，$X$ 是擲出的點數。$E[X]$ 是多少？","options":["$3$","$3.5$","$4$","$21$"],"answer":1,"explanation":"$E[X] = (1+2+3+4+5+6)\\times\\frac16 = 3.5$。期望值是加權平均，不需要是 $X$ 真的可以取到的值。","optionFeedback":["3 看似是「中間」，但 1–6 沒有單一的中間值。",null,"把 3.5 四捨五入成 4 — 期望值不會被四捨五入。","21 是點數總和，還要乘以每個值的機率 1/6。"]},{"id":"u2-pre-2","type":"single","difficulty":1,"concept":"PMF 的條件","stem":"以下哪一個可以是 $\\{1, 2, 3\\}$ 上的 PMF？","options":["$(0.5, 0.4, 0.2)$","$(0.2, 0.3, 0.5)$","$(0.6, -0.1, 0.5)$","$(1, 1, 1)$"],"answer":1,"explanation":"只有 $(0.2, 0.3, 0.5)$ 全部非負而且總和是 1。$(0.5, 0.4, 0.2)$ 總和是 1.1。","optionFeedback":["總和是 1.1 — 先把它們加起來。",null,"有負數，機率不可以是負的。","總和是 3。"]},{"id":"u2-pre-3","type":"tf","difficulty":1,"concept":"離散與連續","stem":"「明天收到的電郵數目」是離散型隨機變數。","answer":true,"explanation":"它的值 0, 1, 2, … 可以逐個列出，即使沒有上限，也是離散的。"}],"difficulties":[{"title":"大楷 X 與細楷 x","concept":"PMF 的條件","why":"兩個字母出現在同一條式 $P(X = x)$ 裏，手寫時又很相似。","explanation":"把 $X$ 讀成「那個隨機的量」，把 $x$ 讀成「它可能等於的某一個數」。$P(X = 4)$ 問的是：這個變數結果是 4 的機率有幾大？","example":"$X$ = 兩粒骰的總和\n\n$P(X = 4) = P\\{(1,3),(2,2),(3,1)\\} = 3/36$"},{"title":"為甚麼 E[X] 不需要是可能取到的值","concept":"期望值","explanation":"期望值是長遠平均。擲很多次骰，平均點數會接近 3.5，雖然每一次都不可能擲出 3.5。"}],"classroom":{"listenFor":["為甚麼期望值可以是 X 永遠取不到的值"]},"review":{"recap":"隨機變數把結果變成數字；離散型的可以逐個列出可能值。\n\n- PMF：$p(x) = P(X=x)$，非負而且總和為 1\n- 期望值：$E[X] = \\sum x\\,p(x)$，是加權平均","keyPoints":["隨機變數是函數，不是「隨機的數」。","PMF 要非負而且總和為 1。","期望值是長遠平均，可以不是可能值。"],"flashcards":[{"front":"PMF 必須滿足的兩個條件？","back":"$p(x) \\ge 0$，而且 $\\sum p(x) = 1$"},{"front":"$E[X]$ 的公式","back":"$\\sum_x x\\,p(x)$"}]},"postquiz":[{"id":"u2-post-1","type":"single","difficulty":2,"concept":"期望值","stem":"$X$ 取 0、1、2 的機率分別是 0.5、0.3、0.2。$E[X]$ 是？","options":["$0.7$","$1$","$0.3$","$1.5$"],"answer":0,"explanation":"$E[X] = 0(0.5) + 1(0.3) + 2(0.2) = 0.7$。"},{"id":"u2-post-2","type":"short","difficulty":2,"concept":"期望值","stem":"一個遊戲：擲骰得 6 贏 \\$10，否則輸 \\$1。用期望值判斷應不應該玩。","answer":"$E = 10\\cdot\\frac16 + (-1)\\cdot\\frac56 = \\frac{5}{6} > 0$，長遠平均每局贏約 \\$0.83，所以（只看期望值的話）應該玩。","explanation":"把每個結果的得失乘以它的機率再相加；正數代表長遠有利。"}],"postDifficulties":[{"title":"忘記把輸錢記成負數","concept":"期望值","explanation":"期望值計的是「得到」的數值，輸錢就是負的得到。","example":"贏 \\$10（機率 1/6）、輸 \\$1（機率 5/6）：$E = 10/6 - 5/6 = 5/6$，不是 $10/6 + 5/6$。"}]}],"midterm":{"title":"期中溫習","date":"2026-10-20","scope":["u1","u2"],"overview":"兩個單元，一條主線：先學會在已知資訊下更新機率，再把結果變成可以計算平均的數字。","themes":[{"title":"已知甚麼？","body":"條件機率的分母永遠是已知事件。做題前先圈出「已知」。","units":["u1"]},{"title":"由結果到數字","body":"隨機變數讓我們計算平均 — 這是下半學期所有分佈的基礎。","units":["u2"]}],"formulaSheet":"- $P(A\\mid B) = P(A\\cap B)/P(B)$\n- $P(A\\cap B) = P(A\\mid B)P(B)$\n- $\\sum p(x) = 1,\\ p(x) \\ge 0$\n- $E[X] = \\sum x\\,p(x)$","strategy":"過往的期中試約有四成分數來自條件機率。先畫樹狀圖，只需 30 秒，可以避免大部分 $P(A\\mid B)$ / $P(B\\mid A)$ 調轉的錯誤。","timeLimitMin":15,"exam":[{"id":"mid-1","type":"single","concept":"條件機率定義","stem":"擲兩粒公平骰，已知總和是 8，第一粒是 3 的機率是？","options":["$1/6$","$1/5$","$5/36$","$1/36$"],"answer":1,"explanation":"總和為 8 的結果有 (2,6),(3,5),(4,4),(5,3),(6,2) 共 5 個，其中第一粒是 3 的只有 1 個，所以是 $1/5$。"},{"id":"mid-2","type":"tf","concept":"P(A|B) 與 P(B|A)","stem":"若 $P(A) = P(B) > 0$，則 $P(A\\mid B) = P(B\\mid A)$。","answer":true,"explanation":"兩者都等於 $P(A\\cap B)$ 除以相同的分母。"},{"id":"mid-3","type":"single","concept":"期望值","stem":"$X$ 取 1 和 3 的機率各為 1/2。$E[X]$ 是？","options":["$1$","$2$","$3$","$4$"],"answer":1,"explanation":"$E[X] = 1\\cdot\\frac12 + 3\\cdot\\frac12 = 2$。"},{"id":"mid-4","type":"short","concept":"乘法法則","stem":"袋中 2 紅 3 藍，不放回抽兩個。求一紅一藍（任何次序）的機率，並寫出步驟。","answer":"$P(\\text{紅藍}) + P(\\text{藍紅}) = \\frac25\\cdot\\frac34 + \\frac35\\cdot\\frac24 = \\frac{6}{20}+\\frac{6}{20} = \\frac{3}{5}$。","explanation":"兩種次序要分開計算再相加；每一步都用乘法法則。"}]}};
 /* ---------- i18n ---------- */
 const UI = {
   "zh-Hant": {
@@ -229,7 +229,7 @@ const UI = {
     submit:"交卷", timeLeft:"剩餘時間", flag:"標記", flagged:"已標記", submitConfirm:"確定交卷？還有 {n} 題未作答。", result:"成績", scored:"得分 {a}/{n}（{p}%）", selfMark:"自評", review_:"檢討答案", newAttempt:"再考一次", backToReview:"返回溫習",
     nbTitle:"錯題簿", nbSub:"所有答錯或估中的題目。重測間隔超過三星期，就算「掌握」。", nbDue:"今日要重測", nbLater:"之後重測", nbMastered:"已掌握", nbEmpty:"錯題簿是空的。", dueOn:"{d} 重測", retestTitle:"重測",
     exportTitle:"匯出進度", exportSub:"下載備份檔（可在其他電腦匯入），或者複製學習摘要貼給 Claude，讓它針對你的弱項講解。", download:"下載備份檔", copySummary:"複製學習摘要給 Claude", close:"關閉", importDone:"已匯入進度。", importFail:"無法讀取這個檔案。",
-    today:"今日", tomorrow:"明日", inDays:"{n} 日後", theme:"主題", light:"淺色", dark:"深色", auto:"自動", localNote:"進度只儲存在這個瀏覽器。", min:"分鐘", codeTitle:"轉移到另一部裝置", codeSub:"複製進度代碼，用 WhatsApp、微信或電郵傳到另一部裝置，再在那裏貼上。", codeCopy:"複製進度代碼", codePaste:"貼上進度代碼", codeApply:"套用代碼（會取代這部裝置的進度）", codeFail:"代碼無效，請確認已完整複製。", drillTitle:"練習卷", drillSub:"由範圍內各單元的題目隨機抽 10 題，即時對答案。", drillRandom:"隨機練習卷（10 題）", drillWeak:"弱項練習卷（{n} 題）", drillNone:"未有足夠題目。", byConcept:"各概念得分", todayTitle:"今日溫習", todayMistakes:"{n} 道錯題待重測", todayCards:"{n} 張記憶卡待複習", todayNext:"下一步：{u} · {s}", todayNone:"今日沒有待溫習的項目，做得好！", cardsTitle:"記憶卡複習", cardsDone:"完成！今日複習了 {n} 張記憶卡。", cardsNone:"今日沒有到期的記憶卡。", contentOnly:"課程內容只有{langs}版本；切換語言只會改變介面。", backupTitle:"備份進度", backupNever:"你還未備份過進度。", backupAgo:"上次備份：{n} 日前。", backupSub:"Safari 等瀏覽器可能會刪除一段時間沒有打開的網站資料。定期下載備份檔最安全。", backupNow:"立即下載備份", search:"搜尋", searchPh:"搜尋概念、公式、題目…", searchNone:"找不到「{q}」。", searchCount:"{n} 個結果", sheet:"重點總覽", sheetSub:"所有單元的重點、關鍵詞彙和公式表，適合考前列印。", print:"列印／存成 PDF", ics:"加到日曆 (.ics)", icsSub:"上堂日、考試日和錯題重測日。下載後打開檔案，就會加入 iPhone、Mac 或 Google 日曆。", icsLecture:"{u}：{t}", icsRetest:"Scholia：{n} 道錯題重測", icsDone:"已下載日曆檔，打開它就可以加入日曆。", icsMidterm:"期中考試", icsFinal:"期末考試"
+    today:"今日", tomorrow:"明日", inDays:"{n} 日後", theme:"主題", light:"淺色", dark:"深色", auto:"自動", localNote:"進度只儲存在這個瀏覽器。", min:"分鐘", codeTitle:"轉移到另一部裝置", codeSub:"複製進度代碼，用 WhatsApp、微信或電郵傳到另一部裝置，再在那裏貼上。", codeCopy:"複製進度代碼", codePaste:"貼上進度代碼", codeApply:"套用代碼（會取代這部裝置的進度）", codeFail:"代碼無效，請確認已完整複製。", drillTitle:"練習卷", drillSub:"由範圍內各單元的題目隨機抽 10 題，即時對答案。", drillRandom:"隨機練習卷（10 題）", drillWeak:"弱項練習卷（{n} 題）", drillNone:"未有足夠題目。", byConcept:"各概念得分", todayTitle:"今日溫習", todayMistakes:"{n} 道錯題待重測", todayCards:"{n} 張記憶卡待複習", todayNext:"下一步：{u} · {s}", todayNone:"今日沒有待溫習的項目，做得好！", cardsTitle:"記憶卡複習", cardsDone:"完成！今日複習了 {n} 張記憶卡。", cardsNone:"今日沒有到期的記憶卡。", contentOnly:"課程內容只有{langs}版本；切換語言只會改變介面。", backupTitle:"備份進度", backupNever:"你還未備份過進度。", backupAgo:"上次備份：{n} 日前。", backupSub:"Safari 等瀏覽器可能會刪除一段時間沒有打開的網站資料。定期下載備份檔最安全。", backupNow:"立即下載備份", search:"搜尋", searchPh:"搜尋概念、公式、題目…", searchNone:"找不到「{q}」。", searchCount:"{n} 個結果", sheet:"重點總覽", sheetSub:"所有單元的重點、關鍵詞彙和公式表，適合考前列印。", print:"列印／存成 PDF", ics:"加到日曆 (.ics)", icsSub:"上堂日、考試日和錯題重測日。下載後打開檔案，就會加入 iPhone、Mac 或 Google 日曆。", icsLecture:"{u}：{t}", icsRetest:"Scholia：{n} 道錯題重測", icsDone:"已下載日曆檔，打開它就可以加入日曆。", icsMidterm:"期中考試", icsFinal:"期末考試", ask:"問 Claude", askCopied:"已複製問題，貼到 Claude 就可以追問。", askQ:"題目：", askMine:"我的答案：", askRight:"正確答案：", askExpl:"網站的解釋：", askTail:"我仍然不明白為甚麼。請根據課程內容一步一步解釋，指出我的思路錯在哪裏，最後再出一道類似的練習題給我。", readAloud:"朗讀", typeMode:"打字作答", typeAnswer:"先打出答案，再翻卡…", typedMatch:"看來答對了", typedDiff:"跟答案不一樣 — 對照一下", typedCompare:"對照參考答案，自己判斷", yourTyped:"你打的答案：", anki:"匯出 Anki 卡組", ankiSub:"記憶卡和關鍵詞彙會匯出成 Anki 可以匯入的檔案（填空卡會用 Anki 的 Cloze 類型）。在 Anki 按「檔案 → 匯入」。", ankiDone:"已下載 Anki 檔案。"
   },
   "zh-Hans": null,
   "en": {
@@ -268,13 +268,13 @@ const UI = {
     submit:"Submit", timeLeft:"Time left", flag:"Flag", flagged:"Flagged", submitConfirm:"Submit now? {n} questions are unanswered.", result:"Result", scored:"Scored {a}/{n} ({p}%)", selfMark:"Self-mark", review_:"Review answers", newAttempt:"New attempt", backToReview:"Back to review",
     nbTitle:"Mistake notebook", nbSub:"Every wrong answer and lucky guess. Once its re-test gap passes three weeks, it counts as mastered.", nbDue:"Due today", nbLater:"Coming up", nbMastered:"Mastered", nbEmpty:"Your notebook is empty.", dueOn:"re-test {d}", retestTitle:"Re-test",
     exportTitle:"Export progress", exportSub:"Download a backup (import it on another computer), or copy a study summary to paste to Claude so it can target your weak spots.", download:"Download backup", copySummary:"Copy summary for Claude", close:"Close", importDone:"Progress imported.", importFail:"Couldn't read that file.",
-    today:"today", tomorrow:"tomorrow", inDays:"in {n} days", theme:"Theme", light:"Light", dark:"Dark", auto:"Auto", localNote:"Progress is saved in this browser only.", min:"min", codeTitle:"Move to another device", codeSub:"Copy a progress code, send it to your other device by chat or email, and paste it there.", codeCopy:"Copy progress code", codePaste:"Paste a progress code", codeApply:"Apply code (replaces this device's progress)", codeFail:"That code isn't valid — make sure you copied all of it.", drillTitle:"Practice set", drillSub:"10 random questions from the units in scope, with instant feedback.", drillRandom:"Random practice set (10)", drillWeak:"Weak-spot practice ({n})", drillNone:"Not enough questions yet.", byConcept:"Score by concept", todayTitle:"Today's review", todayMistakes:"{n} mistakes due for re-test", todayCards:"{n} flashcards due", todayNext:"Next: {u} · {s}", todayNone:"Nothing due today — nice work!", cardsTitle:"Flashcard review", cardsDone:"Done! You reviewed {n} flashcards today.", cardsNone:"No flashcards are due today.", contentOnly:"Course content is only available in {langs}; switching changes the interface only.", backupTitle:"Back up your progress", backupNever:"You haven't backed up yet.", backupAgo:"Last backup: {n} days ago.", backupSub:"Safari and some other browsers may delete data for sites you haven't opened in a while. A downloaded backup is the safe copy.", backupNow:"Download a backup now", search:"Search", searchPh:"Search concepts, formulas, questions…", searchNone:"Nothing found for “{q}”.", searchCount:"{n} results", sheet:"Study sheet", sheetSub:"Key points, key terms and formula sheets for every unit — made for printing before exams.", print:"Print / save as PDF", ics:"Add to calendar (.ics)", icsSub:"Lecture days, exam days and re-test days. Open the downloaded file to add them to iPhone, Mac or Google Calendar.", icsLecture:"{u}: {t}", icsRetest:"Scholia: {n} mistakes to re-test", icsDone:"Calendar file downloaded — open it to add the events.", icsMidterm:"Midterm exam", icsFinal:"Final exam"
+    today:"today", tomorrow:"tomorrow", inDays:"in {n} days", theme:"Theme", light:"Light", dark:"Dark", auto:"Auto", localNote:"Progress is saved in this browser only.", min:"min", codeTitle:"Move to another device", codeSub:"Copy a progress code, send it to your other device by chat or email, and paste it there.", codeCopy:"Copy progress code", codePaste:"Paste a progress code", codeApply:"Apply code (replaces this device's progress)", codeFail:"That code isn't valid — make sure you copied all of it.", drillTitle:"Practice set", drillSub:"10 random questions from the units in scope, with instant feedback.", drillRandom:"Random practice set (10)", drillWeak:"Weak-spot practice ({n})", drillNone:"Not enough questions yet.", byConcept:"Score by concept", todayTitle:"Today's review", todayMistakes:"{n} mistakes due for re-test", todayCards:"{n} flashcards due", todayNext:"Next: {u} · {s}", todayNone:"Nothing due today — nice work!", cardsTitle:"Flashcard review", cardsDone:"Done! You reviewed {n} flashcards today.", cardsNone:"No flashcards are due today.", contentOnly:"Course content is only available in {langs}; switching changes the interface only.", backupTitle:"Back up your progress", backupNever:"You haven't backed up yet.", backupAgo:"Last backup: {n} days ago.", backupSub:"Safari and some other browsers may delete data for sites you haven't opened in a while. A downloaded backup is the safe copy.", backupNow:"Download a backup now", search:"Search", searchPh:"Search concepts, formulas, questions…", searchNone:"Nothing found for “{q}”.", searchCount:"{n} results", sheet:"Study sheet", sheetSub:"Key points, key terms and formula sheets for every unit — made for printing before exams.", print:"Print / save as PDF", ics:"Add to calendar (.ics)", icsSub:"Lecture days, exam days and re-test days. Open the downloaded file to add them to iPhone, Mac or Google Calendar.", icsLecture:"{u}: {t}", icsRetest:"Scholia: {n} mistakes to re-test", icsDone:"Calendar file downloaded — open it to add the events.", icsMidterm:"Midterm exam", icsFinal:"Final exam", ask:"Ask Claude", askCopied:"Question copied — paste it to Claude to ask a follow-up.", askQ:"Question:", askMine:"My answer:", askRight:"Correct answer:", askExpl:"The site's explanation:", askTail:"I still don't see why. Please explain step by step using the course material, point out where my reasoning went wrong, then give me one similar practice question.", readAloud:"Read aloud", typeMode:"Type answers", typeAnswer:"Type your answer, then flip…", typedMatch:"Looks right", typedDiff:"Not the same as the answer — compare", typedCompare:"Compare with the answer and judge for yourself", yourTyped:"You typed:", anki:"Export Anki deck", ankiSub:"Flashcards and key terms as a file Anki can import (cloze cards use Anki's Cloze type). In Anki: File → Import.", ankiDone:"Anki file downloaded."
   }
 };
 // Simplified Chinese: derive from Traditional with a small character map (UI strings only).
 (function(){
-  const T2S = {"體":"体","單":"单","課":"课","題":"题","習":"习","頁":"页","錯":"错","識":"识","測":"测","詞":"词","彙":"汇","階":"阶","段":"段","進":"进","繼":"继","續":"续","導":"导","記":"记","復":"复","溫":"温","學":"学","這":"这","個":"个","為":"为","會":"会","說":"说","時":"时","問":"问","對":"对","後":"后","們":"们","裏":"里","麼":"么","於":"于","與":"与","應":"应","試":"试","準":"准","備":"备","項":"项","選":"选","論":"论","範":"范","圍":"围","離":"离","開":"开","間":"间","隔":"隔","現":"现","讀":"读","標":"标","勾":"勾","據":"据","計":"计","難":"难","點":"点","決":"决","法":"法","帶":"带","貼":"贴","給":"给","據":"据","會":"会","處":"处","語":"语","言":"言","匯":"汇","出":"出","入":"入","頁":"页","邊":"边","註":"注","批":"批","斷":"断","績":"绩","評":"评","剩":"剩","餘":"余","確":"确","定":"定","還":"还","張":"张","翻":"翻","轉":"转","關":"关","係":"系","顯":"显","示":"示","專":"专","業":"业","將":"将","儲":"储","存":"存","覽":"览","器":"器","載":"载","檔":"档","複":"复","製":"制","摘":"摘","針":"针","講":"讲","解":"解","淺":"浅","深":"深","動":"动","鐘":"钟","約":"约","聽":"听","寫":"写","議":"议","掌":"掌","握":"握","簿":"本","嗎":"吗","啲":"些","咁":"这么","喺":"在","冇":"没有","唔":"不","嘅":"的","吓":"一下","幾":"几","肯":"肯","估":"猜","當":"当","並":"并","從":"从","們":"们","賽":"赛","極":"极","經":"经","驗":"验","過":"过","樣":"样","無":"无","層":"层","號":"号","筆":"笔","練":"练","級":"级","數":"数","據":"据","價":"价","態":"态","機":"机","率":"率","統":"统","條":"条","變":"变","積":"积","術":"术","語":"语","資":"资","料":"料","即":"即","時":"时","饋":"馈","低":"下","堂":"堂","嚟":"来","畀":"给","睇":"看","係":"是","佢":"它","揀":"选","徑":"径","暫":"暂","舊":"旧","沒":"没","獲":"获","預":"预","錄":"录","鍵":"键","隨":"随","顧":"顾","憶":"忆","驟":"骤","簡":"简","檢":"检","誤":"误","參":"参","連":"连","兩":"两","來":"来","請":"请","刪":"删","見":"见","師":"师","實":"实","擬":"拟","內":"内","討":"讨","電":"电","腦":"脑","讓":"让","閉":"闭","瀏":"浏","換":"换","僅":"仅","與":"与","尋":"寻","曆":"历","結":"结","網":"网","總":"总","適":"适","擇":"择","詢":"询","份":"份","鬆":"松"};
-  const conv = s => s.replace(/搜尋/g,"搜索").replace(/列印/g,"打印").replace(/備份檔/g,"备份文件").replace(/日曆檔/g,"日历文件").replace(/檔案/g,"文件").replace(/網站資料/g,"网站数据").replace(/存成/g,"保存为").replace(/(\d|\}) 日前/g,"$1 天前").replace(/介面/g,"界面").replace(/匯出/g,"导出").replace(/匯入/g,"导入").replace(/估吓/g,"猜一下").replace(/幾肯定/g,"比较肯定").replace(/好肯定/g,"非常肯定").replace(/咁吸引/g,"这么吸引").replace(/仍然唔明/g,"仍然不明白").replace(/記低上堂的疑問/g,"记下上课的疑问").replace(/上堂/g,"上课").replace(/估中/g,"猜中").replace(/估的/g,"猜的").replace(/功課/g,"作业").replace(/溫習/g,"复习").replace(/./g, c => T2S[c] || c);
+  const T2S = {"體":"体","單":"单","課":"课","題":"题","習":"习","頁":"页","錯":"错","識":"识","測":"测","詞":"词","彙":"汇","階":"阶","段":"段","進":"进","繼":"继","續":"续","導":"导","記":"记","復":"复","溫":"温","學":"学","這":"这","個":"个","為":"为","會":"会","說":"说","時":"时","問":"问","對":"对","後":"后","們":"们","裏":"里","麼":"么","於":"于","與":"与","應":"应","試":"试","準":"准","備":"备","項":"项","選":"选","論":"论","範":"范","圍":"围","離":"离","開":"开","間":"间","隔":"隔","現":"现","讀":"读","標":"标","勾":"勾","據":"据","計":"计","難":"难","點":"点","決":"决","法":"法","帶":"带","貼":"贴","給":"给","據":"据","會":"会","處":"处","語":"语","言":"言","匯":"汇","出":"出","入":"入","頁":"页","邊":"边","註":"注","批":"批","斷":"断","績":"绩","評":"评","剩":"剩","餘":"余","確":"确","定":"定","還":"还","張":"张","翻":"翻","轉":"转","關":"关","係":"系","顯":"显","示":"示","專":"专","業":"业","將":"将","儲":"储","存":"存","覽":"览","器":"器","載":"载","檔":"档","複":"复","製":"制","摘":"摘","針":"针","講":"讲","解":"解","淺":"浅","深":"深","動":"动","鐘":"钟","約":"约","聽":"听","寫":"写","議":"议","掌":"掌","握":"握","簿":"本","嗎":"吗","啲":"些","咁":"这么","喺":"在","冇":"没有","唔":"不","嘅":"的","吓":"一下","幾":"几","肯":"肯","估":"猜","當":"当","並":"并","從":"从","們":"们","賽":"赛","極":"极","經":"经","驗":"验","過":"过","樣":"样","無":"无","層":"层","號":"号","筆":"笔","練":"练","級":"级","數":"数","據":"据","價":"价","態":"态","機":"机","率":"率","統":"统","條":"条","變":"变","積":"积","術":"术","語":"语","資":"资","料":"料","即":"即","時":"时","饋":"馈","低":"下","堂":"堂","嚟":"来","畀":"给","睇":"看","係":"是","佢":"它","揀":"选","徑":"径","暫":"暂","舊":"旧","沒":"没","獲":"获","預":"预","錄":"录","鍵":"键","隨":"随","顧":"顾","憶":"忆","驟":"骤","簡":"简","檢":"检","誤":"误","參":"参","連":"连","兩":"两","來":"来","請":"请","刪":"删","見":"见","師":"师","實":"实","擬":"拟","內":"内","討":"讨","電":"电","腦":"脑","讓":"让","閉":"闭","瀏":"浏","換":"换","僅":"仅","與":"与","尋":"寻","曆":"历","結":"结","網":"网","總":"总","適":"适","擇":"择","詢":"询","份":"份","鬆":"松","類":"类","釋":"释","組":"组","醫":"医","頭":"头","詳":"详"};
+  const conv = s => s.replace(/甚麼/g,"什么").replace(/搜尋/g,"搜索").replace(/列印/g,"打印").replace(/備份檔/g,"备份文件").replace(/日曆檔/g,"日历文件").replace(/檔案/g,"文件").replace(/網站資料/g,"网站数据").replace(/存成/g,"保存为").replace(/(\d|\}) 日前/g,"$1 天前").replace(/介面/g,"界面").replace(/匯出/g,"导出").replace(/匯入/g,"导入").replace(/估吓/g,"猜一下").replace(/幾肯定/g,"比较肯定").replace(/好肯定/g,"非常肯定").replace(/咁吸引/g,"这么吸引").replace(/仍然唔明/g,"仍然不明白").replace(/記低上堂的疑問/g,"记下上课的疑问").replace(/上堂/g,"上课").replace(/估中/g,"猜中").replace(/估的/g,"猜的").replace(/功課/g,"作业").replace(/溫習/g,"复习").replace(/./g, c => T2S[c] || c);
   const zs = {}; const zt = UI["zh-Hant"];
   for (const k in zt) zs[k] = conv(zt[k]);
   zs.langName = "简体中文"; zs.langLabel = "界面语言"; zs.notebook = "错题本"; zs.s_homework = "作业解答"; zs.nbTitle = "错题本";
@@ -306,7 +306,7 @@ function migrate(s){
   for (const k in s.fc) { const v = s.fc[k]; if (typeof v === "string") s.fc[k] = sched({}, v === "know" ? 4 : 2); }
   return s;
 }
-function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null, backup:null}; }
+function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null, backup:null, typeMode:false}; }
 function loadState(){ try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && s.v === 1 ? Object.assign(blank(), s) : blank(); } catch(e){ return blank(); } }
 let S = migrate(loadState());
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
@@ -344,7 +344,25 @@ function md(v){
   return out.join("").replace(/\u0000(\d+)\u0000/g, (_, n) => esc(math[+n])).replace(/\u0001/g, "<span>$</span>");
 }
 function mdi(v){ return md(v).replace(/^<p>|<\/p>$/g, ""); }
-const plain = v => tx(v).replace(IMG_MD, "$1").replace(/[*`$]/g, "");
+const CLOZE = /\{\{c\d*::([\s\S]+?)(?:::([^{}]*?))?\}\}/g;   // {{c1::answer}} or {{c1::answer::hint}}
+const plain = v => tx(v).replace(IMG_MD, "$1").replace(CLOZE, "$1").replace(/[*`$]/g, "");
+/* plain text with LaTeX turned into readable symbols — for search results, read-aloud and copied prompts */
+function readable(v){
+  return plain(v).replace(/\\(?:d?frac)\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
+    .replace(/\\(left|right|,|;|!|quad)/g, "").replace(/\\cdot/g, "·").replace(/\\times/g, "×").replace(/\\le(q)?/g, "≤").replace(/\\ge(q)?/g, "≥").replace(/\\neq/g, "≠")
+    .replace(/\\(alpha|beta|gamma|delta|Delta|epsilon|varepsilon|theta|lambda|mu|pi|sigma|Sigma|partial)\b/g, (_, g) => ({alpha:"α",beta:"β",gamma:"γ",delta:"δ",Delta:"Δ",epsilon:"ε",varepsilon:"ε",theta:"θ",lambda:"λ",mu:"μ",pi:"π",sigma:"σ",Sigma:"Σ",partial:"∂"})[g])
+    .replace(/\\(mid|cap|cup|sum|prod|infty|to|rightarrow|Rightarrow|approx|sqrt|in|subset|pm|ldots|cdots|bar|hat)\b/g, (_, g) => ({mid:"|",cap:"∩",cup:"∪",sum:"Σ",prod:"Π",infty:"∞",to:"→",rightarrow:"→",Rightarrow:"⇒",approx:"≈",sqrt:"√",in:"∈",subset:"⊂",pm:"±",ldots:"…",cdots:"⋯",bar:"",hat:""})[g])
+    .replace(/\\([a-zA-Z]+)/g, "$1").replace(/[{}]/g, "");
+}
+/* A flashcard is front/back, or a cloze card whose front holds {{c1::…}} deletions (back is then optional extra). */
+function cardFaces(card){
+  const f = tx(card.front), b = tx(card.back);
+  if (!/\{\{c\d*::/.test(f)) return {front: f, back: b, answer: b, cloze: false};
+  const ans = [];
+  const front = f.replace(CLOZE, (_, a, h) => { ans.push(a); return "［" + (h || "……") + "］"; });
+  const full = f.replace(CLOZE, (_, a) => "**" + a + "**");
+  return {front, back: full + (b ? "\n\n" + b : ""), answer: ans.join(" / "), cloze: true, full};
+}
 function fmtDay(ts){
   const d = Math.round((startOfDay(ts) - startOfDay(Date.now())) / DAY);
   if (d <= 0) return t("today"); if (d === 1) return t("tomorrow"); return t("inDays",{n:d});
@@ -548,6 +566,69 @@ function downloadBackup(){
   S.backup = Date.now(); save();
   downloadFile("scholia-progress-" + new Date().toISOString().slice(0,10) + ".json", JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1), "application/json");
 }
+/* "Ask Claude": copy a ready-made prompt about one question, to paste into Claude */
+function askPrompt(q, choice){
+  const info = QIDX[q.id], u = info && info.ui >= 0 ? UNITS[info.ui] : null;
+  const lines = ["SCHOLIA-ASK v1", "course: " + plain(COURSE.title) + (u ? " · " + t("unitN",{n:info.ui+1}) + " " + plain(u.title) : ""),
+    "concept: " + plain(q.concept), "", t("askQ") + " " + readable(q.stem)];
+  if (q.type === "single" || q.type === "multi") (q.options || []).forEach((o, i) => lines.push("  " + "ABCDEF"[i] + ". " + readable(o)));
+  lines.push(t("askMine") + " " + (q.type === "short" ? (choice || "—") : readable(answerText(q, choice).replace(/<[^>]+>/g, ""))),
+    t("askRight") + " " + (q.type === "short" ? readable(q.answer) : readable(correctText(q).replace(/<[^>]+>/g, ""))),
+    t("askExpl") + " " + readable(q.explanation), "", t("askTail"));
+  return lines.join("\n");
+}
+function showTextDialog(title, text){
+  const d = document.createElement("dialog");
+  d.style.cssText = "border:1px solid var(--rule);border-radius:14px;padding:24px;max-width:560px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)";
+  d.innerHTML = `<div class="stack g12"><h2 style="font-size:20px">${esc(title)}</h2><p class="small muted">${esc(t("copyFail"))}</p>
+    <textarea readonly style="min-height:220px;font-size:13px">${esc(text)}</textarea>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn">${esc(t("close"))}</button></div></div>`;
+  d.querySelector("button").onclick = () => d.close();
+  d.addEventListener("close", () => d.remove());
+  document.body.appendChild(d); d.showModal(); d.querySelector("textarea").select();
+}
+async function askClaude(id, choice){
+  const q = QIDX[id] && QIDX[id].q; if (!q) return;
+  const text = askPrompt(q, choice);
+  if (await copyText(text)) toast(t("askCopied")); else showTextDialog(t("ask"), text);
+}
+const askBtn = (id, src, key) => `<button type="button" class="btn" data-act="ask" data-id="${esc(id)}" data-src="${src}" ${key ? `data-k="${esc(key)}"` : ""}>${esc(t("ask"))}</button>`;
+
+/* Read aloud with the browser's built-in voices (works offline on most phones) */
+const CAN_SPEAK = typeof window !== "undefined" && "speechSynthesis" in window;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices(), want = LANG === "en" ? ["en-GB","en-US","en"] : LANG === "zh-Hans" ? ["zh-CN","cmn"] : ["zh-HK","yue","zh-TW","zh"];
+  for (const w of want) { const v = vs.find(x => x.lang && x.lang.replace("_","-").toLowerCase().startsWith(w.toLowerCase())); if (v) return v; }
+  return null;
+}
+function speak(text){
+  if (!CAN_SPEAK) return;
+  if (speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
+  const parts = String(text).split(/(?<=[。！？.!?\n])/).map(x => x.trim()).filter(Boolean);
+  const voice = pickVoice();
+  for (const part of parts) { const u = new SpeechSynthesisUtterance(part); if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = LANG === "en" ? "en-US" : LANG === "zh-Hans" ? "zh-CN" : "zh-HK"; u.rate = 0.95; speechSynthesis.speak(u); }
+}
+const speakBtn = (what, extra) => CAN_SPEAK ? `<button type="button" class="btn" data-act="speak" data-w="${what}" ${extra || ""}><span aria-hidden="true">🔊</span> ${esc(t("readAloud"))}</button>` : "";
+
+/* Typed recall for flashcards */
+const normAns = s => readable(s).toLowerCase().replace(/[\s\p{P}\p{S}]/gu, "");
+function typedVerdict(typed, answer){
+  const a = normAns(answer), b = normAns(typed);
+  if (!b) return null;
+  if (a === b || (a.length <= 40 && a.includes(b) && b.length >= a.length * 0.7) || (b.includes(a) && a.length >= 2)) return "typedMatch";
+  return a.length > 40 ? "typedCompare" : "typedDiff";
+}
+function typeBox(st, faces, act, attrs){
+  if (!S.typeMode) return "";
+  if (!st.back) return `<form class="row" data-act="${act}-check" ${attrs} style="gap:8px;flex-wrap:nowrap"><label class="sr" for="fc-in">${esc(t("typeAnswer"))}</label>
+    <input id="fc-in" name="a" data-act="${act}-text" ${attrs} value="${esc(st.typed || "")}" placeholder="${esc(t("typeAnswer"))}" autocomplete="off" style="flex:1">
+    <button type="submit" class="btn">${esc(t("check"))}</button></form>`;
+  const v = typedVerdict(st.typed || "", faces.answer);
+  if (!v) return "";
+  return `<div class="fb ${v === "typedMatch" ? "ok" : "no"}"><span class="label ${v === "typedMatch" ? "b" : "o"}">${esc(t(v))}</span><p class="small">${esc(t("yourTyped"))} ${esc(st.typed)}</p></div>`;
+}
+const typeToggle = () => `<button type="button" class="pill ${S.typeMode ? "on" : ""}" data-act="type-mode" aria-pressed="${S.typeMode}">${esc(t("typeMode"))}</button>`;
+
 function marginHome(){
   const weak = weakSpots();
   const due = dueList();
@@ -619,6 +700,7 @@ function vPrestudy(u){
       <span class="label r">${esc(t("stageN",{n:1}))} · ${esc(t("before"))}${p.minutes ? " · " + esc(t("minutes",{n:p.minutes})) : ""}</span>
       <h1 class="big" style="font-size:44px;line-height:1.08">${mdi(u.title)}</h1>
       ${u.summary ? `<p class="prose" style="font-style:italic;color:var(--ink2);font-size:20px">${mdi(u.summary)}</p>` : ""}
+      <div>${speakBtn("prestudy", `data-u="${esc(u.id)}"`)}</div>
     </header>
     ${objs.length ? `<section class="card stack g10" style="padding:20px 24px"><h2 class="label">${esc(t("objectives"))}</h2>
       ${objs.map((o, i) => `<label class="row" style="gap:12px;align-items:flex-start;flex-wrap:nowrap;min-height:32px"><input type="checkbox" data-act="obj" data-k="${esc(u.id+":"+i)}" ${S.obj[u.id+":"+i]?"checked":""} style="width:18px;height:18px;margin-top:4px;accent-color:var(--blue);flex:none"><span>${mdi(o)}</span></label>`).join("")}</section>` : ""}
@@ -689,7 +771,8 @@ function quizBlock(key, questions, mode, ctx){
     fb = `<div class="fb ${ok?"ok":"no"}" role="status"><span class="label ${ok?"b":"o"}">${esc(ok ? (lucky ? t("rightGuess") : t("right")) : t("notQuite"))}</span>
       ${q.type === "short" ? `<div class="stack g4"><span class="label">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div></div>` : ""}
       <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>${why}
-      ${(!ok || lucky) && mode !== "retest" ? `<p class="mono small" style="color:var(--orange)">${esc(t("addedNb"))}</p>` : ""}</div>`;
+      ${(!ok || lucky) && mode !== "retest" ? `<p class="mono small" style="color:var(--orange)">${esc(t("addedNb"))}</p>` : ""}
+      ${!ok || lucky ? `<div class="row">${askBtn(q.id, "quiz", key)}</div>` : ""}</div>`;
   }
   let actions;
   if (q.type === "short" && !st.checked) {
@@ -790,7 +873,7 @@ function mistakeCard(id, withUnit){
     <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>
     <div class="between" style="padding-top:12px;border-top:1px solid var(--sunk)">
       <span class="mono small muted" style="font-size:12px">${e.mastered ? esc(t("nbMastered")) + " ✓" : esc(t("retestOn",{d:fmtDay(e.due)}))}</span>
-      ${e.mastered ? "" : `<button type="button" class="btn" data-act="retest-one" data-id="${esc(id)}">${esc(t("similar"))}</button>`}
+      <span class="row" style="gap:8px">${askBtn(id, "nb")}${e.mastered ? "" : `<button type="button" class="btn" data-act="retest-one" data-id="${esc(id)}">${esc(t("similar"))}</button>`}</span>
     </div></article>`;
 }
 
@@ -824,14 +907,16 @@ function vReview(u){
   const cards = r.flashcards || [];
   const f = fcState(u); if (f.i >= cards.length) f.i = 0;
   const known = cards.filter((_, i) => { const it = S.fc[u.id+":"+i]; return it && it.reps > 0; }).length;
-  const card = cards[f.i];
+  const card = cards[f.i], faces = card ? cardFaces(card) : null;
   const quizKey = u.id + ":postquiz";
   return `<div class="read"><article class="col">
     ${unitHeader(u, "review")}
-    <section class="stack g12"><h2 style="font-size:26px">${esc(t("recap"))}</h2><div class="prose">${md(r.recap)}</div></section>
+    <section class="stack g12"><div class="between"><h2 style="font-size:26px">${esc(t("recap"))}</h2>${speakBtn("recap", `data-u="${esc(u.id)}"`)}</div><div class="prose">${md(r.recap)}</div></section>
     ${(r.keyPoints||[]).length ? `<section class="card stack g10"><h2 class="label">${esc(t("keyPoints"))}</h2><ol class="md" style="margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol></section>` : ""}
     ${card ? `<section class="stack g12" aria-labelledby="fc"><div class="between"><h2 id="fc" style="font-size:26px">${esc(t("flashcards"))}</h2><span class="mono small muted">${esc(t("cardOf",{i:f.i+1,n:cards.length}))} · ${esc(t("known",{k:known}))}</span></div>
-      <button type="button" class="flash ${f.back?"back":""}" data-act="fc-flip" data-u="${esc(u.id)}" aria-label="${esc(t("flip"))}"><span class="md">${md(f.back ? card.back : card.front)}</span></button>
+      <div class="row" style="gap:8px">${typeToggle()}${speakBtn("fc", `data-u="${esc(u.id)}"`)}</div>
+      <button type="button" class="flash ${f.back?"back":""}" data-act="fc-flip" data-u="${esc(u.id)}" aria-label="${esc(t("flip"))}"><span class="md">${md(f.back ? faces.back : faces.front)}</span></button>
+      ${typeBox(f, faces, "fc", `data-u="${esc(u.id)}"`)}
       <div class="between"><div class="row" style="gap:8px"><button type="button" class="btn" data-act="fc-prev" data-u="${esc(u.id)}" aria-label="prev">←</button><button type="button" class="btn" data-act="fc-flip" data-u="${esc(u.id)}">${esc(t("flip"))}</button><button type="button" class="btn" data-act="fc-next" data-u="${esc(u.id)}" aria-label="next">→</button></div>
       <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="again">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="know">${esc(t("know"))}</button></div></div></section>` : ""}
     ${r.connections ? `<section class="stack g8"><h2 style="font-size:22px">${esc(t("connections"))}</h2><div class="md">${md(r.connections)}</div></section>` : ""}
@@ -892,11 +977,13 @@ function viewCards(){
     const n = CS.list.length;
     return topBar(t("cardsTitle")) + `<div class="read"><main class="col"><div class="empty">${esc(n ? t("cardsDone",{n}) : t("cardsNone"))}<a class="btn" href="#/">${esc(t("dashboard"))}</a></div></main></div>`;
   }
-  const key = CS.list[CS.i], [uid, i] = key.split(":"), u = unitById(uid), card = u.review.flashcards[+i];
+  const key = CS.list[CS.i], [uid, i] = key.split(":"), u = unitById(uid), card = u.review.flashcards[+i], faces = cardFaces(card);
   return topBar(t("cardsTitle")) + `<div class="read"><main class="col stack g14">
     <div class="between"><span class="label r">${esc(t("unitN",{n:unitNum(uid)}))} · ${esc(plain(u.title))}</span><span class="mono small muted">${esc(t("cardOf",{i:CS.i+1,n:CS.list.length}))}</span></div>
     <div class="prog" aria-hidden="true">${CS.list.map((_, j) => `<i class="${j < CS.i ? "ok" : j === CS.i ? "cur" : ""}"></i>`).join("")}</div>
-    <button type="button" class="flash ${CS.back?"back":""}" data-act="cs-flip" aria-label="${esc(t("flip"))}"><span class="md">${md(CS.back ? card.back : card.front)}</span></button>
+    <div class="row" style="gap:8px">${typeToggle()}${speakBtn("cs")}</div>
+    <button type="button" class="flash ${CS.back?"back":""}" data-act="cs-flip" aria-label="${esc(t("flip"))}"><span class="md">${md(CS.back ? faces.back : faces.front)}</span></button>
+    ${typeBox(CS, faces, "cs", "")}
     <div class="between"><button type="button" class="btn" data-act="cs-flip">${esc(t("flip"))}</button>
     <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="cs-mark" data-v="2">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="cs-mark" data-v="4">${esc(t("know"))}</button></div></div>
   </main></div>`;
@@ -1048,11 +1135,7 @@ let SEARCH_Q = "";
 function searchIndex(){
   if (searchIndex.lang === LANG) return searchIndex.items;
   const items = [];
-  const flat = v => plain(v).replace(/\\(?:d?frac)\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
-    .replace(/\\(left|right|,|;|!|quad)/g, "").replace(/\\cdot/g, "·").replace(/\\times/g, "×").replace(/\\le(q)?/g, "≤").replace(/\\ge(q)?/g, "≥").replace(/\\neq/g, "≠")
-    .replace(/\\(alpha|beta|gamma|delta|Delta|epsilon|varepsilon|theta|lambda|mu|pi|sigma|Sigma|partial)\b/g, (_, g) => ({alpha:"α",beta:"β",gamma:"γ",delta:"δ",Delta:"Δ",epsilon:"ε",varepsilon:"ε",theta:"θ",lambda:"λ",mu:"μ",pi:"π",sigma:"σ",Sigma:"Σ",partial:"∂"})[g])
-    .replace(/\\(mid|cap|cup|sum|prod|infty|to|rightarrow|Rightarrow|approx|sqrt|in|subset|pm|ldots|cdots|bar|hat)\b/g, (_, g) => ({mid:"|",cap:"∩",cup:"∪",sum:"Σ",prod:"Π",infty:"∞",to:"→",rightarrow:"→",Rightarrow:"⇒",approx:"≈",sqrt:"√",in:"∈",subset:"⊂",pm:"±",ldots:"…",cdots:"⋯",bar:"",hat:""})[g])
-    .replace(/\\([a-zA-Z]+)/g, "$1").replace(/[{}]/g, "");
+  const flat = readable;
   const add = (u, kind, title, body, href) => { const ti = flat(title), bo = flat(body); items.push({u, kind, title: ti, body: bo, hay: (ti + "\n" + bo).toLowerCase(), href}); };
   UNITS.forEach(u => {
     const p = u.prestudy || {}, r = u.review || {}, base = "#/u/" + u.id + "/";
@@ -1105,13 +1188,33 @@ function viewSheet(){
     return `<section class="stack g10 sheet-unit"><h2 style="font-size:26px"><span style="color:var(--rubric)">${i+1}</span> ${mdi(u.title)}</h2>
       ${(r.keyPoints||[]).length ? `<ol class="md" style="margin:0;padding-left:1.3em">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol>` : ""}
       ${(p.keyTerms||[]).length ? `<dl class="sheet-terms">${p.keyTerms.map(k => `<div><dt>${mdi(k.term)}</dt><dd>${mdi(k.definition)}</dd></div>`).join("")}</dl>` : ""}
-      ${(r.flashcards||[]).length ? `<details class="sheet-cards"><summary class="small">${esc(t("flashcards"))} (${r.flashcards.length})</summary><dl class="sheet-terms">${r.flashcards.map(f => `<div><dt>${mdi(f.front)}</dt><dd>${mdi(f.back)}</dd></div>`).join("")}</dl></details>` : ""}
+      ${(r.flashcards||[]).length ? `<details class="sheet-cards"><summary class="small">${esc(t("flashcards"))} (${r.flashcards.length})</summary><dl class="sheet-terms">${r.flashcards.map(f => { const fc = cardFaces(f); return fc.cloze ? `<div><dt>${mdi(fc.full)}</dt>${f.back ? `<dd>${mdi(f.back)}</dd>` : ""}</div>` : `<div><dt>${mdi(f.front)}</dt><dd>${mdi(f.back)}</dd></div>`; }).join("")}</dl></details>` : ""}
     </section>`; }).join("");
   const sheets = REVIEWS.filter(k => DATA[k].formulaSheet).map(k => `<section class="card stack g10 sheet-unit"><h2 style="font-size:24px">${esc(tx(DATA[k].title) || t(k))} · ${esc(t("formulaSheet"))}</h2><div class="md">${md(DATA[k].formulaSheet)}</div></section>`).join("");
   return topBar(t("sheet")) + `<div class="shell">${sideNav(null,"sheet")}<main class="main sheet" style="max-width:900px">
     <header class="stack g8"><span class="label r">${esc(plain(COURSE.title))}</span><h1 class="big" style="font-size:40px">${esc(t("sheet"))}</h1>
     <p class="muted">${esc(t("sheetSub"))}</p><div class="noprint"><button type="button" class="btn primary" data-act="print">${esc(t("print"))}</button></div></header>
     ${sheets}${units}</main></div>`;
+}
+
+/* ----- Anki export: tab-separated, with Anki's file headers (Anki 2.1.55+) ----- */
+function ankiFile(){
+  // math becomes MathJax \( \) / \[ \]; a literal dollar (rendered as <span>$</span>) is protected first
+  const cell = v => md(v).replace(/<span>\$<\/span>/g, "\u0002").replace(/\$\$([\s\S]+?)\$\$/g, "\\[$1\\]").replace(/\$([^$]+?)\$/g, "\\($1\\)")
+    .replace(/\u0002/g, "$").replace(/[\t\r\n]+/g, " ");
+  const deck = s => s.replace(/[:\t\r\n]+/g, " ").trim();
+  const rows = ["#separator:tab", "#html:true", "#notetype column:1", "#deck column:2", "#tags column:5"];
+  UNITS.forEach((u, i) => {
+    const d = "Scholia::" + deck(plain(COURSE.title)) + "::" + String(i+1).padStart(2, "0") + " " + deck(plain(u.title));
+    const tag = "scholia unit-" + u.id.replace(/\s+/g, "_");
+    ((u.review || {}).flashcards || []).forEach(f => {
+      const fc = cardFaces(f);
+      rows.push(fc.cloze ? ["Cloze", d, cell(f.front), cell(f.back), tag].join("\t")
+                         : ["Basic", d, cell(f.front), cell(f.back), tag].join("\t"));
+    });
+    ((u.prestudy || {}).keyTerms || []).forEach(k => rows.push(["Basic", d, cell(k.term), cell(k.definition), tag + " key-term"].join("\t")));
+  });
+  return rows.join("\n") + "\n";
 }
 
 /* ----- calendar (.ics) ----- */
@@ -1179,6 +1282,8 @@ function openExport(){
     <label class="btn" style="cursor:pointer">${esc(t("import"))}<input type="file" accept="application/json,.json" data-x="imp" class="sr"></label></div>
     <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("ics"))}</h3><p class="small muted">${esc(t("icsSub"))}</p>
     <button type="button" class="btn" data-x="ics">${esc(t("ics"))}</button></div>
+    <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("anki"))}</h3><p class="small muted">${esc(t("ankiSub"))}</p>
+    <button type="button" class="btn" data-x="anki">${esc(t("anki"))}</button></div>
     <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("codeTitle"))}</h3><p class="small muted">${esc(t("codeSub"))}</p>
     <button type="button" class="btn" data-x="code">${esc(t("codeCopy"))}</button>
     <label class="sr" for="code-in">${esc(t("codePaste"))}</label><textarea id="code-in" data-x="codein" placeholder="SCHZ1:…" style="min-height:72px;font-family:var(--mono);font-size:12px"></textarea>
@@ -1190,6 +1295,7 @@ function openExport(){
     const x = e.target.closest("[data-x]"); if (!x) { if (e.target === d) d.close(); return; }
     if (x.dataset.x === "close") d.close();
     if (x.dataset.x === "dl") { downloadBackup(); render(); }
+    if (x.dataset.x === "anki") { downloadFile("scholia-anki-" + new Date().toISOString().slice(0,10) + ".txt", ankiFile(), "text/plain"); toast(t("ankiDone")); }
     if (x.dataset.x === "ics") { downloadFile("scholia-" + new Date().toISOString().slice(0,10) + ".ics", icsFile(), "text/calendar"); toast(t("icsDone")); }
     if (x.dataset.x === "code") { const c = await progressCode(); S.backup = Date.now(); save(); if (!(await copyText(c))) { const o = d.querySelector('[data-x="out"]'); o.textContent = c; o.hidden = false; } }
     if (x.dataset.x === "apply") {
@@ -1226,6 +1332,7 @@ function render(){
   app.innerHTML = html;
   if (r.view === "review" && S.exam[r.a] && S.exam[r.a].current && !S.exam[r.a].current.submitted) startTimer(r.a);
   typeset(app);
+  const fin = document.getElementById("fc-in"); if (fin && S.typeMode && document.activeElement === document.body && fin.getBoundingClientRect().top < innerHeight) fin.focus({preventScroll: true});
   if (r.view === "search") { const inp = document.getElementById("search-in"); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
 }
 function typeset(el){
@@ -1239,6 +1346,18 @@ document.addEventListener("click", e => {
   if (act === "lang") { LANG = d.v; S.lang = d.v; save(); rerender(true); return; }
   if (act === "export") { openExport(); return; }
   if (act === "backup") { downloadBackup(); rerender(true); return; }
+  if (act === "ask") { let choice;
+    if (d.src === "quiz") { const st = qs(d.k); choice = QIDX[d.id].q.type === "short" ? st.text : st.sel; }
+    else { const e = S.nb[d.id]; choice = e && e.lastChoice; }
+    askClaude(d.id, choice); return; }
+  if (act === "speak") { const u = d.u ? unitById(d.u) : null;
+    if (d.w === "recap") { const r = u.review || {}; speak([readable(r.recap)].concat((r.keyPoints || []).map(readable)).join("\n")); }
+    else if (d.w === "prestudy") { const p = u.prestudy || {}; speak([readable(u.title)].concat((p.sections || []).map(x => readable(x.heading) + "。\n" + readable(x.body))).join("\n")); }
+    else { const st = d.w === "cs" ? CS : fcState(u); const key = d.w === "cs" ? CS.list[CS.i] : u.id + ":" + st.i;
+      const [uid, i] = key.split(":"), card = unitById(uid).review.flashcards[+i], fc = cardFaces(card);
+      speak(readable(st.back ? (fc.cloze ? fc.full : card.back) : fc.front)); }
+    return; }
+  if (act === "type-mode") { S.typeMode = !S.typeMode; save(); rerender(true); return; }
   if (act === "print") { window.print(); return; }
   if (act.startsWith("q-")) { quizAct(act, d.k, d.v); rerender(true); return; }
   if (act === "done" || act === "undone") { setDone(unitById(d.u), d.s, act === "done"); rerender(true); return; }
@@ -1249,12 +1368,12 @@ document.addEventListener("click", e => {
     const txt = ["SCHOLIA-QUESTIONS v1", "course: " + plain(COURSE.title), `unit: ${u.id} · ${plain(u.title)}`, "lang: " + LANG, ""].concat(list.map((x, i) => `${i+1}. ${x.text}`)).join("\n");
     copyText(txt).then(ok => { if (!ok) { const o = document.getElementById("cq-out"); if (o) { o.textContent = txt; o.hidden = false; } } }); return; }
   if (act === "cs-flip") { CS.back = !CS.back; rerender(true); return; }
-  if (act === "cs-mark") { const k = CS.list[CS.i]; S.fc[k] = sched(S.fc[k] || {}, +d.v); save(); CS.i++; CS.back = false; rerender(true); return; }
+  if (act === "cs-mark") { const k = CS.list[CS.i]; S.fc[k] = sched(S.fc[k] || {}, +d.v); save(); CS.i++; CS.back = false; CS.typed = null; rerender(true); return; }
   if (act.startsWith("fc-")) { const u = unitById(d.u), f = fcState(u), n = (u.review.flashcards||[]).length;
     if (act === "fc-flip") f.back = !f.back;
-    if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; }
-    if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; }
-    if (act === "fc-mark") { const k = u.id+":"+f.i; S.fc[k] = sched(S.fc[k] || {}, d.v === "know" ? 4 : 2); save(); f.i = (f.i+1) % n; f.back = false; }
+    if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; f.typed = null; }
+    if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; f.typed = null; }
+    if (act === "fc-mark") { const k = u.id+":"+f.i; S.fc[k] = sched(S.fc[k] || {}, d.v === "know" ? 4 : 2); save(); f.i = (f.i+1) % n; f.back = false; f.typed = null; }
     rerender(true); return; }
   if (act === "hw-hint") { HWV[d.id].hints++; rerender(true); return; }
   if (act === "hw-sol") { HWV[d.id].sol = true; rerender(true); return; }
@@ -1280,12 +1399,17 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("input", e => {
   const el = e.target; const d = el.dataset;
+  if (d.act === "fc-text") { fcState(unitById(d.u)).typed = el.value; return; }
+  if (d.act === "cs-text") { CS.typed = el.value; return; }
   if (el.id === "search-in") { SEARCH_Q = el.value; const res = document.getElementById("search-res"); if (res) { res.innerHTML = searchResults(); } return; }
   if (d.act === "q-text") qs(d.k).text = el.value;
   if (d.act === "ex-text") { S.exam[d.k].current.ans[d.id] = el.value; save(); }
 });
 document.addEventListener("submit", e => {
-  const f = e.target; if (f.dataset.act !== "cq-add") return; e.preventDefault();
+  const f = e.target;
+  if (f.dataset.act === "fc-check" || f.dataset.act === "cs-check") { e.preventDefault();
+    const st = f.dataset.act === "cs-check" ? CS : fcState(unitById(f.dataset.u)); st.typed = f.a.value; st.back = true; rerender(true); return; }
+  if (f.dataset.act !== "cq-add") return; e.preventDefault();
   const v = f.q.value.trim(); if (!v) return;
   (S.cq[f.dataset.u] = S.cq[f.dataset.u] || []).push({text: v, ts: Date.now()}); save(); rerender(true);
   const ta = document.getElementById("cq-input"); if (ta) ta.focus();

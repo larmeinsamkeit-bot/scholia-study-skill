@@ -80,6 +80,13 @@ class ValidationTests(unittest.TestCase):
         _, warnings = messages(d)
         self.assertTrue(any("no 'en' version" in w for w in warnings), warnings)
 
+    def test_cloze_card_needs_no_back(self):
+        d = example_data()
+        d["units"][0]["review"]["flashcards"].append({"front": "邊際成本是 {{c1::多生產一單位的成本}}"})
+        d["units"][0]["review"]["flashcards"].append({"front": "沒有填空也沒有背面"})
+        errors, _ = messages(d)
+        self.assertEqual(sum("flashcards" in e for e in errors), 1, errors)
+
     def test_content_langs_must_start_with_lang(self):
         d = example_data()
         d["course"]["contentLangs"] = ["en", "zh-Hant"]
@@ -197,6 +204,11 @@ class BrowserTests(unittest.TestCase):
         sheet = self.dump(self.out, "#/sheet")
         self.assertIn("sheet-unit", sheet)
         self.assertIn('class="katex"', sheet)
+
+    def test_review_has_cards_reading_and_typing(self):
+        dom = self.dump(self.out, "#/u/u1/review")
+        self.assertIn('data-act="type-mode"', dom)
+        self.assertIn('class="flash', dom)
 
     def test_figure_renders(self):
         self.assertIn('<img src="data:image/svg+xml;base64,', self.dump(self.out, "#/u/u1/prestudy"))

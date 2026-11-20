@@ -22,7 +22,7 @@ function migrate(s){
   for (const k in s.fc) { const v = s.fc[k]; if (typeof v === "string") s.fc[k] = sched({}, v === "know" ? 4 : 2); }
   return s;
 }
-function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null, backup:null}; }
+function blank(){ return {v:1, att:{}, nb:{}, done:{}, cq:{}, fc:{}, obj:{}, hw:{}, exam:{}, lang:null, theme:null, backup:null, typeMode:false}; }
 function loadState(){ try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && s.v === 1 ? Object.assign(blank(), s) : blank(); } catch(e){ return blank(); } }
 let S = migrate(loadState());
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
@@ -60,7 +60,25 @@ function md(v){
   return out.join("").replace(/\u0000(\d+)\u0000/g, (_, n) => esc(math[+n])).replace(/\u0001/g, "<span>$</span>");
 }
 function mdi(v){ return md(v).replace(/^<p>|<\/p>$/g, ""); }
-const plain = v => tx(v).replace(IMG_MD, "$1").replace(/[*`$]/g, "");
+const CLOZE = /\{\{c\d*::([\s\S]+?)(?:::([^{}]*?))?\}\}/g;   // {{c1::answer}} or {{c1::answer::hint}}
+const plain = v => tx(v).replace(IMG_MD, "$1").replace(CLOZE, "$1").replace(/[*`$]/g, "");
+/* plain text with LaTeX turned into readable symbols — for search results, read-aloud and copied prompts */
+function readable(v){
+  return plain(v).replace(/\\(?:d?frac)\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
+    .replace(/\\(left|right|,|;|!|quad)/g, "").replace(/\\cdot/g, "·").replace(/\\times/g, "×").replace(/\\le(q)?/g, "≤").replace(/\\ge(q)?/g, "≥").replace(/\\neq/g, "≠")
+    .replace(/\\(alpha|beta|gamma|delta|Delta|epsilon|varepsilon|theta|lambda|mu|pi|sigma|Sigma|partial)\b/g, (_, g) => ({alpha:"α",beta:"β",gamma:"γ",delta:"δ",Delta:"Δ",epsilon:"ε",varepsilon:"ε",theta:"θ",lambda:"λ",mu:"μ",pi:"π",sigma:"σ",Sigma:"Σ",partial:"∂"})[g])
+    .replace(/\\(mid|cap|cup|sum|prod|infty|to|rightarrow|Rightarrow|approx|sqrt|in|subset|pm|ldots|cdots|bar|hat)\b/g, (_, g) => ({mid:"|",cap:"∩",cup:"∪",sum:"Σ",prod:"Π",infty:"∞",to:"→",rightarrow:"→",Rightarrow:"⇒",approx:"≈",sqrt:"√",in:"∈",subset:"⊂",pm:"±",ldots:"…",cdots:"⋯",bar:"",hat:""})[g])
+    .replace(/\\([a-zA-Z]+)/g, "$1").replace(/[{}]/g, "");
+}
+/* A flashcard is front/back, or a cloze card whose front holds {{c1::…}} deletions (back is then optional extra). */
+function cardFaces(card){
+  const f = tx(card.front), b = tx(card.back);
+  if (!/\{\{c\d*::/.test(f)) return {front: f, back: b, answer: b, cloze: false};
+  const ans = [];
+  const front = f.replace(CLOZE, (_, a, h) => { ans.push(a); return "［" + (h || "……") + "］"; });
+  const full = f.replace(CLOZE, (_, a) => "**" + a + "**");
+  return {front, back: full + (b ? "\n\n" + b : ""), answer: ans.join(" / "), cloze: true, full};
+}
 function fmtDay(ts){
   const d = Math.round((startOfDay(ts) - startOfDay(Date.now())) / DAY);
   if (d <= 0) return t("today"); if (d === 1) return t("tomorrow"); return t("inDays",{n:d});
@@ -264,6 +282,69 @@ function downloadBackup(){
   S.backup = Date.now(); save();
   downloadFile("scholia-progress-" + new Date().toISOString().slice(0,10) + ".json", JSON.stringify({scholia:1, course: plain(COURSE.title), state: S}, null, 1), "application/json");
 }
+/* "Ask Claude": copy a ready-made prompt about one question, to paste into Claude */
+function askPrompt(q, choice){
+  const info = QIDX[q.id], u = info && info.ui >= 0 ? UNITS[info.ui] : null;
+  const lines = ["SCHOLIA-ASK v1", "course: " + plain(COURSE.title) + (u ? " · " + t("unitN",{n:info.ui+1}) + " " + plain(u.title) : ""),
+    "concept: " + plain(q.concept), "", t("askQ") + " " + readable(q.stem)];
+  if (q.type === "single" || q.type === "multi") (q.options || []).forEach((o, i) => lines.push("  " + "ABCDEF"[i] + ". " + readable(o)));
+  lines.push(t("askMine") + " " + (q.type === "short" ? (choice || "—") : readable(answerText(q, choice).replace(/<[^>]+>/g, ""))),
+    t("askRight") + " " + (q.type === "short" ? readable(q.answer) : readable(correctText(q).replace(/<[^>]+>/g, ""))),
+    t("askExpl") + " " + readable(q.explanation), "", t("askTail"));
+  return lines.join("\n");
+}
+function showTextDialog(title, text){
+  const d = document.createElement("dialog");
+  d.style.cssText = "border:1px solid var(--rule);border-radius:14px;padding:24px;max-width:560px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)";
+  d.innerHTML = `<div class="stack g12"><h2 style="font-size:20px">${esc(title)}</h2><p class="small muted">${esc(t("copyFail"))}</p>
+    <textarea readonly style="min-height:220px;font-size:13px">${esc(text)}</textarea>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn">${esc(t("close"))}</button></div></div>`;
+  d.querySelector("button").onclick = () => d.close();
+  d.addEventListener("close", () => d.remove());
+  document.body.appendChild(d); d.showModal(); d.querySelector("textarea").select();
+}
+async function askClaude(id, choice){
+  const q = QIDX[id] && QIDX[id].q; if (!q) return;
+  const text = askPrompt(q, choice);
+  if (await copyText(text)) toast(t("askCopied")); else showTextDialog(t("ask"), text);
+}
+const askBtn = (id, src, key) => `<button type="button" class="btn" data-act="ask" data-id="${esc(id)}" data-src="${src}" ${key ? `data-k="${esc(key)}"` : ""}>${esc(t("ask"))}</button>`;
+
+/* Read aloud with the browser's built-in voices (works offline on most phones) */
+const CAN_SPEAK = typeof window !== "undefined" && "speechSynthesis" in window;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices(), want = LANG === "en" ? ["en-GB","en-US","en"] : LANG === "zh-Hans" ? ["zh-CN","cmn"] : ["zh-HK","yue","zh-TW","zh"];
+  for (const w of want) { const v = vs.find(x => x.lang && x.lang.replace("_","-").toLowerCase().startsWith(w.toLowerCase())); if (v) return v; }
+  return null;
+}
+function speak(text){
+  if (!CAN_SPEAK) return;
+  if (speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
+  const parts = String(text).split(/(?<=[。！？.!?\n])/).map(x => x.trim()).filter(Boolean);
+  const voice = pickVoice();
+  for (const part of parts) { const u = new SpeechSynthesisUtterance(part); if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = LANG === "en" ? "en-US" : LANG === "zh-Hans" ? "zh-CN" : "zh-HK"; u.rate = 0.95; speechSynthesis.speak(u); }
+}
+const speakBtn = (what, extra) => CAN_SPEAK ? `<button type="button" class="btn" data-act="speak" data-w="${what}" ${extra || ""}><span aria-hidden="true">🔊</span> ${esc(t("readAloud"))}</button>` : "";
+
+/* Typed recall for flashcards */
+const normAns = s => readable(s).toLowerCase().replace(/[\s\p{P}\p{S}]/gu, "");
+function typedVerdict(typed, answer){
+  const a = normAns(answer), b = normAns(typed);
+  if (!b) return null;
+  if (a === b || (a.length <= 40 && a.includes(b) && b.length >= a.length * 0.7) || (b.includes(a) && a.length >= 2)) return "typedMatch";
+  return a.length > 40 ? "typedCompare" : "typedDiff";
+}
+function typeBox(st, faces, act, attrs){
+  if (!S.typeMode) return "";
+  if (!st.back) return `<form class="row" data-act="${act}-check" ${attrs} style="gap:8px;flex-wrap:nowrap"><label class="sr" for="fc-in">${esc(t("typeAnswer"))}</label>
+    <input id="fc-in" name="a" data-act="${act}-text" ${attrs} value="${esc(st.typed || "")}" placeholder="${esc(t("typeAnswer"))}" autocomplete="off" style="flex:1">
+    <button type="submit" class="btn">${esc(t("check"))}</button></form>`;
+  const v = typedVerdict(st.typed || "", faces.answer);
+  if (!v) return "";
+  return `<div class="fb ${v === "typedMatch" ? "ok" : "no"}"><span class="label ${v === "typedMatch" ? "b" : "o"}">${esc(t(v))}</span><p class="small">${esc(t("yourTyped"))} ${esc(st.typed)}</p></div>`;
+}
+const typeToggle = () => `<button type="button" class="pill ${S.typeMode ? "on" : ""}" data-act="type-mode" aria-pressed="${S.typeMode}">${esc(t("typeMode"))}</button>`;
+
 function marginHome(){
   const weak = weakSpots();
   const due = dueList();
@@ -335,6 +416,7 @@ function vPrestudy(u){
       <span class="label r">${esc(t("stageN",{n:1}))} · ${esc(t("before"))}${p.minutes ? " · " + esc(t("minutes",{n:p.minutes})) : ""}</span>
       <h1 class="big" style="font-size:44px;line-height:1.08">${mdi(u.title)}</h1>
       ${u.summary ? `<p class="prose" style="font-style:italic;color:var(--ink2);font-size:20px">${mdi(u.summary)}</p>` : ""}
+      <div>${speakBtn("prestudy", `data-u="${esc(u.id)}"`)}</div>
     </header>
     ${objs.length ? `<section class="card stack g10" style="padding:20px 24px"><h2 class="label">${esc(t("objectives"))}</h2>
       ${objs.map((o, i) => `<label class="row" style="gap:12px;align-items:flex-start;flex-wrap:nowrap;min-height:32px"><input type="checkbox" data-act="obj" data-k="${esc(u.id+":"+i)}" ${S.obj[u.id+":"+i]?"checked":""} style="width:18px;height:18px;margin-top:4px;accent-color:var(--blue);flex:none"><span>${mdi(o)}</span></label>`).join("")}</section>` : ""}
@@ -405,7 +487,8 @@ function quizBlock(key, questions, mode, ctx){
     fb = `<div class="fb ${ok?"ok":"no"}" role="status"><span class="label ${ok?"b":"o"}">${esc(ok ? (lucky ? t("rightGuess") : t("right")) : t("notQuite"))}</span>
       ${q.type === "short" ? `<div class="stack g4"><span class="label">${esc(t("modelAnswer"))}</span><div class="md">${md(q.answer)}</div></div>` : ""}
       <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>${why}
-      ${(!ok || lucky) && mode !== "retest" ? `<p class="mono small" style="color:var(--orange)">${esc(t("addedNb"))}</p>` : ""}</div>`;
+      ${(!ok || lucky) && mode !== "retest" ? `<p class="mono small" style="color:var(--orange)">${esc(t("addedNb"))}</p>` : ""}
+      ${!ok || lucky ? `<div class="row">${askBtn(q.id, "quiz", key)}</div>` : ""}</div>`;
   }
   let actions;
   if (q.type === "short" && !st.checked) {
@@ -506,7 +589,7 @@ function mistakeCard(id, withUnit){
     <div class="md prose" style="font-size:17.5px">${md(q.explanation)}</div>
     <div class="between" style="padding-top:12px;border-top:1px solid var(--sunk)">
       <span class="mono small muted" style="font-size:12px">${e.mastered ? esc(t("nbMastered")) + " ✓" : esc(t("retestOn",{d:fmtDay(e.due)}))}</span>
-      ${e.mastered ? "" : `<button type="button" class="btn" data-act="retest-one" data-id="${esc(id)}">${esc(t("similar"))}</button>`}
+      <span class="row" style="gap:8px">${askBtn(id, "nb")}${e.mastered ? "" : `<button type="button" class="btn" data-act="retest-one" data-id="${esc(id)}">${esc(t("similar"))}</button>`}</span>
     </div></article>`;
 }
 
@@ -540,14 +623,16 @@ function vReview(u){
   const cards = r.flashcards || [];
   const f = fcState(u); if (f.i >= cards.length) f.i = 0;
   const known = cards.filter((_, i) => { const it = S.fc[u.id+":"+i]; return it && it.reps > 0; }).length;
-  const card = cards[f.i];
+  const card = cards[f.i], faces = card ? cardFaces(card) : null;
   const quizKey = u.id + ":postquiz";
   return `<div class="read"><article class="col">
     ${unitHeader(u, "review")}
-    <section class="stack g12"><h2 style="font-size:26px">${esc(t("recap"))}</h2><div class="prose">${md(r.recap)}</div></section>
+    <section class="stack g12"><div class="between"><h2 style="font-size:26px">${esc(t("recap"))}</h2>${speakBtn("recap", `data-u="${esc(u.id)}"`)}</div><div class="prose">${md(r.recap)}</div></section>
     ${(r.keyPoints||[]).length ? `<section class="card stack g10"><h2 class="label">${esc(t("keyPoints"))}</h2><ol class="md" style="margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol></section>` : ""}
     ${card ? `<section class="stack g12" aria-labelledby="fc"><div class="between"><h2 id="fc" style="font-size:26px">${esc(t("flashcards"))}</h2><span class="mono small muted">${esc(t("cardOf",{i:f.i+1,n:cards.length}))} · ${esc(t("known",{k:known}))}</span></div>
-      <button type="button" class="flash ${f.back?"back":""}" data-act="fc-flip" data-u="${esc(u.id)}" aria-label="${esc(t("flip"))}"><span class="md">${md(f.back ? card.back : card.front)}</span></button>
+      <div class="row" style="gap:8px">${typeToggle()}${speakBtn("fc", `data-u="${esc(u.id)}"`)}</div>
+      <button type="button" class="flash ${f.back?"back":""}" data-act="fc-flip" data-u="${esc(u.id)}" aria-label="${esc(t("flip"))}"><span class="md">${md(f.back ? faces.back : faces.front)}</span></button>
+      ${typeBox(f, faces, "fc", `data-u="${esc(u.id)}"`)}
       <div class="between"><div class="row" style="gap:8px"><button type="button" class="btn" data-act="fc-prev" data-u="${esc(u.id)}" aria-label="prev">←</button><button type="button" class="btn" data-act="fc-flip" data-u="${esc(u.id)}">${esc(t("flip"))}</button><button type="button" class="btn" data-act="fc-next" data-u="${esc(u.id)}" aria-label="next">→</button></div>
       <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="again">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="fc-mark" data-u="${esc(u.id)}" data-v="know">${esc(t("know"))}</button></div></div></section>` : ""}
     ${r.connections ? `<section class="stack g8"><h2 style="font-size:22px">${esc(t("connections"))}</h2><div class="md">${md(r.connections)}</div></section>` : ""}
@@ -608,11 +693,13 @@ function viewCards(){
     const n = CS.list.length;
     return topBar(t("cardsTitle")) + `<div class="read"><main class="col"><div class="empty">${esc(n ? t("cardsDone",{n}) : t("cardsNone"))}<a class="btn" href="#/">${esc(t("dashboard"))}</a></div></main></div>`;
   }
-  const key = CS.list[CS.i], [uid, i] = key.split(":"), u = unitById(uid), card = u.review.flashcards[+i];
+  const key = CS.list[CS.i], [uid, i] = key.split(":"), u = unitById(uid), card = u.review.flashcards[+i], faces = cardFaces(card);
   return topBar(t("cardsTitle")) + `<div class="read"><main class="col stack g14">
     <div class="between"><span class="label r">${esc(t("unitN",{n:unitNum(uid)}))} · ${esc(plain(u.title))}</span><span class="mono small muted">${esc(t("cardOf",{i:CS.i+1,n:CS.list.length}))}</span></div>
     <div class="prog" aria-hidden="true">${CS.list.map((_, j) => `<i class="${j < CS.i ? "ok" : j === CS.i ? "cur" : ""}"></i>`).join("")}</div>
-    <button type="button" class="flash ${CS.back?"back":""}" data-act="cs-flip" aria-label="${esc(t("flip"))}"><span class="md">${md(CS.back ? card.back : card.front)}</span></button>
+    <div class="row" style="gap:8px">${typeToggle()}${speakBtn("cs")}</div>
+    <button type="button" class="flash ${CS.back?"back":""}" data-act="cs-flip" aria-label="${esc(t("flip"))}"><span class="md">${md(CS.back ? faces.back : faces.front)}</span></button>
+    ${typeBox(CS, faces, "cs", "")}
     <div class="between"><button type="button" class="btn" data-act="cs-flip">${esc(t("flip"))}</button>
     <div class="row" style="gap:8px"><button type="button" class="btn" style="color:var(--orange);border-color:var(--orange-rule)" data-act="cs-mark" data-v="2">${esc(t("again"))}</button><button type="button" class="btn" style="color:var(--blue);border-color:var(--blue-rule)" data-act="cs-mark" data-v="4">${esc(t("know"))}</button></div></div>
   </main></div>`;
@@ -764,11 +851,7 @@ let SEARCH_Q = "";
 function searchIndex(){
   if (searchIndex.lang === LANG) return searchIndex.items;
   const items = [];
-  const flat = v => plain(v).replace(/\\(?:d?frac)\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\(?:text|mathrm|mathbf|operatorname)\{([^{}]*)\}/g, "$1")
-    .replace(/\\(left|right|,|;|!|quad)/g, "").replace(/\\cdot/g, "·").replace(/\\times/g, "×").replace(/\\le(q)?/g, "≤").replace(/\\ge(q)?/g, "≥").replace(/\\neq/g, "≠")
-    .replace(/\\(alpha|beta|gamma|delta|Delta|epsilon|varepsilon|theta|lambda|mu|pi|sigma|Sigma|partial)\b/g, (_, g) => ({alpha:"α",beta:"β",gamma:"γ",delta:"δ",Delta:"Δ",epsilon:"ε",varepsilon:"ε",theta:"θ",lambda:"λ",mu:"μ",pi:"π",sigma:"σ",Sigma:"Σ",partial:"∂"})[g])
-    .replace(/\\(mid|cap|cup|sum|prod|infty|to|rightarrow|Rightarrow|approx|sqrt|in|subset|pm|ldots|cdots|bar|hat)\b/g, (_, g) => ({mid:"|",cap:"∩",cup:"∪",sum:"Σ",prod:"Π",infty:"∞",to:"→",rightarrow:"→",Rightarrow:"⇒",approx:"≈",sqrt:"√",in:"∈",subset:"⊂",pm:"±",ldots:"…",cdots:"⋯",bar:"",hat:""})[g])
-    .replace(/\\([a-zA-Z]+)/g, "$1").replace(/[{}]/g, "");
+  const flat = readable;
   const add = (u, kind, title, body, href) => { const ti = flat(title), bo = flat(body); items.push({u, kind, title: ti, body: bo, hay: (ti + "\n" + bo).toLowerCase(), href}); };
   UNITS.forEach(u => {
     const p = u.prestudy || {}, r = u.review || {}, base = "#/u/" + u.id + "/";
@@ -821,13 +904,33 @@ function viewSheet(){
     return `<section class="stack g10 sheet-unit"><h2 style="font-size:26px"><span style="color:var(--rubric)">${i+1}</span> ${mdi(u.title)}</h2>
       ${(r.keyPoints||[]).length ? `<ol class="md" style="margin:0;padding-left:1.3em">${r.keyPoints.map(k => `<li>${mdi(k)}</li>`).join("")}</ol>` : ""}
       ${(p.keyTerms||[]).length ? `<dl class="sheet-terms">${p.keyTerms.map(k => `<div><dt>${mdi(k.term)}</dt><dd>${mdi(k.definition)}</dd></div>`).join("")}</dl>` : ""}
-      ${(r.flashcards||[]).length ? `<details class="sheet-cards"><summary class="small">${esc(t("flashcards"))} (${r.flashcards.length})</summary><dl class="sheet-terms">${r.flashcards.map(f => `<div><dt>${mdi(f.front)}</dt><dd>${mdi(f.back)}</dd></div>`).join("")}</dl></details>` : ""}
+      ${(r.flashcards||[]).length ? `<details class="sheet-cards"><summary class="small">${esc(t("flashcards"))} (${r.flashcards.length})</summary><dl class="sheet-terms">${r.flashcards.map(f => { const fc = cardFaces(f); return fc.cloze ? `<div><dt>${mdi(fc.full)}</dt>${f.back ? `<dd>${mdi(f.back)}</dd>` : ""}</div>` : `<div><dt>${mdi(f.front)}</dt><dd>${mdi(f.back)}</dd></div>`; }).join("")}</dl></details>` : ""}
     </section>`; }).join("");
   const sheets = REVIEWS.filter(k => DATA[k].formulaSheet).map(k => `<section class="card stack g10 sheet-unit"><h2 style="font-size:24px">${esc(tx(DATA[k].title) || t(k))} · ${esc(t("formulaSheet"))}</h2><div class="md">${md(DATA[k].formulaSheet)}</div></section>`).join("");
   return topBar(t("sheet")) + `<div class="shell">${sideNav(null,"sheet")}<main class="main sheet" style="max-width:900px">
     <header class="stack g8"><span class="label r">${esc(plain(COURSE.title))}</span><h1 class="big" style="font-size:40px">${esc(t("sheet"))}</h1>
     <p class="muted">${esc(t("sheetSub"))}</p><div class="noprint"><button type="button" class="btn primary" data-act="print">${esc(t("print"))}</button></div></header>
     ${sheets}${units}</main></div>`;
+}
+
+/* ----- Anki export: tab-separated, with Anki's file headers (Anki 2.1.55+) ----- */
+function ankiFile(){
+  // math becomes MathJax \( \) / \[ \]; a literal dollar (rendered as <span>$</span>) is protected first
+  const cell = v => md(v).replace(/<span>\$<\/span>/g, "\u0002").replace(/\$\$([\s\S]+?)\$\$/g, "\\[$1\\]").replace(/\$([^$]+?)\$/g, "\\($1\\)")
+    .replace(/\u0002/g, "$").replace(/[\t\r\n]+/g, " ");
+  const deck = s => s.replace(/[:\t\r\n]+/g, " ").trim();
+  const rows = ["#separator:tab", "#html:true", "#notetype column:1", "#deck column:2", "#tags column:5"];
+  UNITS.forEach((u, i) => {
+    const d = "Scholia::" + deck(plain(COURSE.title)) + "::" + String(i+1).padStart(2, "0") + " " + deck(plain(u.title));
+    const tag = "scholia unit-" + u.id.replace(/\s+/g, "_");
+    ((u.review || {}).flashcards || []).forEach(f => {
+      const fc = cardFaces(f);
+      rows.push(fc.cloze ? ["Cloze", d, cell(f.front), cell(f.back), tag].join("\t")
+                         : ["Basic", d, cell(f.front), cell(f.back), tag].join("\t"));
+    });
+    ((u.prestudy || {}).keyTerms || []).forEach(k => rows.push(["Basic", d, cell(k.term), cell(k.definition), tag + " key-term"].join("\t")));
+  });
+  return rows.join("\n") + "\n";
 }
 
 /* ----- calendar (.ics) ----- */
@@ -895,6 +998,8 @@ function openExport(){
     <label class="btn" style="cursor:pointer">${esc(t("import"))}<input type="file" accept="application/json,.json" data-x="imp" class="sr"></label></div>
     <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("ics"))}</h3><p class="small muted">${esc(t("icsSub"))}</p>
     <button type="button" class="btn" data-x="ics">${esc(t("ics"))}</button></div>
+    <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("anki"))}</h3><p class="small muted">${esc(t("ankiSub"))}</p>
+    <button type="button" class="btn" data-x="anki">${esc(t("anki"))}</button></div>
     <div class="stack g8" style="padding-top:12px;border-top:1px solid var(--rule)"><h3 style="font-size:18px">${esc(t("codeTitle"))}</h3><p class="small muted">${esc(t("codeSub"))}</p>
     <button type="button" class="btn" data-x="code">${esc(t("codeCopy"))}</button>
     <label class="sr" for="code-in">${esc(t("codePaste"))}</label><textarea id="code-in" data-x="codein" placeholder="SCHZ1:…" style="min-height:72px;font-family:var(--mono);font-size:12px"></textarea>
@@ -906,6 +1011,7 @@ function openExport(){
     const x = e.target.closest("[data-x]"); if (!x) { if (e.target === d) d.close(); return; }
     if (x.dataset.x === "close") d.close();
     if (x.dataset.x === "dl") { downloadBackup(); render(); }
+    if (x.dataset.x === "anki") { downloadFile("scholia-anki-" + new Date().toISOString().slice(0,10) + ".txt", ankiFile(), "text/plain"); toast(t("ankiDone")); }
     if (x.dataset.x === "ics") { downloadFile("scholia-" + new Date().toISOString().slice(0,10) + ".ics", icsFile(), "text/calendar"); toast(t("icsDone")); }
     if (x.dataset.x === "code") { const c = await progressCode(); S.backup = Date.now(); save(); if (!(await copyText(c))) { const o = d.querySelector('[data-x="out"]'); o.textContent = c; o.hidden = false; } }
     if (x.dataset.x === "apply") {
@@ -942,6 +1048,7 @@ function render(){
   app.innerHTML = html;
   if (r.view === "review" && S.exam[r.a] && S.exam[r.a].current && !S.exam[r.a].current.submitted) startTimer(r.a);
   typeset(app);
+  const fin = document.getElementById("fc-in"); if (fin && S.typeMode && document.activeElement === document.body && fin.getBoundingClientRect().top < innerHeight) fin.focus({preventScroll: true});
   if (r.view === "search") { const inp = document.getElementById("search-in"); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
 }
 function typeset(el){
@@ -955,6 +1062,18 @@ document.addEventListener("click", e => {
   if (act === "lang") { LANG = d.v; S.lang = d.v; save(); rerender(true); return; }
   if (act === "export") { openExport(); return; }
   if (act === "backup") { downloadBackup(); rerender(true); return; }
+  if (act === "ask") { let choice;
+    if (d.src === "quiz") { const st = qs(d.k); choice = QIDX[d.id].q.type === "short" ? st.text : st.sel; }
+    else { const e = S.nb[d.id]; choice = e && e.lastChoice; }
+    askClaude(d.id, choice); return; }
+  if (act === "speak") { const u = d.u ? unitById(d.u) : null;
+    if (d.w === "recap") { const r = u.review || {}; speak([readable(r.recap)].concat((r.keyPoints || []).map(readable)).join("\n")); }
+    else if (d.w === "prestudy") { const p = u.prestudy || {}; speak([readable(u.title)].concat((p.sections || []).map(x => readable(x.heading) + "。\n" + readable(x.body))).join("\n")); }
+    else { const st = d.w === "cs" ? CS : fcState(u); const key = d.w === "cs" ? CS.list[CS.i] : u.id + ":" + st.i;
+      const [uid, i] = key.split(":"), card = unitById(uid).review.flashcards[+i], fc = cardFaces(card);
+      speak(readable(st.back ? (fc.cloze ? fc.full : card.back) : fc.front)); }
+    return; }
+  if (act === "type-mode") { S.typeMode = !S.typeMode; save(); rerender(true); return; }
   if (act === "print") { window.print(); return; }
   if (act.startsWith("q-")) { quizAct(act, d.k, d.v); rerender(true); return; }
   if (act === "done" || act === "undone") { setDone(unitById(d.u), d.s, act === "done"); rerender(true); return; }
@@ -965,12 +1084,12 @@ document.addEventListener("click", e => {
     const txt = ["SCHOLIA-QUESTIONS v1", "course: " + plain(COURSE.title), `unit: ${u.id} · ${plain(u.title)}`, "lang: " + LANG, ""].concat(list.map((x, i) => `${i+1}. ${x.text}`)).join("\n");
     copyText(txt).then(ok => { if (!ok) { const o = document.getElementById("cq-out"); if (o) { o.textContent = txt; o.hidden = false; } } }); return; }
   if (act === "cs-flip") { CS.back = !CS.back; rerender(true); return; }
-  if (act === "cs-mark") { const k = CS.list[CS.i]; S.fc[k] = sched(S.fc[k] || {}, +d.v); save(); CS.i++; CS.back = false; rerender(true); return; }
+  if (act === "cs-mark") { const k = CS.list[CS.i]; S.fc[k] = sched(S.fc[k] || {}, +d.v); save(); CS.i++; CS.back = false; CS.typed = null; rerender(true); return; }
   if (act.startsWith("fc-")) { const u = unitById(d.u), f = fcState(u), n = (u.review.flashcards||[]).length;
     if (act === "fc-flip") f.back = !f.back;
-    if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; }
-    if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; }
-    if (act === "fc-mark") { const k = u.id+":"+f.i; S.fc[k] = sched(S.fc[k] || {}, d.v === "know" ? 4 : 2); save(); f.i = (f.i+1) % n; f.back = false; }
+    if (act === "fc-next") { f.i = (f.i+1) % n; f.back = false; f.typed = null; }
+    if (act === "fc-prev") { f.i = (f.i-1+n) % n; f.back = false; f.typed = null; }
+    if (act === "fc-mark") { const k = u.id+":"+f.i; S.fc[k] = sched(S.fc[k] || {}, d.v === "know" ? 4 : 2); save(); f.i = (f.i+1) % n; f.back = false; f.typed = null; }
     rerender(true); return; }
   if (act === "hw-hint") { HWV[d.id].hints++; rerender(true); return; }
   if (act === "hw-sol") { HWV[d.id].sol = true; rerender(true); return; }
@@ -996,12 +1115,17 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("input", e => {
   const el = e.target; const d = el.dataset;
+  if (d.act === "fc-text") { fcState(unitById(d.u)).typed = el.value; return; }
+  if (d.act === "cs-text") { CS.typed = el.value; return; }
   if (el.id === "search-in") { SEARCH_Q = el.value; const res = document.getElementById("search-res"); if (res) { res.innerHTML = searchResults(); } return; }
   if (d.act === "q-text") qs(d.k).text = el.value;
   if (d.act === "ex-text") { S.exam[d.k].current.ans[d.id] = el.value; save(); }
 });
 document.addEventListener("submit", e => {
-  const f = e.target; if (f.dataset.act !== "cq-add") return; e.preventDefault();
+  const f = e.target;
+  if (f.dataset.act === "fc-check" || f.dataset.act === "cs-check") { e.preventDefault();
+    const st = f.dataset.act === "cs-check" ? CS : fcState(unitById(f.dataset.u)); st.typed = f.a.value; st.back = true; rerender(true); return; }
+  if (f.dataset.act !== "cq-add") return; e.preventDefault();
   const v = f.q.value.trim(); if (!v) return;
   (S.cq[f.dataset.u] = S.cq[f.dataset.u] || []).push({text: v, ts: Date.now()}); save(); rerender(true);
   const ta = document.getElementById("cq-input"); if (ta) ta.focus();

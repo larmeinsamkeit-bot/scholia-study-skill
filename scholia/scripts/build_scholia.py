@@ -243,7 +243,10 @@ def validate(data):
             need_text(c, rv, "recap", f"{w} review")
             for j, fc in enumerate(rv.get("flashcards") or []):
                 need_text(c, fc, "front", f"{w} review.flashcards[{j}]")
-                need_text(c, fc, "back", f"{w} review.flashcards[{j}]")
+                front = fc.get("front")
+                fronts = front.values() if isinstance(front, dict) else [front]
+                is_cloze = any(isinstance(x, str) and "{{c" in x and "::" in x for x in fronts)
+                need_text(c, fc, "back", f"{w} review.flashcards[{j}]", required=not is_cloze)
         for j, h in enumerate(u.get("homework") or []):
             hw = f"{w} homework[{j}] [{h.get('id')}]"
             if not h.get("id"):

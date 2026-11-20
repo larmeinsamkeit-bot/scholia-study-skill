@@ -64,6 +64,8 @@ Purpose: consolidate after the lecture.
 - `recap`: the unit on one screen — the structure of ideas, not a transcript.
 - `keyPoints`: 4–8 sentences the student should be able to say from memory.
 - `flashcards`: 8–15 cards; one fact or idea per card; front is a question, not a heading.
+  Use cloze cards (`{{c1::…}}`, see the schema) for definitions, formulas and fixed phrases —
+  2–4 per unit; keep the rest as question/answer cards.
 - `postquiz`: 6–10 questions, difficulty 2–3, testing *use*: calculations, choosing a method,
   interpreting a result. Past-exam style where you have past exams.
 
@@ -89,6 +91,8 @@ errors, misreading the question type). 2–4 entries, same shape as stage 3.
 - `themes`: 3–5 cross-unit threads — the synthesis students can't easily do themselves.
 - `formulaSheet`: what's worth memorising, in the course's notation.
 - `strategy`: built from past exams when available (question types, mark weighting, time).
+- Past exams set the *format and difficulty*, not the questions: rewrite past-paper questions with
+  new numbers or contexts so the mock exam measures what the student can do, not what they remember.
 - `exam`: 15–25 questions for a midterm, 25–40 for a final, mixed difficulty, spread across the
   scope in proportion to lecture time. Don't reuse quiz questions verbatim; reuse concepts.
 

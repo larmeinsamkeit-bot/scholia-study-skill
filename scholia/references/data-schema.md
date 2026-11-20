@@ -85,7 +85,7 @@ filename — name them `u01.json`, `u02.json`, … so they sort past nine.
   "review": {
     "recap": "markdown",
     "keyPoints": ["…"],
-    "flashcards": [ { "front": "…", "back": "…" } ],
+    "flashcards": [ { "front": "…", "back": "…" } ],   // or a cloze card: { "front": "… {{c1::answer}} …", "back?": "extra" }
     "connections?": "markdown — links to earlier/later units"
   },
 
@@ -163,3 +163,11 @@ themselves. Make the model answer list the key points a correct answer must cont
 ```
 
 The app adds readiness-by-unit and weak-spot panels automatically from the student's answers.
+
+## Cloze flashcards
+
+A flashcard whose `front` contains `{{c1::…}}` is a cloze (fill-in-the-blank) card. The app shows
+the sentence with each deletion replaced by `［……］`, or by a hint written as `{{c1::answer::hint}}`;
+flipping reveals the full sentence with the answers in bold. `back` becomes optional extra text.
+Use `c1`, `c2`, … for separate blanks; the Anki export keeps the numbers, so Anki makes one card per
+number. Math can sit inside a deletion: `{{c1::$\\dfrac{a}{b}$}}`.

@@ -26,6 +26,7 @@ Plus:
 - **Weak-spot tracking** that feeds the midterm and final reviews
 - **繁體中文 / 简体中文 / English** interface; course content in the language(s) you choose
 - **Search** across every unit, a printable **study sheet**, and **figures** (diagrams from your slides, embedded in the file)
+- **Ask Claude** after a wrong answer (copies a ready-made follow-up prompt), **read aloud** (built-in voices, incl. Cantonese), **typed recall** and **cloze cards** for flashcards, and **Anki export**
 - **Calendar export (.ics)** of lecture, exam and re-test days, and a weekly **backup reminder**
 - **Works fully offline** — math (KaTeX) and fonts are embedded in the file; light and dark mode; phone-friendly
 - **Progress stays with you** — saved in your browser; move it to another device with a short progress code
